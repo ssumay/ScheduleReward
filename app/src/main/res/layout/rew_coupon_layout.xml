@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/coupon_layout"
+    >
+    <TextView
+            android:id="@+id/regi_coupon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/regi_new_coupon"
+            android:background="@drawable/button"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:layout_marginBottom="7dp" android:gravity="center"
+            android:layout_marginTop="10dp"
+            />
+
+    <LinearLayout
+        android:id="@+id/coupon_spi_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
+        >
+            <Spinner
+                android:id="@+id/coupon_spi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                ></Spinner>
+        <TextView
+            android:id="@+id/add_coupon_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button"
+            android:text="@string/add"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"></TextView>
+    </LinearLayout>
+    <ListView
+        android:id="@+id/coupon_list"
+        android:layout_width="wrap_content"
+        android:background="@drawable/picture2"
+        android:layout_height="wrap_content"></ListView>
+</LinearLayout>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="sugan.org.schedulereward01.LoginActivity"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="100dp" />
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TableRow> <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login_id"
+            android:gravity="right"
+            android:layout_marginRight="10dp"
+            android:textSize="20sp"
+            />
+            <EditText
+                android:id="@+id/_id"
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:hint="@string/ID_enter"
+                android:maxLength="10"/></TableRow>
+    <TableRow android:id="@+id/pwd_layout"
+        android:visibility="gone">
+        <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pwd"
+            android:layout_marginRight="10dp"
+            android:textSize="20sp"
+         />
+        <EditText
+            android:id="@+id/pwd"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:maxLength="4"
+            android:hint="@string/pwd_enter"
+            android:inputType="numberPassword"/></TableRow>
+    </TableLayout>
+    </LinearLayout>
+
+

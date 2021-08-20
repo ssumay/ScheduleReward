@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dip">
+        <TextView
+            android:id="@+id/addsched"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/new_man"
+            android:textSize="20dp"
+            android:layout_marginRight="16dip"
+            android:layout_marginLeft="5dip"
+            android:background="@drawable/button"
+            android:gravity="center"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:onClick="onNewMan"/>
+
+        <TextView
+            android:id="@+id/showsum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/gohome"
+            android:textSize="20dp"
+            android:layout_toRightOf="@id/addsched"
+            android:background="@drawable/button"
+            android:gravity="center"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:onClick="onHomeClicked"/>
+
+    </RelativeLayout>
+
+    <ExpandableListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

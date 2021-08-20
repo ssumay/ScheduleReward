@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="box_length">
+        <item>60dp</item>
+        <item>70dp</item>
+        <item>80dp</item>
+        <item>90dp</item>
+        <item>100dp</item>
+
+    </string-array>
+</resources>

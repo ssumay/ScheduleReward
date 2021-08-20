@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content" android:layout_height="wrap_content"
+    android:gravity="center"
+    >
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+        <TableRow>
+            <LinearLayout
+                android:id="@+id/rect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:orientation="vertical"
+                android:padding="5dp" android:gravity="center"
+                android:background="@drawable/link"
+                android:onClick="onLinkClicked"
+                >
+                <TextView
+                    android:id="@+id/note"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:layout_gravity="center"
+                    android:maxWidth="200dp"
+                    />
+
+                <TextView
+                    android:id="@+id/no_exist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"/>
+                <TextView
+                    android:id="@+id/pic_exist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"/>
+                <LinearLayout
+                    android:id="@+id/unit_values"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    ></LinearLayout>
+                <TextView
+                    android:id="@+id/formula"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    ></TextView>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:id="@+id/coupon_list"/>
+       <!--         <LinearLayout
+                    android:id="@+id/score_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/score1"
+                        />
+                    <TextView
+                        android:id="@+id/score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        />
+                </LinearLayout> -->
+                <TextView
+                    android:id="@+id/seq1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:visibility="gone"
+                    />
+            </LinearLayout>
+
+
+
+
+        </TableRow>
+        <TableRow>
+            <LinearLayout android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/line"
+                    android:layout_width="5dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/line" />
+                <TextView
+                    android:id="@+id/seq"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:visibility="gone"
+                    />
+
+            </LinearLayout>
+            <RadioButton
+                android:id="@+id/radiob"
+                android:layout_width="26dp"
+                android:layout_height="20dp"
+
+                />
+        </TableRow>
+    </TableLayout>
+</LinearLayout>

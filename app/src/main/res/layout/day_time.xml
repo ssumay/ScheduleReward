@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:id="@+id/day_time"
+    android:background="@drawable/picture5">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        >
+        <TextView
+            android:id="@+id/day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+        <TextView
+            android:id="@+id/mon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mon"
+            android:background="@drawable/picture"
+            android:textSize="15sp"
+            android:padding="2dp"
+            android:onClick="onDayClicked"
+            />
+        <TextView
+            android:id="@+id/mon_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textSize="13sp"
+            android:onClick="ontimeClicked"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:padding="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tue"
+            android:background="@drawable/picture"
+            android:textSize="15sp"
+            android:padding="2dp"                 android:onClick="onDayClicked"
+            />
+        <TextView
+            android:id="@+id/tue_time"             android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:onClick="ontimeClicked" android:textSize="13sp"/>
+    </LinearLayout>
+    <LinearLayout android:padding="2dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/wed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/wed"
+        android:background="@drawable/picture"
+        android:textSize="15sp"
+        android:padding="2dp"                 android:onClick="onDayClicked"
+        />
+    <TextView
+        android:id="@+id/wed_time" android:onClick="ontimeClicked" android:textSize="13sp"
+        android:layout_width="wrap_content"             android:layout_marginLeft="10dp"
+        android:layout_height="wrap_content" />
+</LinearLayout>    <LinearLayout android:padding="2dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/thu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/thu"
+        android:background="@drawable/picture"
+        android:textSize="15sp"
+        android:padding="2dp"              android:onClick="onDayClicked"
+        />
+    <TextView
+        android:id="@+id/thu_time" android:onClick="ontimeClicked" android:textSize="13sp"
+        android:layout_width="wrap_content"             android:layout_marginLeft="10dp"
+        android:layout_height="wrap_content" />
+</LinearLayout>    <LinearLayout android:padding="2dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/fri"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fri"
+        android:background="@drawable/picture"
+        android:textSize="15sp"
+        android:padding="2dp"               android:onClick="onDayClicked"
+        />
+    <TextView
+        android:id="@+id/fri_time"  android:onClick="ontimeClicked" android:textSize="13sp"
+        android:layout_width="wrap_content"             android:layout_marginLeft="10dp"
+        android:layout_height="wrap_content" />
+</LinearLayout>    <LinearLayout android:padding="2dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/sat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sat"
+        android:background="@drawable/picture"
+        android:textSize="15sp"
+        android:padding="2dp"               android:onClick="onDayClicked"
+        />
+    <TextView
+        android:id="@+id/sat_time" android:onClick="ontimeClicked" android:textSize="13sp"
+        android:layout_width="wrap_content"             android:layout_marginLeft="10dp"
+        android:layout_height="wrap_content" />
+</LinearLayout>
+    <LinearLayout  android:padding="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/sun"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sun"
+            android:background="@drawable/picture"
+            android:textSize="15sp"
+            android:onClick="onDayClicked"
+            android:padding="2dp"            />
+        <TextView
+            android:id="@+id/sun_time" android:onClick="ontimeClicked" android:textSize="13sp"
+            android:layout_width="wrap_content"             android:layout_marginLeft="10dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</LinearLayout>

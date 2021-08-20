@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="30dp">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/regi_coupon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/regi_new_coupon"
+                android:paddingLeft="10dp" android:paddingBottom="4dp"
+                android:paddingTop="4dp" android:paddingRight="10dp"
+                android:background="@drawable/button"
+                android:textSize="20dp" android:gravity="center"
+                />
+            <TextView android:layout_height="wrap_content"
+                android:layout_width="wrap_content" android:onClick="onHome"
+                android:paddingLeft="10dp" android:paddingBottom="4dp"
+                android:paddingTop="4dp" android:paddingRight="10dp"
+                android:background="@drawable/button"
+                android:textSize="20dp" android:text="@string/gohome"
+                android:layout_marginLeft="150dp"
+                /></LinearLayout>
+                <include layout="@layout/new_coupon_dialog"
+                    ></include>
+    <LinearLayout
+        android:id="@+id/del_coupon_l"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:paddingTop="15dp"
+      >
+        <Spinner
+            android:id="@+id/coupon_spi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+            ></Spinner>
+        <TextView
+            android:id="@+id/del_coupon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/delete"
+            android:onClick="onDelCoupon"
+            android:background="@drawable/button"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:gravity="center"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="20dp"
+           />
+
+    </LinearLayout>
+
+    </LinearLayout>
+
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp">
+    <TextView
+        android:id="@+id/give_cp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/give_coup"
+        android:textSize="20dp"
+        android:textColor="#808000"
+        android:onClick="onCpb"
+        android:background="@drawable/oneday_ticket2"
+        android:paddingLeft="10dp" android:paddingBottom="4dp"
+        android:paddingTop="4dp" android:paddingRight="10dp"
+        android:gravity="center"
+        android:layout_marginRight="100dp"
+        />
+    <TextView
+        android:id="@+id/new_man"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/regi_man"
+        android:textSize="20dp"
+        android:background="@drawable/button"
+        android:gravity="center"
+        android:paddingLeft="10dp" android:paddingBottom="4dp"
+        android:paddingTop="4dp" android:paddingRight="10dp"
+        android:onClick="onNewMan"/></LinearLayout>
+    <LinearLayout
+        android:id="@+id/give_cpl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:background="@drawable/oneday_ticket3"
+        android:padding="20dp"
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/to"
+                android:textSize="18sp"
+                android:layout_marginRight="25dp"
+                android:layout_marginLeft="15dp"/>
+        <Spinner
+            android:id="@+id/man_spi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            ></Spinner>
+       </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/coupon"
+                android:textSize="18sp"
+                android:layout_marginRight="25dp"
+                android:layout_marginLeft="15dp"/>
+        <Spinner
+            android:id="@+id/coupon_spi1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            ></Spinner>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/ea"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:hint="1"
+                android:text="1"
+                android:paddingRight="10dp"
+                android:layout_marginLeft="30dp"
+                android:maxLength="1"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ea"
+                android:paddingRight="10dp"
+                />
+        </LinearLayout>
+        <RadioGroup
+            android:id="@+id/cpb_rbg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkedButton="@id/one_time"
+            >
+            <RadioButton
+                android:id="@+id/one_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/one_time"></RadioButton>
+            <RadioButton
+                android:id="@+id/period"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/periodically"></RadioButton>
+        </RadioGroup>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/picture1"
+            android:layout_marginLeft="30dp"
+            android:padding="5dp"
+            android:visibility="gone"
+            android:id="@+id/period_l"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="price per ea. : "/>
+            <EditText
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:text="0"
+                android:hint="0"
+                android:gravity="right"
+                android:id="@+id/price"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/won"
+                android:paddingLeft="15dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_margin="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/publish"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#808000"
+                android:background="@drawable/oneday_ticket2"
+                android:padding="8dp"
+                android:onClick="onPublishCP"
+                android:layout_marginRight="20dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cancle"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:onClick="onCancelCP"
+                android:background="@drawable/button"
+                />
+        </LinearLayout>
+        </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="15dp"
+        android:id="@+id/mycoupon_l"
+        android:visibility="gone">
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/man_spi1"/>
+        <TextView
+            android:id="@+id/mycoupons_b"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/coupons"
+            android:onClick="onMyCoupons"
+            android:textSize="20dp"
+            android:background="@drawable/button"
+            android:gravity="center"
+            android:paddingLeft="10dp" android:paddingBottom="4dp"
+            android:paddingTop="4dp" android:paddingRight="10dp"
+            android:layout_marginLeft="50dp"/>
+    </LinearLayout>
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/period_coupon_list"/>
+</LinearLayout>
