@@ -37,7 +37,7 @@
         >
 
         <TextView
-            android:layout_width="90dp"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:text="@string/sum_current"
             android:textSize="18sp"

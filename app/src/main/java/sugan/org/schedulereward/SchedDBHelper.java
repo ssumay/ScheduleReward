@@ -76,21 +76,25 @@ public class SchedDBHelper extends SQLiteOpenHelper {
 
         String  CREATE_SUM="CREATE TABLE sum (" +
                 " man_name text NOT NULL," +
-                " s_id INTEGER NOT NULL," +
+                " s_id INTEGER ," +
                 " s_title text, " +  //나중에 추가됨.  스케줄 이행내역(정산관리)을 위해
                 " link_note text, " + //나중에 추가됨.  스케줄 이행내역(정산관리)을 위해
-                " seq INTEGER NOT NULL," +
+                " seq INTEGER ," +
                 " date  integer not null," +
                 " reward  TEXT not null," +  // cash - 그냥 숫자 ex. 35.7
                                            // coupon인 경우 coupon|nameA|1|nameB|3  그리고 my_coupon table에 nameA쿠폰 1번 그리고 nameB 쿠폰을 3번 저장한다.
-                " picture text)";
+                " picture text," +
+                " isCP integer )";   //coupon인지 여부. coupon이면 1이고 cash이면 null.
 
         String CREATE_MY_COUPON="CREATE TABLE my_coupon (" +
                 " _id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
+                " s_title text, " +  //나중에 추가됨.  스케줄 이행내역(쿠폰내역)을 위해
+                " link_note text, " + //나중에 추가됨.  스케줄 이행내역(쿠폰내역)을 위해
                 " man_name TEXT NOT NULL," +
                 " name text not null, " +
                 " date integer not null, " +
-                " price_ea TEXT )";  //무료이면 NULL
+                " price_ea TEXT, " + //무료이면 NULL
+                " state INTEGER )";  // 1이면 사용한 상태. 그렇지 않은 경우 NULL
 
 
         String CREATE_COUPON= "CREATE TABLE COUPON (" +

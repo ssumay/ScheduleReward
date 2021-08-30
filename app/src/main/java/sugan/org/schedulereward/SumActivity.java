@@ -62,7 +62,7 @@ public class SumActivity extends AppCompatActivity {
         per_score_i = ms.man.per_score; Log.i("per_score", per_score_i+" ");
 
         name.setText(md.name);
-        Man.setImage(md.img, img);
+        Man.setImage(md.img, img, this);
         t1.setText(ms.sum + "");
         if(ms.man.per_score==0){
             per_score_i=1;      // 보이지 않으므로 상관없음.
@@ -77,20 +77,20 @@ public class SumActivity extends AppCompatActivity {
         }
         //t3.setText(((int) (ms.sum / ms.man.per_score)) + "");
         t3.setText(((int) (ms.sum / per_score_i)) + "");
-
+/*
         if(ms.used_scores.size()>1) {
             UsedSumListAdapter adapter1 = new UsedSumListAdapter(SumActivity.this, ms.used_scores);
             list2.setAdapter(adapter1);
             b2.setVisibility(View.VISIBLE);
             A_SumActivity.setListViewHeightBasedOnChildren(list2);
         }
-        else b2.setVisibility(View.GONE);
-        if(ms.oneday_rews1.size()>0) {
+        else b2.setVisibility(View.GONE);*/
+        if(ms.cp_datas.size()>0) {
             b3.setVisibility(View.VISIBLE);
         }
         else b3.setVisibility(View.GONE);
         if(ms.sum_datas.size()>1) {
-            AccumulatedSumListAdapter adapter = new AccumulatedSumListAdapter(SumActivity.this, ms.sum_datas);
+            SumListAdapter adapter = new SumListAdapter(SumActivity.this, ms.sum_datas);
             list1.setAdapter(adapter);
             A_SumActivity.setListViewHeightBasedOnChildren(list1);
             b1.setVisibility(View.VISIBLE);
@@ -118,11 +118,11 @@ public class SumActivity extends AppCompatActivity {
     }
 
     public void onB3Clicked(View v) {
-
+/*
         final GridLayout linear = (GridLayout) View.inflate(this, R.layout.oneday_not_used, null);
-        for(int i=0; i<ms.oneday_rews1.size(); i++) {
+        for(int i=0; i<ms.cp_datas.size(); i++) {
             final TextView or = (TextView)View.inflate(this, R.layout.my_coupon, null);
-            or.setText(ms.oneday_rews1.get(i).rew_desc);
+            or.setText(ms.cp_datas.get(i).rew_desc);
 
             linear.addView(or);
             or.setOnClickListener(new View.OnClickListener() {
@@ -161,6 +161,8 @@ public class SumActivity extends AppCompatActivity {
                 .setNegativeButton(R.string.cancle, null)
                 .setView(linear)
                 .show();
+
+ */
     }
     public void onHome(View v){
         Intent intent = new Intent(this, EntranceActivity.class);

@@ -107,7 +107,7 @@ public class DoSchedFragment extends Fragment {
         logout1 =  root.findViewById(R.id.logout1);
         home =  root.findViewById(R.id.home);
         home1 = root.findViewById(R.id.home1);
-        Man.setImage(md.img, root.findViewById(R.id.img));
+        Man.setImage(md.img, root.findViewById(R.id.img), context);
 
         showLinkContent();
         return root;
@@ -139,7 +139,7 @@ public class DoSchedFragment extends Fragment {
             }
             else */
 
-            sum_res = Sum.getSumScore(md.name+"", sd._id+"" , context);
+            sum_res = Sum.getSumScore(md.name, sd._id+"" , context);
             ((TextView)root.findViewById(R.id.sum)).setText(sum_res);
             Log.i("s_title", s_title +" ");
             ((TextView)root.findViewById(R.id.c_title)).setText(s_title);
@@ -178,9 +178,9 @@ public class DoSchedFragment extends Fragment {
                 if (ld.ld.pic == 0) picture_layout.setVisibility(View.GONE);
                 switch (ld.ld.reward_type) {
                     case 1:
-                        values_layout.setVisibility(View.VISIBLE);
+                        //values_layout.setVisibility(View.VISIBLE);
                         variables = new ArrayList<>();
-                        Schedule.arrangeValues_layout(context, values_layout, ld.ld.link_Atoms, true, false, 25, variables);
+                        Schedule.arrangeValues_layout(context, values_layout, ld.ld.link_Atoms, values_layout, true, false, 25, variables);
                         break;
                     case 0:   //simple
                     case 2:   //no reward
@@ -351,6 +351,7 @@ public class DoSchedFragment extends Fragment {
                 case 0: //simple
                     if(ld.ld.formula.startsWith("3")) { //cash
                         result = ld.ld.formula.substring(2); Log.i("cash_result = " , result + " ");
+
                     }
                     else { //coupon
                         result = ld.ld.formula.replaceFirst("4", "coupon");  Log.i("coupon_result = ", result+ " ");

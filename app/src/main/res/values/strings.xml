@@ -31,7 +31,6 @@
     <string name="addlink">연결스케줄 추가</string>
     <string name="link_note">내용</string>
     <string name="input_link">연결된 스케줄을 입력하세요</string>
-    <string name="modify_link">연결된 스케줄을 수정하거나 삭제합니다</string>
     <string name="no_select">no 버튼 추가</string>
     <string name="picture_select">인증사진 추가</string>
     <string name="picture">인증사진</string>
@@ -47,9 +46,9 @@
     <string name="no_exist">No 버튼 있음</string>
     <string name="pic_exist">인증사진 가능</string>
     <string name="score1">점수 : </string>
-    <string name="sum_detail">누적점수내역</string>
+    <string name="sum_detail">누적점수내역</string>  <!-- 삭제 -->
     <string name="sc_detail1">스케줄 이행내역</string>
-    <string name="sum_used">사용한 점수내역</string>
+    <string name="sum_used">사용한 점수내역</string>   <!-- 삭제 -->
     <string name="sum_enter">[ 사용할 점수를 입력후 엔터 ]</string>
     <string name="sum_enter1">[ 보너스 점수를 입력후 엔터 ]</string>
 
@@ -205,4 +204,8 @@
     <string name="period_day">periodical day</string>
     <string name="use_coupon"> 쿠폰을 사용하실 건가요?</string>
     <string name="used_coupon">쿠폰을 사용하였습니다.</string>
+    <string name="sum_history">점수 내역</string>
+    <string name="cp_history">쿠폰 내역</string>
+    <string name="content">내용</string>
+    <string name="modify_link">연결된 내용을 수정합니다</string>
 </resources>

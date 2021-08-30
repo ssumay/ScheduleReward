@@ -43,7 +43,7 @@ public class MyPageFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_mypage, container, false);
         ((TextView) root.findViewById(R.id.name)).setText(md.name);
-        Man.setImage(md.img, (ImageView)root.findViewById(R.id.img));
+        Man.setImage(md.img, (ImageView)root.findViewById(R.id.img), context);
         return root;
     }
 

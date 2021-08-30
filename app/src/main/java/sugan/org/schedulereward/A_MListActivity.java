@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -57,6 +58,10 @@ public class A_MListActivity extends AppCompatActivity {
     String from;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+
         Intent intent = getIntent();
         from = intent.getStringExtra("from");
         if(from!=null && (from.equals("schedA") || from.equals("couponA"))) {
@@ -67,6 +72,8 @@ public class A_MListActivity extends AppCompatActivity {
 
             getManList();
         }
+
+
         //.setIcon(R.drawable.androboy)
     }
     public boolean checkLoginId(){
@@ -126,7 +133,7 @@ public class A_MListActivity extends AppCompatActivity {
         if(mode == 0)
 
             sql = "insert into man ( name, pwd, pwd_on, img ) values ('" +
-                    name.getText().toString() +"', '1111', 0 , '" + i_img +"' )";
+                    name.getText().toString() +"', '1111', 0 , " + i_img +" )";
 
         else
             sql = "update man set name = '" + name.getText().toString() + "', login_id= '"+name.getText().toString()
@@ -170,7 +177,7 @@ public class A_MListActivity extends AppCompatActivity {
         String url = "tmp_" + String.valueOf(System.currentTimeMillis()) + ".jpg";
 
         mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), url));
-        //Log.i("mImageCaptureUri = " , mImageCaptureUri.getPath().toString());
+        Log.i("mImageCaptureUri = " , mImageCaptureUri.getPath().toString());
 
 
         intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
@@ -181,6 +188,7 @@ public class A_MListActivity extends AppCompatActivity {
 
         intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
         startActivityForResult(intent, PICK_FROM_ALBUM);
+
     }
 
     public void  onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -226,8 +234,11 @@ public class A_MListActivity extends AppCompatActivity {
                 img = System.currentTimeMillis()+"";
 
 
-                String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()
-                        + "/scheduleReward/" + img + ".jpg";
+                //String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()
+                //        + "/scheduleReward/" + img + ".jpg";
+                //String filePath = "/storage/Android/data/data/sugan.org.schedulereward/"+ img + ".jpg";
+                String filePath = getCacheDir()+"/" + img + ".jpg";
+                Log.i("CROP_FROM_IMAGE", filePath + " ");
                 if(extras != null){
                     Bitmap photo = extras.getParcelable("data");
                     ch_img.setImageBitmap(photo);
@@ -252,9 +263,11 @@ public class A_MListActivity extends AppCompatActivity {
     }
     public void storeCropImage ( Bitmap bitmap, String filePath) {
         Log.i("filepath", filePath+" ");
-        String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath()
-                + "/scheduleReward";
-        File directory_sched = new File(dirPath);
+        //String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath()
+        //        + "/scheduleReward";
+        //String dirPath = getCacheDir()
+        //String dirPath = "/storage/Android/data/data/sugan.org.schedulereward/";
+        File directory_sched = new File(getCacheDir()+"/");
 
         if (!directory_sched.exists())
             directory_sched.mkdir();
@@ -291,7 +304,7 @@ public class A_MListActivity extends AppCompatActivity {
             dialog.show();
         }
         name.setText(md.name);
-        Man.setImage(md.img, ch_img);
+        Man.setImage(md.img, ch_img, this);
         if(md.per_score==0)  per_score.setText("");
         else  per_score.setText(md.per_score+"");
         save.setText(R.string.modify);
@@ -560,8 +573,8 @@ class ManListAdapter extends BaseExpandableListAdapter {
         Man_data d = (Man_data) getGroup(groupPosition);
         ((TextView)convertView.findViewById(R.id.name)).setText(d.name);
         ImageView img = (ImageView) convertView.findViewById(R.id.img);
-        //Log.i("groupview", d.name+" " +d._id);
-        Man.setImage(d.img, img);
+        Log.i("groupview", d.name+" " +d.img);
+        Man.setImage(d.img, img, context);
         return convertView;
 
     }

@@ -65,7 +65,7 @@ class Week_select_state {
     View.OnLongClickListener listener = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View v) {
-            Schedule.onDayClicked((TextView)v);
+            Schedule.onDayClicked((TextView)v, context );
             return false;
         }
     };

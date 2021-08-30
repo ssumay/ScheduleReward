@@ -287,12 +287,13 @@ public class Man {
         return mds;
     }
 
-    public static void setImage(String file, ImageView img){
+    public static void setImage(String file, ImageView img, Context context){
         Log.i("file", file +" ");
         if(file!=null) {
-            String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()
-                    + "/scheduleReward/" +
+            String filePath = //Environment.getExternalStorageDirectory().getAbsolutePath() + "/scheduleReward/"
+                    context.getCacheDir()+"/"+
                     file + ".jpg";
+
 
             Bitmap bitmapImage = BitmapFactory.decodeFile(filePath);
             img.setImageBitmap(bitmapImage);

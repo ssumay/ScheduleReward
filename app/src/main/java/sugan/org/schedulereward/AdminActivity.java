@@ -28,6 +28,11 @@ public class AdminActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void onAdSum(View v){
+        Intent intent = new Intent(this, A_SumActivity.class);
+        startActivity(intent);
+    }
+
     public void onAdCoupon(View v){
         Intent intent = new Intent(this, A_CouponActivity.class);
         startActivity(intent);

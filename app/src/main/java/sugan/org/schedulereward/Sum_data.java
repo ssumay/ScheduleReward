@@ -5,11 +5,12 @@ package sugan.org.schedulereward;
  */
 
 public class Sum_data {
-    //int s_id;
-    //int man_id;
+
     String s_title;
+    String link_note;
     String date;
     String score;
+    String picture;
 
 
 }

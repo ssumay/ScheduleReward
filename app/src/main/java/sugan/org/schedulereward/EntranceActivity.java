@@ -26,7 +26,7 @@ public class EntranceActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //deleteDatabase("schedreward.db");
+       // deleteDatabase("schedreward.db");
 
         setContentView(R.layout.activity_entrance);
        // TextView formula_test_r = findViewById(R.id.formula_test_r);

@@ -36,7 +36,7 @@
                     android:layout_height="wrap_content"
                     android:visibility="gone"/>
                 <LinearLayout
-                    android:id="@+id/unit_values"
+                    android:id="@+id/verticalLinear"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -48,27 +48,27 @@
                     android:layout_height="wrap_content"
                     android:visibility="gone"
                     ></TextView>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:id="@+id/coupon_list"/>
-       <!--         <LinearLayout
-                    android:id="@+id/score_layout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/score1"
-                        />
-                    <TextView
-                        android:id="@+id/score"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        />
-                </LinearLayout> -->
+                <!--     <LinearLayout
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:orientation="vertical"
+                       android:id="@+id/coupon_list"/>
+                 <LinearLayout
+                       android:id="@+id/score_layout"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:visibility="gone">
+                       <TextView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:text="@string/score1"
+                           />
+                       <TextView
+                           android:id="@+id/score"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           />
+                   </LinearLayout> -->
                 <TextView
                     android:id="@+id/seq1"
                     android:layout_width="wrap_content"

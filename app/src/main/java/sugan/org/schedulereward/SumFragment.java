@@ -60,7 +60,7 @@ public class SumFragment extends Fragment {
         name.setText(md.name);
         img = (ImageView) root.findViewById(R.id.img);
 
-        Man.setImage(md.img, img);
+        Man.setImage(md.img, img, context);
         t1 = (TextView) root.findViewById(R.id.t1);
         t2 = (TextView) root.findViewById(R.id.t2);
         t3 = (TextView) root.findViewById(R.id.t3);
@@ -81,7 +81,7 @@ public class SumFragment extends Fragment {
         per_score_i = ms.man.per_score; Log.i("per_score", per_score_i+" ");
 
         name.setText(md.name);
-        Man.setImage(md.img, img);
+        Man.setImage(md.img, img, context);
         t1.setText(ms.sum + "");
         if(ms.man.per_score==0){
             per_score_i=1;      // 보이지 않으므로 상관없음.
@@ -96,7 +96,7 @@ public class SumFragment extends Fragment {
         }
         //t3.setText(((int) (ms.sum / ms.man.per_score)) + "");
         t3.setText(((int) (ms.sum / per_score_i)) + "");
-
+/*
         if(ms.used_scores.size()>1) {
             UsedSumListAdapter adapter1 = new UsedSumListAdapter(context, ms.used_scores);
             list2.setAdapter(adapter1);
@@ -117,7 +117,7 @@ public class SumFragment extends Fragment {
         else  {
             list1.setAdapter(null);
             b1.setVisibility(View.GONE);
-        }
+        }*/
 
         b1.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
@@ -136,6 +136,7 @@ public class SumFragment extends Fragment {
 
             }
         });
+        /*
         b3.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
 
@@ -184,7 +185,7 @@ public class SumFragment extends Fragment {
                         .setView(linear)
                         .show();
             }
-        });
+        });*/
         return root;
 
     }

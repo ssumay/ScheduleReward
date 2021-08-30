@@ -9,13 +9,13 @@ import java.util.ArrayList;
 
 public class Sched_data implements Serializable {
     String title;
-    int  _id;
+    int  _id = -1;   // new page일 때 -1로 설정함.
 
     int state = 0;  // 0- 수정중=> 사용자에게 나타나지 않음,   1 - 나타남
     int seq_num;   //count(*) from linked_sched where s_id=" + sd._id
     //int reward;   //reward _id  삭제
-    String rew_desc;   //삭제
-    int rew_day;   //삭제
+    //String rew_desc;   //삭제
+    //int rew_day;   //삭제
     ArrayList<Linked_sched_data> lds;
     Week_select_state week_select_state;
 
@@ -38,7 +38,7 @@ class Linked_sched_data {
     int seq;
     int s_id;
     //int score;
-    int db_seq;//삭제
+    //int db_seq;//삭제
     int reward_type;   //0 - simple, 1 - formula, 2 - no reward
 
     ArrayList<LinkAtom> link_Atoms = new ArrayList<>();

@@ -24,7 +24,8 @@ import java.util.ArrayList;
 
 public class A_ScListActivity extends AppCompatActivity {
 
-    String s_id;
+    String s_id;   //for delete
+    String _id;  //스케줄 보기 및 수정 버튼 클릭시 에러 처리를 위해
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,8 +33,9 @@ public class A_ScListActivity extends AppCompatActivity {
 
         getSchedList();
     }
-    public void onSched(View v) {
+    public void onSched(View v) {  //스케줄 보기 및 수정 버튼
         Intent intent = new Intent(this, ScheduleActivity.class);
+        intent.putExtra("s_id", _id);
         startActivity(intent);
     }
     public void onNewSched(View v){
@@ -74,6 +76,7 @@ public class A_ScListActivity extends AppCompatActivity {
         ExpandableListView listView = (ExpandableListView) findViewById(R.id.list);
         SchedListAdapter adapter = Schedule.getList(this);
         listView.setAdapter(adapter);
+        _id = adapter.groups.get(0)._id + "";
     }
 }
 
@@ -82,7 +85,7 @@ class SchedListAdapter implements ExpandableListAdapter {
 
     Context context;
 
-    private ArrayList<Sched_data> groups;
+     ArrayList<Sched_data> groups;
 
     private ArrayList<ArrayList<Linked_sched_data>> children;
 

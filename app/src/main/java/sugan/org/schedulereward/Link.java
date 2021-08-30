@@ -32,7 +32,7 @@ public class Link {
         }
 
         if(seq==0) {  //요청한 seq가 0이면  during_sched에서 실행중이었는지 체크하고 실행중이라면 다음 실행할 seq로 대체한다.
-            String sql = "select seq+1 from during_sched where date = " + Util.today() + " and s_id=" + sd._id + " and man_name = " + md.name;
+            String sql = "select seq+1 from during_sched where date = " + Util.today() + " and s_id=" + sd._id + " and man_name = '" + md.name + "'";
             Cursor cursor1 = db.rawQuery(sql, null);
             if(cursor1.moveToNext()) {
                 seq = cursor1.getInt(0); Log.i("during_sched에 존재함", seq + " ");

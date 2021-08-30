@@ -55,7 +55,8 @@ public class Coupon {
     static boolean useMyCoupon(Context context, String _id){
         SchedDBHelper sHelper = new SchedDBHelper(context);
         SQLiteDatabase db = sHelper.getWritableDatabase();
-        String sql = " delete from my_coupon where _id = " + _id ;
+        String sql = "update my_coupon set state=1 where _id = " + _id;
+        //String sql = " delete from my_coupon where _id = " + _id ;
         try {
             db.execSQL(sql);
             return true;
@@ -491,7 +492,7 @@ class ScheduleCouponListAdapter extends BaseAdapter{
     }
 
     public void addItem(Coupon_data coupon_data){
-        coupon_datas.add(coupon_data);
+        coupon_datas.add(coupon_data);Log.i("additem", coupon_data.name + " " + coupon_data.ea);
         notifyDataSetChanged();
 
     }
@@ -507,13 +508,14 @@ class ScheduleCouponListAdapter extends BaseAdapter{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if(convertView==null){
+       // if(convertView==null){
             convertView = inflater.inflate(R.layout.coupon_listview, parent, false);
 
-        }
+        //}
         TextView name = (TextView)convertView.findViewById(R.id.name);
         name.setText(coupon_datas.get(position).name);
         EditText ea = (EditText)convertView.findViewById(R.id.ea);
+        ea.setText(coupon_datas.get(position).ea);
         TextView seq = convertView.findViewById(R.id.position);
         seq.setText(position+ "");
         TextView del = convertView.findViewById(R.id.del);

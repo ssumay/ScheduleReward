@@ -73,23 +73,23 @@ public class Schedule {
     static LinearLayout linkDiaLayout = null ;   //추후 삭제
     static String if_edit_s1;
 
-    ArrayList<Sched_data> scheds;
+    //ArrayList<Sched_data> scheds;   //추후 삭제
 
    // static int atom_length;
    // static ArrayList<LinkAtom> currentlink_Atoms = new ArrayList<>();
 
 
-    static ScheduleActivity sa;
+   // static ScheduleActivity sa;   //추후 삭제
 
     //ArrayList<ArrayList<Linked_sched_data>> s_links;
 
-    Schedule(ScheduleActivity sa){
-        this.sa = sa;
-    }
+  //  Schedule(ScheduleActivity sa){
+  //      this.sa = sa;
+  //  }   //추후 삭제
 
-    public void fillSpinner( Spinner spinner) {
+    static void fillSpinner( Spinner spinner, ArrayList<Sched_data> scheds, Context context ) {
 
-        SchedDBHelper sHelper = new SchedDBHelper(sa);
+        SchedDBHelper sHelper = new SchedDBHelper(context);
         SQLiteDatabase db = sHelper.getWritableDatabase();
         Cursor cursor;
         cursor = db.rawQuery("select title, _id from sched order by _id desc", null);
@@ -97,13 +97,12 @@ public class Schedule {
         //cursor = db.rawQuery("select title, _id, mon, tue, wed, thu, fri, sat, sun, reward, " +
         //                " skip_num from sched order by _id desc", null);
 
-        scheds = new ArrayList<Sched_data>();
         //s_links = new ArrayList<ArrayList<Linked_sched_data>>();
         String[] titles = new String[cursor.getCount()];  int i=0;
 
         while(cursor.moveToNext()) {
             Sched_data sched = new Sched_data();
-            ArrayList<Linked_sched_data> lds = new ArrayList<Linked_sched_data>();
+           // ArrayList<Linked_sched_data> lds = new ArrayList<Linked_sched_data>();
             //s_links.add(lds);
 
             sched.title = cursor.getString(0);
@@ -139,7 +138,7 @@ public class Schedule {
             cursor1.close();            */
         }
         ArrayAdapter<CharSequence> adapter;
-        adapter = new ArrayAdapter<CharSequence>(sa,
+        adapter = new ArrayAdapter<CharSequence>(context,
                 android.R.layout.simple_spinner_item, titles);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -149,66 +148,77 @@ public class Schedule {
         sHelper.close();
 
     }
-    public static Sched_data getSchedData(int s_id) {
+    public static Sched_data getSchedData(int s_id, Context context) {
 
-        SchedDBHelper sHelper = new SchedDBHelper(sa);
+        SchedDBHelper sHelper = new SchedDBHelper(context);
         SQLiteDatabase db = sHelper.getWritableDatabase();
-        Cursor cursor;
-        cursor = db.rawQuery("select title, _id, reward, "  +
-                                 " skip_num  from sched where _id="+ s_id, null);
+       // Cursor cursor;
+      //  cursor = db.rawQuery("select title, state  from sched where _id="+ s_id, null);
 
-        cursor.moveToNext();
+       // cursor.moveToNext();
         Sched_data sched = new Sched_data();
         sched.lds = new ArrayList<Linked_sched_data>();
-        sched.week_select_state = new Week_select_state(sa);
+        sched.week_select_state = new Week_select_state(context);
             //s_links.add(lds);
 
-            sched.title = cursor.getString(0);
-            sched._id = cursor.getInt(1);
+          //  sched.title = cursor.getString(0);
+          //  sched._id = s_id;
 
-            sched.state = cursor.getInt(2); //   Log.i("reward---", sched.reward+ " " + sched.skip_num);
+          //  sched.state = cursor.getInt(1); //   Log.i("reward---", sched.reward+ " " + sched.skip_num);
            // sched.skip_num = cursor.getInt(3);
-
-            String sql1 = "select note, s_id, seq, score, type, picture, formula " +
-                    " from linked_sched where s_id=" + sched._id +" order by seq";
+Log.i("sched.title", sched.title + " ");
+            String sql1 = "select note,  seq, picture, reward_type, formula " +
+                    " from linked_sched where s_id=" + s_id+" order by seq";
             Cursor cursor1;
             cursor1 = db.rawQuery(sql1, null);
             int j=1;
             while(cursor1.moveToNext()) {
                 Linked_sched_data ld = new Linked_sched_data();
                 ld.link_note = cursor1.getString(0);
-                ld.s_id = cursor1.getInt(1);
-                ld.db_seq = cursor1.getInt(2);
+
+                ld.s_id = s_id; // cursor1.getInt(1);
+                ld.seq = cursor1.getInt(1);   Log.i("ld.seq", ld.seq + " ");
                // ld.score = cursor1.getInt(3);
                 //ld.no = cursor1.getInt(4);
-                ld.pic = cursor1.getInt(5);
-                ld.seq = j++;
-                String formula = cursor1.getString(6);
+                ld.pic = cursor1.getInt(2);
+                ld.reward_type = cursor1.getInt(3);
+                //ld.seq = j++;
+                ld.formula = cursor1.getString(4);
+                Log.i("cursor1.movetonext", ld.link_note+" " + formula);
 
-                if(! formula.equals("")) {
-                    parseFormula(ld, formula);
-                    ld.link_Atoms = new ArrayList<>(5);
+                if(! ld.formula.equals("")) {
+                    parseFormula(ld, ld.formula);
 
-                    String sql2 = "select length, unit, default_v from link_atom where  s_id=" + sched._id +
-                            " and link_seq =" + ld.seq + " order by atom_seq ";
-                    Cursor cursor2;
-                    cursor2 = db.rawQuery(sql2, null);
-                    while(cursor2.moveToNext()) {
-                        LinkAtom atom = new LinkAtom();
-                        atom.length = cursor2.getInt(0);
-                        atom.unit = cursor2.getString(1);
-                        atom.default_v = Float.parseFloat(cursor2.getString(2));
-                        ld.link_Atoms.add(atom);
+                    if(ld.reward_type == 1) {
 
+                        ld.link_Atoms = new ArrayList<>(5);
+
+                        String sql2 = "select length, unit, default_v from link_atom where  s_id=" + s_id +
+                                " and link_seq =" + ld.seq + " order by atom_seq ";
+                        Log.i("sql2", sql2);
+                        Cursor cursor2;
+                        cursor2 = db.rawQuery(sql2, null);
+                        while (cursor2.moveToNext()) {
+                            Log.i("cursor2", "movetonext");
+                            LinkAtom atom = new LinkAtom();
+                            atom.length = cursor2.getInt(0);
+                            atom.unit = cursor2.getString(1);
+                            atom.default_v = Float.parseFloat(cursor2.getString(2));
+                            ld.link_Atoms.add(atom);
+
+                        }
+                        Log.i("sched_data - link_atom", ld.link_Atoms.size() + " ");
+                        cursor2.close();
                     }
-                    cursor2.close();
+                    //else if(ld.reward_type==0){
+
+                    //}
                 }
-
-
                 sched.lds.add(ld);
+                Log.i("sched.lds.addld", ld.link_note + " ");
             }
             cursor1.close();
-        cursor.close();
+      //  cursor.close();
         Cursor cursor2;
         cursor2 = db.rawQuery("select day, time  from sched_week where s_id="+ s_id + " order by s_id, day ", null);
         while(cursor2.moveToNext()) {
@@ -236,9 +246,30 @@ public class Schedule {
             Log.i("r["+i+"]", r[i] + " ");
         }
 
-        if(r[0].equals("1")){
-            ld.formula = r[1]; Log.i("ld.formula = " , ld.formula + " ");}
-        else ld.if_formula = new If_formula(r[1], r[2], r[3], r[4], r[5]);
+        switch(r[0]){
+            case "1" :
+                ld.formula = r[1];
+                break;
+            case "2" :
+                ld.if_formula = new If_formula(r[1], r[2], r[3], r[4], r[5]);
+                break;
+            case "3" :
+                ld.cash = r[1];
+                break;
+            case "4" :
+                ld.coupon_datas = new  ArrayList<Coupon_data>();
+                String[] cps = formula.substring(2).split("\\|");
+                for (int i = 0; i < cps.length; i = i + 2) {
+                    String ea = cps[i + 1];
+                    ld.coupon_datas.add(new Coupon_data(cps[i], ea));
+                }
+                break;
+
+
+
+        }
+
+            Log.i("ld.formula = " , ld.formula + " ");
 
     }
 
@@ -265,22 +296,22 @@ public class Schedule {
         sHelper.close();
     }
 
-    public static void delMSc(String m_id, String s_id) {
+    public static void delMSc(String m_id, String s_id, Context context) {
         SchedDBHelper sHelper;
         SQLiteDatabase db;
         //SchedPerChild schedPerChild;
-        sHelper = new SchedDBHelper(sa);
+        sHelper = new SchedDBHelper(context);
         String sql = "delete from sched_man  where s_id= " + s_id +" and man_id="+ m_id;
         db = sHelper.getWritableDatabase();
         db.execSQL(sql);
 
         sHelper.close();
     }
-    public static void delLink(String s_id, String seq ) {
+    public static void delLink(String s_id, String seq, Context context ) {
         SchedDBHelper sHelper;
         SQLiteDatabase db;
         //SchedPerChild schedPerChild;
-        sHelper = new SchedDBHelper(sa);
+        sHelper = new SchedDBHelper(context);
         String sql = "delete from linked_sched where s_id= " + s_id +" and seq="+ seq;
         db = sHelper.getWritableDatabase();
         db.execSQL(sql);
@@ -322,9 +353,9 @@ public class Schedule {
 
         String sql = "select  title, _id,  from sched "
       //  String sql = "select  title, _id, "+ day +", reward, skip_num  from sched "
-                + " where _id in (select s_id from sched_man where man_name = "+ man.name
-                + ") and "+ day+" is not null and _id not in (select s_id from during_sched where "
-                + " man_name= " + man.name + " and end_time='"+ strNow1 + "' and state='done' ) order by _id desc";
+                + " where _id in (select s_id from sched_man where man_name = '"+ man.name
+                + "') and "+ day+" is not null and _id not in (select s_id from during_sched where "
+                + " man_name= '" + man.name + "' and end_time='"+ strNow1 + "' and state='done' ) order by _id desc";
         cursor = db.rawQuery(sql, null);
         FragmentSchedAdapter adapter = null;
 
@@ -388,17 +419,17 @@ public class Schedule {
         return day;
     }
 
-    static boolean isNotCompletedToday(int s_id, int m_id, Context context){  //sum data에 있으면서 during_sched에 없으면 완료된 상태임.
+    static boolean isNotCompletedToday(int s_id, String m_name, Context context){  //sum data에 있으면서 during_sched에 없으면 완료된 상태임.
 
         SchedDBHelper sHelper = new SchedDBHelper(context);;
         SQLiteDatabase db = sHelper.getWritableDatabase();;
 
         Cursor cursor;
-        String sql = "select seq from sum where s_id = " + s_id + " and man_id = " + m_id + " and date = " + Util.today();
+        String sql = "select seq from sum where s_id = " + s_id + " and man_name = '" + m_name + "' and date = " + Util.today();
         cursor = db.rawQuery(sql, null);
 
         if(cursor.moveToNext()) { // Log.i("sum data exist", cursor.getInt(0) + " ");
-            sql = "select seq from during_sched where s_id = " + s_id + " and man_id = " + m_id + " and date = " + Util.today();
+            sql = "select seq from during_sched where s_id = " + s_id + " and man_name = '" + m_name + "' and date = " + Util.today();
             Cursor cursor1 = db.rawQuery(sql, null);
             if(cursor1.moveToNext()) { //Log.i("during_sched data exist", cursor1.getInt(0) + " ");
                 return true;
@@ -462,8 +493,8 @@ public class Schedule {
         String strNow = new SimpleDateFormat("hh:mm").format(new Date(System.currentTimeMillis()));
 
         String sql = "select title, _id from sched "
-                + " where _id in (select s_id from sched_man where man_name = " + m_name
-                + " ) and _id in (select s_id from sched_week where day = " + getDayOfWeek() + ") "
+                + " where _id in (select s_id from sched_man where man_name = '" + m_name
+                + "' ) and _id in (select s_id from sched_week where day = " + getDayOfWeek() + ") "
                 + " and state != 0 ";   //나중에 테스트해볼 것 state ==0에 대해
        /* String sql = "select  title, _id, "+ day +", reward, skip_num  from sched "
         + " where _id in (select s_id from sched_man where man_id = "+ m_id
@@ -478,7 +509,7 @@ Log.i("nowsched", sql);
                 int s_id = cursor.getInt(1);
 
                 if (isNowSCheduledTime(s_id, context)
-                       // && isNotCompletedToday(s_id, m_id, context)
+                        && isNotCompletedToday(s_id, m_name, context)
                 ) {  //when right now is scheduled for s_id && 오늘 수행되었는지 여부.
 
                     Sched_data sd = new Sched_data();
@@ -535,11 +566,11 @@ Log.i("nowsched", sql);
         SchedDBHelper sHelper;
         SQLiteDatabase db;
         //SchedPerChild schedPerChild;
-        sHelper = new SchedDBHelper(sa);
+        sHelper = new SchedDBHelper(context);
         Cursor cursor;
         db = sHelper.getWritableDatabase();
-        String sql = "select s_id from sched_man where man_name= " + m_name
-                +" order by s_id desc";
+        String sql = "select s_id from sched_man where man_name= '" + m_name
+                +"' order by s_id desc";
         //String sql = "select  title, _id  from sched where order by _id desc";
         cursor = db.rawQuery(sql, null);
         if(cursor.getCount()!=0){
@@ -552,7 +583,7 @@ Log.i("nowsched", sql);
                 cursor1 = db.rawQuery(sql1, null);
                 cursor1.moveToNext();
                 sd._id = cursor1.getInt(0);
-                TextView imsi = new TextView(sa);
+                TextView imsi = new TextView(context);
                 imsi.setText(R.string.one_day_rew);
                 sd.title = (cursor1.getInt(2)==-1)? cursor1.getString(1): cursor1.getString(1) + " - " +
                         imsi.getText().toString();
@@ -622,7 +653,7 @@ Log.i("nowsched", sql);
         sHelper.close();
         return adapter;
     }
-    public static void  onSaveTimeClicked() {
+    public static void  onSaveTimeClicked(Context context) {
         TimePicker ps_time = (TimePicker) timepicker_select.findViewById(R.id.s_time);
         TimePicker pe_time = (TimePicker) timepicker_select.findViewById(R.id.e_time);
         int sh = ps_time.getCurrentHour(); int sm = ps_time.getCurrentMinute();
@@ -638,7 +669,7 @@ Log.i("nowsched", sql);
 
         if(sh*100+sm >= eh*100+em) {
             Log.i("sh*100+sm >= eh*100+em", " ");
-            Toast.makeText(sa, R.string.time_again, Toast.LENGTH_LONG).show();
+            Toast.makeText(context, R.string.time_again, Toast.LENGTH_LONG).show();
             return ;
         }
 
@@ -647,8 +678,8 @@ Log.i("nowsched", sql);
 
         dialog2.dismiss(); //selected_day.setTextColor(0x70000000);
         //Day_time_data  d = new Day_time_data();
-        String day = ((TextView)sa.findViewById(R.id.day)).getText().toString();
-        Week_select_state ws =  sa.week_select_state;
+        String day = ((TextView)((ScheduleActivity)context).findViewById(R.id.day)).getText().toString();
+        Week_select_state ws =  ((ScheduleActivity)context).week_select_state;
         int ds=0 ;
         for(int i=0; i<7; i++) {
             if(day.equals(ws.week_state[i].v_day.getText().toString())) {
@@ -659,11 +690,11 @@ Log.i("nowsched", sql);
         String time = s_time + " ~ "+ e_time;
       //  d.day = day;
       //  d.time = time;
-        Day_state d = sa.week_select_state.week_state[ds];
+        Day_state d = ((ScheduleActivity)context).week_select_state.week_state[ds];
         d.time = time;
         d.v_time.setText(time);
         d.state = 2;
-        d.v_day.setBackground(sa.getResources().getDrawable(R.drawable.day_click));
+        d.v_day.setBackground(context.getResources().getDrawable(R.drawable.day_click));
        // d.v_time.setVisibility(View.VISIBLE);
 
           //  d.v_time = (TextView)scheduleActivity.findViewById(R.id.sun_time);
@@ -675,14 +706,14 @@ Log.i("nowsched", sql);
       //  day_time_datas[Integer.parseInt(day)] = d;
         //return day_time_data;
     }
-    public static void onDayClicked( TextView v) {
-            timepicker_select = (ScrollView) View.inflate(sa, R.layout.time_picker, null);
+    public static void onDayClicked( TextView v, Context context) {
+            timepicker_select = (ScrollView) View.inflate(context, R.layout.time_picker, null);
             String day = v.getText().toString();
-        ((TextView)sa.findViewById(R.id.day)).setText(day);
+        ((TextView)((ScheduleActivity)context).findViewById(R.id.day)).setText(day);
         ((TextView)timepicker_select.findViewById(R.id.day)).setText(day);
         ((TextView)timepicker_select.findViewById(R.id.day1)).setText(day);
 
-        dialog2 = new AlertDialog.Builder(sa)
+        dialog2 = new AlertDialog.Builder(context)
                 .setTitle(R.string.select_time)
                 //.setIcon(R.drawable.androboy)
                 .setView(timepicker_select)
@@ -748,9 +779,9 @@ Log.i("nowsched", sql);
     }
 */
     public static void  saveSc(int page_mode, Sched_data sd,    ArrayList<Man_data> selected_mans,
-                                Week_select_state week_select_state ) {
+                                Week_select_state week_select_state, Context context ) {
               //page_mode 0-newsc save , 1- modify
-        SchedDBHelper sHelper = new SchedDBHelper(sa);
+        SchedDBHelper sHelper = new SchedDBHelper(context);
         SQLiteDatabase db = sHelper.getWritableDatabase();
 
         int s_id ;
@@ -860,218 +891,22 @@ Log.i("nowsched", sql);
         return formula;
     }
 
-/*
-    public static void onAddLinkClicked( ) {
-
-        currentlink_Atoms = new ArrayList<>();
-        linkDiaLayout = (LinearLayout) View.inflate(sa, R.layout.add_sched_content, null);
-        save_link =  linkDiaLayout.findViewById(R.id.save_link);
-
-        link_note =  linkDiaLayout.findViewById(R.id.link_note);
-       // sa.setReward_type( true, linkDiaLayout);
-        formula = linkDiaLayout.findViewById(R.id.formula);
-
-        save_link.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sa.onSaveLink(null);
-
-            }
-        });
-
-        linkDia = new AlertDialog.Builder(sa, R.style.SchedLinkDialog).setTitle(R.string.input_link)
-                //.setIcon(R.drawable.androboy)
-        .setCancelable(false)
-                .setView(linkDiaLayout).show();
-
-        linkDia.getWindow().setBackgroundDrawableResource(R.drawable.add_link_dialog);
-
-        link_note.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-             Util.titleSaveListener(s, save_link, link_note);
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-
-
-        /*score_layout = (LinearLayout) linear.findViewById(R.id.score_layout);
-        score = (EditText) linear.findViewById(R.id.score);
-
-        if(position<=0) {   //rew_spi가 비어서 안보이는 경우 position = -1로 전달됨.
-            score_layout.setVisibility(View.VISIBLE);
-            score.addTextChangedListener(scoreWatch);
-            scored = false;
-        }
-        else {
-            Log.i("score", "gone");
-            scored = true;
-            one_day_rew = true;
-            score_layout.setVisibility(View.GONE);
-        }
-
-
-        cb = (CheckBox) linear.findViewById(R.id.checkb);
-        no_select = (Switch) linear.findViewById(R.id.no_select);
-        pic_select = (Switch) linkDiaLayout.findViewById(R.id.pic_select);
-
-
-
-
-    }
-*/
-
-    public static void onLinkClicked(Linked_sched_data data,  int position ) {
-        linkDiaLayout  = (LinearLayout) View.inflate(sa, R.layout.add_sched_content, null);
-        link_note = (EditText) linkDiaLayout.findViewById(R.id.link_note);
-        formula = linkDiaLayout.findViewById(R.id.formula);
-
-        pic_select = (Switch) linkDiaLayout.findViewById(R.id.pic_select);
-        modify_link = (TextView) linkDiaLayout.findViewById(R.id.modify_a);
-        del_link = (TextView) linkDiaLayout.findViewById(R.id.del_a);
-        del_link.setVisibility(View.VISIBLE);
-        modify_link.setVisibility(View.VISIBLE);
-        link_note.setText(data.link_note);
-        link_noted = true;
-        //if(data.link_note.equals("")) link_noted = false;
-        //else link_noted  = true;
-        //if(data.score==0) scored = false; else scored = true;
-
-      /*  score.setText(data.score+"");  Log.i("data", data.no+" "+data.pic);
-        if(data.no==1) {
-            no_select.setChecked(true);
-        }
-        else no_select.setChecked(false);  */
-        if(data.pic==1) {
-            pic_select.setChecked(true);
-        }
-        else pic_select.setChecked(false);
-        /*
-        scored=true;
-        if(position!=0) {
-            score_layout.setVisibility(View.GONE);
-
-            //scored = false;
-        }
-        else {
-            Log.i("score", "gone");
-            //scored = true;
-            //one_day_rew = true;
-            score_layout.setVisibility(View.VISIBLE);
-            score.addTextChangedListener(scoreWatch_m);
-
-        }*/
-
-        link_note.addTextChangedListener( new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int i, int i1, int i2) {
-                if(s.length()>0) {
-                    link_noted = true;
-                    if(link_noted && scored)
-                        modify_link.setVisibility(View.VISIBLE);
-
-                }
-                else { link_noted = false; modify_link.setVisibility(View.GONE);     }
-            }
-            @Override
-            public void afterTextChanged(Editable editable) {            }
-        });
-
-        modify_link = (TextView) linkDiaLayout.findViewById(R.id.modify_a);
-        modify_link.setVisibility(View.VISIBLE);
-       // cb = (CheckBox) linkDiaLayout.findViewById(R.id.checkb);
-       // no_select = (Switch) linear.findViewById(R.id.no_select);
-
-        linkDia = new AlertDialog.Builder(sa)
-                .setTitle(R.string.modify_link)
-                //.setIcon(R.drawable.androboy)
-                .setView(linkDiaLayout)
-                .show();
-
-
-    }
-
-/*
-    public static void onAdScAtom(Context context) {
-
-        LinearLayout linear = (LinearLayout) View.inflate(sa, R.layout.add_sched_atom, null);
-        arrangeScAtomLayout(linear, context);
-
-        atomDia = new AlertDialog.Builder(sa)
-                .setTitle(R.string.skd_atom)
-                //.setIcon(R.drawable.androboy)
-                .setView(linear)
-                //.setCancelable(false)
-                .show();
-
-    }
-
-    public static void ifClicked() {
-        if(add_if.value){
-            add_if.value = false;
-            ((Button)linkDiaLayout.findViewById(R.id.if_b)).setText(R.string.add_if);
-            linkDiaLayout.findViewById(R.id.formula).setVisibility(View.VISIBLE);
-            linkDiaLayout.findViewById(R.id.if_layout).setVisibility(View.GONE);
-            ((EditText)linkDiaLayout.findViewById(R.id.if_edit_a)).setText("");
-            ((EditText)linkDiaLayout.findViewById(R.id.if_edit_c)).setText("");
-            ((EditText)linkDiaLayout.findViewById(R.id.if_command)).setText("");
-            ((EditText)linkDiaLayout.findViewById(R.id.else_command)).setText("");
-
-
-        }
-        else{
-            add_if.value = true;
-            ((Button)linkDiaLayout.findViewById(R.id.if_b)).setText(R.string.cancle_if);
-            Schedule.linkDiaLayout.findViewById(R.id.formula).setVisibility(View.GONE);
-            Schedule.linkDiaLayout.findViewById(R.id.if_layout).setVisibility(View.VISIBLE);
-            ((EditText)linkDiaLayout.findViewById(R.id.formula)).setText("");
-
-            Spinner if_edit_s = (Spinner)linkDiaLayout.findViewById(R.id.if_edit_s);
-           ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(sa, R.array.if_edit, android.R.layout.
-                    simple_spinner_item);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            if_edit_s.setAdapter(adapter);
-            if_edit_s.getBackground().setColorFilter(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-            if_edit_s.setSelection(0);
-            if_edit_s.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    if_edit_s1 = (String)if_edit_s.getSelectedItem();
-
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
-
-        }
-    }
-*/
     public static void onDialogCancelClicked( int i) {  //추후 삭제
             if(i==1)  dtDialog.dismiss();
             else if(i==2) {dialog2.dismiss(); selected_day.setTextColor(0x70000000); }
         }
 
 
-    static void arrangeValues_layout(Context context, LinearLayout vl, ArrayList<LinkAtom> schAtoms,
+    static void arrangeValues_layout(Context context, LinearLayout vl, ArrayList<LinkAtom> schAtoms, LinearLayout formula_l,
                                      boolean editText, int rightPadding) {
-        arrangeValues_layout(context, vl, schAtoms,
+        arrangeValues_layout(context, vl, schAtoms, formula_l,
                 editText, true, rightPadding, null);
     }
 
-    static void arrangeValues_layout(Context context, LinearLayout vl, ArrayList<LinkAtom> schAtoms,
+    static void arrangeValues_layout(Context context, LinearLayout vl, ArrayList<LinkAtom> schAtoms, LinearLayout formula_l,
                                      boolean editText, boolean variable, int rightPadding, ArrayList<TextView> variables){
+       if(formula_l != null) formula_l.setVisibility(View.VISIBLE);
+
         //variable 은 edittext 밑에 a,b,c.. 표시기능
         LinearLayout l = new LinearLayout(context);
         Log.i("arrangevalues_l", schAtoms.size() + " ");

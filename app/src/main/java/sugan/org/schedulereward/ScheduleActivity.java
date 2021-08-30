@@ -40,55 +40,39 @@ import java.util.ArrayList;
 
 /**
  * Created by eunsoo on 2017-11-10.
+ * upgraded by eunsoo Aug 2021.
  */
 
 public class ScheduleActivity extends AppCompatActivity {
     Spinner man_spi;
     Spinner sched_spi;
 
-    // LinearLayout schedl;
     LinearLayout linkedl;
-    LinearLayout dtsl;
     ListView man_list;
     EditText man_search;
-    //TextView searchb;
     TextView man_regb;
     ImageView img;
-    Schedule sched;
     Man man;
     int selected_i;                 //선택된 사람
-    int selected_i1;
     ArrayList<Man_data> selected_mans;
     ArrayList<CheckBox> search_cbs;
 
     AlertDialog search_dialog;
     String s_id;
-    //String intent_s_id;
 
-    //Day_time_data[] day_time_datas;
-    //Day_time_data[] dt_dates_imsi;
     Week_select_state week_select_state;
-    //boolean  dt_input_state = false;   //한개라도 날짜시간설정되어있는경우를 나타내기 위함 (입력버튼색깔 떄문?)
     LinearLayout day_time;
 
     int dt_datas_length = 0;
     ArrayList<Coupon_data> rews;
-    Spinner rew_spi;
-    LinearLayout rew;  //삭제
-    boolean one_day_rew = false;
-    int rew_id;
+
     int sel_seq = 0;
-    LinearLayout num_lay;
     ArrayList<RadioButton> rbs;
     Sched_data sd;
     Linked_sched_data main = null;   //sd.lds.get(0)
 
-    TextView title;
-    TextView s_idt;
-    String rew_s;
     TextView save;
     int page_mode = 1;   //0- newsced    1-modifySc
-    //LinearLayout link_view;   //LinearLayout linear; ->link_view로 수정
     LinearLayout man_lay;
     TextView new_man;
     AlertDialog dialog;   //언제 사용되는거지?
@@ -98,12 +82,12 @@ public class ScheduleActivity extends AppCompatActivity {
     TextView addlink;
     TextView dellink;
     boolean existLink = false;   //연결된 링크가 있는지 여부. if there is connected link on schedule.
-    // Schedule_week schedule_week;
 
     Schedule_content_layout cl;
     Schedule_content_layout ldl = null;   //link dialog layout
-    //ArrayList<LinkAtom> currentlink_Atoms;
     int atom_length;
+
+    ArrayList<Sched_data> scheds;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,9 +97,9 @@ public class ScheduleActivity extends AppCompatActivity {
         allocate_variables();
 
         Intent intent = getIntent();
-        String i_s_id = intent.getStringExtra("s_id");
+        s_id = intent.getStringExtra("s_id");
         String i_page = intent.getStringExtra("page");
-        Log.i("i_page ", i_page + " ");
+        Log.i("i_page ", i_page + " " + s_id);
 
         if (i_page != null && i_page.equals("newSc")) {
             Log.i("i_page!=null ", "&& i_page.equals('newSc')");
@@ -157,21 +141,16 @@ public class ScheduleActivity extends AppCompatActivity {
                 }
             });
 
+            clSet(true, 0);
+
         } else {
             sched_spi.setVisibility(View.VISIBLE);
+            //sched = new Schedule(this);
             listScheds();
 
+
         }
 
-        if (i_s_id != null) {
-            int i_sid = Integer.parseInt(i_s_id);
-            for (int i = 0; i < sched.scheds.size(); i++) {
-                if (sched.scheds.get(i)._id == i_sid) {
-                    sched_spi.setSelection(i);
-                    break;
-                }
-            }
-        }
 
 
         //day_time_datas = new Day_time_data[7];
@@ -181,6 +160,241 @@ public class ScheduleActivity extends AppCompatActivity {
         week_select_state = new Week_select_state(this);
 
         initiate();
+
+    }
+
+    void clSet(boolean isMain, int seq){
+        if(isMain){
+            cl = new Schedule_content_layout(getWindow().getDecorView().getRootView(), sd, 0, this, false);
+        }
+        else ldl = new Schedule_content_layout((LinearLayout) View.inflate(this, R.layout.add_sched_content, null), sd, seq, this, true);
+        final Schedule_content_layout layout = isMain? cl : ldl ;
+        Linked_sched_data lsd = sd.lds.get(isMain?0: seq);
+
+        // if(isMain) layout =  cl ;
+       // else layout = ldl;
+
+        //main = sd.lds.get(0);
+
+        layout.link_note.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if(Util.checkFrontBlank(s)){
+                    layout.link_note.setText(s.toString().substring(1));
+
+                    return;}
+
+                if(s.toString().equals("")) {
+                    addlink.setVisibility(View.GONE);
+                    dellink.setVisibility(View.GONE);
+                    linkedl.setVisibility(View.GONE);
+                    existLink = false;
+                }
+                else {
+                    addlink.setVisibility(View.VISIBLE);
+                    if(sd.lds.size()>1) {
+                        dellink.setVisibility(View.VISIBLE);
+                    }
+                    //dellink.setVisibility(View.VISIBLE);
+                    linkedl.setVisibility(View.VISIBLE);
+                }
+
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        if(sd._id != -1) {  //modify page일 떄
+            //Linked_sched_data data = sd.lds.get(0);
+            layout.link_note.setText(lsd.link_note);
+            layout.pic_select.setChecked(lsd.pic == 1 ? true : false);
+
+           // cl.reward_type.setSelection(0);
+            Log.i("lsd.reward_type", lsd.reward_type + " ");
+
+            layout.reward_type.setSelection(lsd.reward_type);
+             Log.i("lsd.reward_type1", lsd.reward_type + " ");
+
+            if (lsd.reward_type == 1) {   //if_formula rew   1|12 - (a-3)*0.8   or 2|a|>|3|a*0.2|a*0.2+0.1
+                Log.i("reward_type", lsd.formula + " : " + (lsd.if_formula == null));
+
+                arrangeLinkDialog();
+
+               // cl.reward_type.setSelection(1);
+                if (lsd.if_formula == null) {
+                    layout.formula.setText(lsd.formula);
+                } else {
+
+                    ((TextView) findViewById(R.id.if_b)).setText(R.string.cancle_if);
+                    findViewById(R.id.formula).setVisibility(View.GONE);
+                    findViewById(R.id.if_layout).setVisibility(View.VISIBLE);
+
+                    ((EditText) layout.root.findViewById(R.id.if_edit_a)).setText(lsd.if_formula.if_edit_a);
+                    ((EditText) layout.root.findViewById(R.id.if_edit_c)).setText(lsd.if_formula.if_edit_c);
+                    int j = 0;
+                    switch (lsd.if_formula.if_edit_s) {
+                        case ">=":
+                            j = 1;
+                            break;
+                        case "<":
+                            j = 2;
+                            break;
+                        case "<=":
+                            j = 3;
+                            break;
+                        case "==":
+                            j = 4;
+                            break;
+                        case "!=":
+                            j = 5;
+
+
+                    }
+                    ((Spinner) layout.root.findViewById(R.id.if_edit_s)).setSelection(j);
+                    ((EditText) layout.root.findViewById(R.id.if_command)).setText(lsd.if_formula.if_command);
+                    ((EditText) layout.root.findViewById(R.id.else_command)).setText(lsd.if_formula.else_command);
+                }
+            }
+            else if(lsd.reward_type == 0) {//simple rew  (3|5.5.. cash, 4|name|ea.. coupon, )
+                // cl.reward_type.setSelection(0);
+
+                Log.i("clset", lsd.reward_type + " " + lsd.formula);
+                if (lsd.formula.startsWith("3"))
+                    ((EditText) layout.root.findViewById(R.id.cash)).setText(lsd.formula.substring(2));
+                    //main.formula.substring(2));
+                else {
+                    layout.simple_rew_type.setSelection(1);
+                    String[] cps = lsd.formula.substring(2).split("\\|");
+                    for (int i = 0; i < cps.length; i = i + 2) {
+                        String ea = cps[i + 1];
+                        layout.adapter.addItem(new Coupon_data(cps[i], ea));
+
+                        Log.i("coupons", cps[i]);
+                    }
+                }
+            }
+                else if(lsd.reward_type == 3){
+                layout.reward_type.setSelection(3);
+                    String[] t = lsd.formula.substring(2).split("\\|");
+                layout.start_h.setText(t[0]);
+                layout.start_m.setText(t[1]);
+                layout.till_h.setText(t[2]);
+                layout.till_m.setText(t[3]);
+                layout.edt_cash.setText(t[4]);
+
+                }
+
+        }
+
+
+    }
+
+    void schedSet(int i){
+        sd = Schedule.getSchedData( scheds.get(i)._id, ScheduleActivity.this);
+        sd.title = scheds.get(i).title;
+        sd._id = scheds.get(i)._id;
+        main = sd.lds.get(0);
+
+        //Intent intent = getIntent();
+        //if ( intent.getStringExtra("s_id") != null) {
+        clSet(true, 0);
+
+        // cl = new Schedule_content_layout(getWindow().getDecorView().getRootView(), sd, 0, ScheduleActivity.this);//}
+
+        Log.i("sch_spi sd.lds.size", sd.lds.size() + " ");
+
+        //     one_day_rew = false;
+                /*
+                LinearLayout linear = (LinearLayout) View.inflate(RegisterManActivity.this, R.layout.sched_item_view, null);
+                title = (TextView) linear.findViewById(R.id.title);
+                s_idt = (TextView) linear.findViewById(R.id.s_id);
+                srb = ((RadioButton) linear.findViewById(R.id.radiob));
+                //srb.setChecked(true);
+                srb.setOnClickListener(bListener);
+                rbs.clear();
+                rbs.add(srb);
+                if(sd.reward!=-1)  {
+                    one_day_rew = true;
+                    for(int j=0; j<rews.size();j++) {
+                        if (rews.get(j)._id == sd.reward) {
+                            rew_spi.setSelection(j + 1);
+                            break;
+                        }
+                    }
+                }
+                schedl.addView(linear);*/
+        // showScView();
+        /*
+        showLinkView();
+        showWeekView();
+
+
+        selected_i1 = i;
+        ScheduleActivity.this.s_id = sd._id+"";
+        selected_mans = man.fillSelected_mans( sd._id+"",
+                this);
+                //ScheduleActivity.this);
+        SelectedMansAdapter adapter = new SelectedMansAdapter(ScheduleActivity.this, selected_mans);
+        man_list.setAdapter(adapter);*/
+    }
+    private void listScheds() {
+        scheds = new ArrayList<Sched_data>(5);
+        Schedule.fillSpinner(sched_spi, scheds, this);
+
+        Log.i("s_id", s_id + " ");
+        sched_spi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                schedSet(i);
+
+                showLinkView();
+                showWeekView();
+
+                ScheduleActivity.this.s_id = sd._id+"";
+                selected_mans = man.fillSelected_mans( sd._id+"",
+                        //this);
+                ScheduleActivity.this);
+                SelectedMansAdapter adapter = new SelectedMansAdapter(ScheduleActivity.this, selected_mans);
+                man_list.setAdapter(adapter);
+                Log.i("sched_spi", i + " ");
+                //  day_time_datas = new Day_time_data[7];
+                //  dt_dates_imsi = new Day_time_data[7];
+
+                //schedl.removeAllViews();
+                //linkedl.removeAllViews();
+                //dtsl.removeAllViews();
+                Log.i("scheds.geti._id",scheds.get(i)._id + " " );
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        if (s_id != null) {
+            int i_sid = Integer.parseInt(s_id);
+            int j=-1;
+            Log.i("scheds.size", scheds.size() + " ");
+            for (int i = 0; i < scheds.size(); i++) {
+                if (scheds.get(i)._id == i_sid) {
+                    sched_spi.setSelection(i);
+                    j = i; Log.i("abcj = ", j + " " + i_sid);
+                    break;
+                }
+            }
+            schedSet(j);
+
+            //   Log.i("listsched", sd.lds.size() + " ");
+
+        }
 
     }
 
@@ -226,7 +440,11 @@ public class ScheduleActivity extends AppCompatActivity {
 
     public void onModLink(View v) {
         LinearLayout linear = (LinearLayout) (((LinearLayout) v.getParent()).getParent());
-        Linked_sched_data ld = getSelectedLD();
+        TextView t = (TextView) (linear.findViewById(R.id.seq));
+        Log.i("link_seq", t.getText().toString() + " ");
+        sel_seq = Integer.parseInt(t.getText().toString());     Log.i("sel_seq", sel_seq + " ");
+
+        Linked_sched_data ld = sd.lds.get(sel_seq);
         ld.link_note = ((EditText) linear.findViewById(R.id.link_note)).getText().toString();
        /* ld.score = Integer.parseInt(((EditText)linear.findViewById(R.id.score)).getText().toString());
         if(((Switch)linear.findViewById(R.id.no_select)).isChecked())
@@ -281,11 +499,9 @@ public class ScheduleActivity extends AppCompatActivity {
     public void onCloseLink(View v) {
         cl.if_edit_s1 = cl.if_edit_s1_imsi;
         Log.i("main - if_edit_s1", cl.if_edit_s1 + " ");
-        int seq = Integer.parseInt(ldl.seqT.getText().toString());
-        sd.lds.remove(seq);
+
         showLinkView();
 
-        ldl.linkDia.dismiss();
         ldl = null;
         //Schedule.onDialogCancelClicked(0);
 
@@ -364,14 +580,17 @@ public class ScheduleActivity extends AppCompatActivity {
                 }
             }
         else if(data.reward_type ==3) { //edt execute_during_time rew
-            if(seq!=0 && ( layout.start_h.getText().toString().trim().equals("")||
-                    layout.start_m.getText().toString().trim().equals("")||
-                    layout.till_h.getText().toString().trim().equals("")||
-                    layout.till_m.getText().toString().trim().equals("")||
-                    layout.edt_cash.getText().toString().trim().equals(""))) {
-                Toast.makeText(this, R.string.input_edt, Toast.LENGTH_LONG).show();
-                return false;
+            if(seq!=0){
+                if( layout.start_h.getText().toString().trim().equals("")||
+                        layout.start_m.getText().toString().trim().equals("")||
+                        layout.till_h.getText().toString().trim().equals("")||
+                        layout.till_m.getText().toString().trim().equals("")||
+                        layout.edt_cash.getText().toString().trim().equals("")) {
+                    Toast.makeText(this, R.string.input_edt, Toast.LENGTH_LONG).show();
+                    return false;
+                }
             }
+
             data.formula = "5|" + layout.start_h.getText().toString().trim() + "|"
                     + layout.start_m.getText().toString().trim() + "|"
                     + layout.till_h.getText().toString().trim() + "|"
@@ -414,7 +633,7 @@ public class ScheduleActivity extends AppCompatActivity {
         }
     }
     */
-
+/*
     public Linked_sched_data getSelectedLD() {
         for (int i = 0; i < sd.lds.size(); i++) {
             Log.i("i", sd.lds.get(i).seq + " ");
@@ -424,20 +643,20 @@ public class ScheduleActivity extends AppCompatActivity {
         }
         return null;
     }
-
+*/
     public void onLinkClicked(View v) {
-        Log.i(" ItemPosition()", rew_spi.getSelectedItemPosition() + " ");
         TextView t = (TextView) ((TableLayout) ((TableRow) v.getParent()).getParent()).findViewById(R.id.seq);
         Log.i("link_seq", t.getText().toString() + " ");
-        sel_seq = Integer.parseInt(t.getText().toString());
+        sel_seq = Integer.parseInt(t.getText().toString());     Log.i("sel_seq", sel_seq + " ");
 
-        Schedule.onLinkClicked(getSelectedLD(), rew_spi.getSelectedItemPosition());
+        clSet(false, sel_seq);
+
+       // Schedule.onLinkClicked( sd.lds.get(sel_seq), this); 삭제
     }
 
     public void onAddLinkClicked(View v) {
 
         // currentlink_Atoms = new ArrayList<>();
-        LinearLayout linkDiaLayout = (LinearLayout) View.inflate(this, R.layout.add_sched_content, null);
         Linked_sched_data link = new Linked_sched_data();
         if(sel_seq!= 0 && sel_seq < sd.lds.size()-1){  //중간에 삽입하는 경우
             Log.i("onaddlinkclick sel_seq", sel_seq + " ");
@@ -453,7 +672,8 @@ public class ScheduleActivity extends AppCompatActivity {
             link.seq = seq;
         }
 
-        ldl = new Schedule_content_layout(linkDiaLayout, sd, link.seq, this);
+        ldl = new Schedule_content_layout((LinearLayout) View.inflate(this, R.layout.add_sched_content, null),
+                                                                        sd, link.seq, this, false);
         // Schedule.onAddLinkClicked();   //삭제
     }
 
@@ -572,16 +792,18 @@ public class ScheduleActivity extends AppCompatActivity {
             LinearLayout vl = (LinearLayout) ldl.root.findViewById(R.id.values_layout);
             vl.removeAllViews();
             if (sd.lds.get(sd.lds.size() - 1).link_Atoms.size() > 0) {
-                (ldl.root.findViewById(R.id.formula_l)).setVisibility(View.VISIBLE);
-                Schedule.arrangeValues_layout(this, vl, sd.lds.get(sd.lds.size() - 1).link_Atoms, true, true, 25, null);
+                //(ldl.root.findViewById(R.id.formula_l)).setVisibility(View.VISIBLE);
+                Schedule.arrangeValues_layout(this, vl, sd.lds.get(sd.lds.size() - 1).link_Atoms, ldl.root.findViewById(R.id.formula_l)
+                ,true, true, 25, null);
 
             }
         } else {   // main schedule일 때
             LinearLayout vl = findViewById(R.id.values_layout);
             vl.removeAllViews();
+            Log.i("arrangelinkdialog", main.link_Atoms.size() + " ");
             if (main.link_Atoms.size() > 0) {
-                (findViewById(R.id.formula_l)).setVisibility(View.VISIBLE);
-                Schedule.arrangeValues_layout(this, vl, main.link_Atoms, true, true, 25, null);
+               // (findViewById(R.id.formula_l)).setVisibility(View.VISIBLE);
+                Schedule.arrangeValues_layout(this, vl, main.link_Atoms, findViewById(R.id.formula_l), true, true, 25, null);
             }
 
         }
@@ -606,7 +828,7 @@ public class ScheduleActivity extends AppCompatActivity {
         TextView seq1 = linear.findViewById(R.id.seq1);
         seq.setText(Integer.toString(sched_data.seq));
         seq1.setText(Integer.toString(sched_data.seq));
-        LinearLayout l = linear.findViewById(R.id.unit_values);
+        LinearLayout l = linear.findViewById(R.id.verticalLinear);
         TextView formula = linear.findViewById(R.id.formula);
         if(sched_data.reward_type==1) {
             l.setVisibility(View.VISIBLE);
@@ -621,21 +843,21 @@ public class ScheduleActivity extends AppCompatActivity {
                         "else  " + sched_data.if_formula.else_command);
             }
             if (sched_data.link_Atoms != null)
-                Schedule.arrangeValues_layout(this, l, sched_data.link_Atoms, false, 10);
+                Schedule.arrangeValues_layout(this, l, sched_data.link_Atoms, null, false, 10);
         }
         else if(sched_data.reward_type==0) {  //simple rew
             TextView imsi = new TextView(context);
             imsi.setText(R.string.won);
             String won = imsi.getText().toString();
             l.setVisibility(View.GONE);
-
+            Log.i("cash", sched_data.cash+" ");
             if(!sched_data.cash.equals("")) {
                 formula.setVisibility(View.VISIBLE);
                 formula.setText(sched_data.cash + " " + won);
             }
             else {
                 formula.setVisibility(View.GONE);
-                LinearLayout cl = linear.findViewById(R.id.coupon_list);
+                LinearLayout cl = linear.findViewById(R.id.verticalLinear);
                 int size = sched_data.coupon_datas.size();
                 for (int i = 0; i < size; i++) {
                     TextView t = new TextView(context);
@@ -644,6 +866,18 @@ public class ScheduleActivity extends AppCompatActivity {
 
                 }
             }
+        }
+        else if(sched_data.reward_type==3) { // edt execute_during_time
+            formula = linear.findViewById(R.id.formula);
+            formula.setVisibility(View.VISIBLE);
+            String[] edt = sched_data.formula.substring(2).split("\\|");
+            TextView imsi = new TextView(context);
+            imsi.setText(R.string.won);
+            String won = imsi.getText().toString();
+
+            String e = edt[0] + "h " + edt[1] + "m ~ " + edt[2] + "h " + edt[3] + "m \n" + edt[4] + won;
+            formula.setText(e);
+
         }
 
         //LinearLayout rect = linear.findViewById(R.id.rect);                         L.schedule_makeView(" ");
@@ -862,7 +1096,7 @@ public class ScheduleActivity extends AppCompatActivity {
 
     void saveSc() {
         //saveContent_data(main, 0, cl);
-        Schedule.saveSc(page_mode, sd, selected_mans, week_select_state);
+        Schedule.saveSc(page_mode, sd, selected_mans, week_select_state, this);
 
         if (page_mode == 0)
             Toast.makeText(this, R.string.saved, Toast.LENGTH_SHORT).show();
@@ -961,64 +1195,7 @@ public class ScheduleActivity extends AppCompatActivity {
         }
 
     }
-    private void listScheds() {
-        sched.fillSpinner(sched_spi);
-        if(s_id!=null) {
 
-        }
-        sched_spi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-              //  day_time_datas = new Day_time_data[7];
-              //  dt_dates_imsi = new Day_time_data[7];
-
-                //schedl.removeAllViews();
-                //linkedl.removeAllViews();
-                dtsl.removeAllViews();
-
-                sd = Schedule.getSchedData( sched.scheds.get(i)._id);
-
-                one_day_rew = false;
-                /*
-                LinearLayout linear = (LinearLayout) View.inflate(RegisterManActivity.this, R.layout.sched_item_view, null);
-                title = (TextView) linear.findViewById(R.id.title);
-                s_idt = (TextView) linear.findViewById(R.id.s_id);
-                srb = ((RadioButton) linear.findViewById(R.id.radiob));
-                //srb.setChecked(true);
-                srb.setOnClickListener(bListener);
-                rbs.clear();
-                rbs.add(srb);
-                if(sd.reward!=-1)  {
-                    one_day_rew = true;
-                    for(int j=0; j<rews.size();j++) {
-                        if (rews.get(j)._id == sd.reward) {
-                            rew_spi.setSelection(j + 1);
-                            break;
-                        }
-                    }
-                }
-                schedl.addView(linear);*/
-               // showScView();
-                showLinkView();
-                showWeekView();
-
-
-                selected_i1 = i;
-                ScheduleActivity.this.s_id = sd._id+"";
-                selected_mans = man.fillSelected_mans( sd._id+"",
-                        ScheduleActivity.this);
-                SelectedMansAdapter adapter = new SelectedMansAdapter(ScheduleActivity.this, selected_mans);
-                man_list.setAdapter(adapter);
-
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-    }
 
     public void onDayClicked(View v) {
 
@@ -1128,7 +1305,7 @@ public class ScheduleActivity extends AppCompatActivity {
     public void onSaveTimeClicked(View v) {
      //   ++dt_datas_length;
         //if(dt_input_state)
-            Schedule.onSaveTimeClicked();
+            Schedule.onSaveTimeClicked(this);
         //else Schedule.onSaveTimeClicked(this, day_time_datas);
     }
 
@@ -1203,7 +1380,7 @@ public class ScheduleActivity extends AppCompatActivity {
 
             ((TextView) convertView.findViewById(R.id.title)).setText(ld.name);
             ((TextView) convertView.findViewById(R.id.i)).setText(i + "");
-            Man.setImage(ld.img, (ImageView) convertView.findViewById(R.id.img));
+            Man.setImage(ld.img, (ImageView) convertView.findViewById(R.id.img), context);
 
             return convertView;
 
@@ -1252,7 +1429,7 @@ public class ScheduleActivity extends AppCompatActivity {
             ((TextView) convertView.findViewById(R.id.name)).setText(ld.name);
 
            // ((TextView) convertView.findViewById(R.id._id)).setText(ld._id + "");
-            Man.setImage(ld.img, (ImageView) convertView.findViewById(R.id.img));
+            Man.setImage(ld.img, (ImageView) convertView.findViewById(R.id.img), context);
            // ((TextView) convertView.findViewById(R.id.login_id)).setText(ld.login_id);
             search_cbs.add((CheckBox)convertView.findViewById(R.id.cb));
             //((TextView)convertView.findViewById(R.id.i)).setText(i+"");
@@ -1294,7 +1471,7 @@ public class ScheduleActivity extends AppCompatActivity {
 
         // schedl =  findViewById(R.id.sched);
         linkedl = findViewById(R.id.linked);
-        dtsl =  findViewById(R.id.dt);
+        //dtsl =  findViewById(R.id.dt);
         img =  findViewById(R.id.img);
 
         man_list = findViewById(R.id.man_list);
@@ -1319,9 +1496,12 @@ public class ScheduleActivity extends AppCompatActivity {
     }
 
     void initiate(){
+     //  Log.i("initiate", sd.lds.size() + " ");
+     //   Intent intent = getIntent();
+     //   if ( intent.getStringExtra("s_id") == null) {
 
-        cl = new Schedule_content_layout(getWindow().getDecorView().getRootView(), sd, 0, this);
-        sched = new Schedule(this);
+       // cl = new Schedule_content_layout(getWindow().getDecorView().getRootView(), sd, 0, this); //}
+        //sched = new Schedule(this);
         man = new Man();
         rbs = new ArrayList<RadioButton>();
 
@@ -1354,7 +1534,7 @@ public class ScheduleActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-                Man.setImage(man.mans.get(i).img, img);
+                Man.setImage(man.mans.get(i).img, img, ScheduleActivity.this);
                 selected_i = i;
                 //showSchedule();
 
@@ -1367,38 +1547,6 @@ public class ScheduleActivity extends AppCompatActivity {
             }
         });
 
-        cl.link_note.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                if(Util.checkFrontBlank(s)){
-                    cl.link_note.setText(s.toString().substring(1));
-
-                    return;}
-
-                if(s.toString().equals("")) {
-                    addlink.setVisibility(View.GONE);
-                    dellink.setVisibility(View.GONE);
-                    linkedl.setVisibility(View.GONE);
-                    existLink = false;
-                }
-                else {
-                    addlink.setVisibility(View.VISIBLE);
-                    if(sd.lds.size()>1) {
-                        dellink.setVisibility(View.VISIBLE);
-                    }
-                    //dellink.setVisibility(View.VISIBLE);
-                    linkedl.setVisibility(View.VISIBLE);
-                }
-
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
     }
 
 }
