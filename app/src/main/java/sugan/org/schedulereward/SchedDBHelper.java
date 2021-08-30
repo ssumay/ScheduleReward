@@ -113,6 +113,9 @@ public class SchedDBHelper extends SQLiteOpenHelper {
 
         String CREATE_CHECK_PERIOD_COUPON = "CREATE TABLE CHECK_PERIOD_COUPON (" +
                 " date integer not null )";   //마지막으로 체크한 날 저장
+
+        String CREATE_LATEST_SCHED_ID = "CREATE TABLE LATEST_SCHED_ID (" +
+                " s_id integer not null )";   //schedule의 마지막 s_id를 저장한다. s_id의 중복을 막기 위해.
 /*
                 String  CREATE_SUM_RES="CREATE TABLE sum_res (" +
                 " _id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
@@ -163,8 +166,10 @@ public class SchedDBHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_COUPON);
             db.execSQL(CREATE_PERIODIC_COUPON);
             db.execSQL(CREATE_CHECK_PERIOD_COUPON);
+            db.execSQL(CREATE_LATEST_SCHED_ID);
 
             db.execSQL("insert into man values ('admin', null,'1111', 0, null)");
+            db.execSQL("insert into LATEST_SCHED_ID values (0)");
            // db.execSQL("insert into CHECK_PERIOD_COUPON values ('210809')");
 
 

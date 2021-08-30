@@ -71,7 +71,14 @@ public class Sum {
             for(int i=1; i<coupons.length; i=i+2 ){
                 int j = Integer.parseInt(coupons[i+1]);
                 for(int k=0; k<j; k++){
-                    sql = "insert into my_coupon values ('" + ld.md.name + "', '" + coupons[i] + "' )"; Log.i("insert my coupon", sql);
+                    sql = "insert into my_coupon " +
+                            "(s_title, link_note, man_name, name, date, price_ea, state )" +
+                            " values (" +
+                            "'" + ld.sched_title + "', '" +
+                              ld.ld.link_note + "', '" +
+                              ld.md.name + "', '" +
+                            coupons[i] + "', " +
+                            Util.today() + ", null, null )"; Log.i("insert my coupon", sql);
                     db.execSQL(sql);
                 }
                     Log.i("coupons", coupons[i]);
@@ -405,14 +412,15 @@ public class Sum {
         String coupons = "";
 
         while (cursor.moveToNext()){
-            String val = cursor.getString(0);
+            String val = cursor.getString(0);   Log.i("value", val + " ");
             if(val.startsWith("coupon")){
                 String[] coupon = val.split("\\|");
                 for (int i=1; i<coupon.length; i++)
                     coupons += coupon[i] + " ";
             }
             else
-            sum+= Double.parseDouble(cursor.getString(0));
+                if(!cursor.getString(0).equals(""))
+                   sum+= Double.parseDouble(cursor.getString(0));
 
         }
 

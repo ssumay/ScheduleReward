@@ -76,7 +76,10 @@ public class A_ScListActivity extends AppCompatActivity {
         ExpandableListView listView = (ExpandableListView) findViewById(R.id.list);
         SchedListAdapter adapter = Schedule.getList(this);
         listView.setAdapter(adapter);
-        _id = adapter.groups.get(0)._id + "";
+        if(adapter != null){
+            _id = adapter.groups.get(0)._id + "";
+            findViewById(R.id.sched_mod).setVisibility(View.VISIBLE);
+        }
     }
 }
 

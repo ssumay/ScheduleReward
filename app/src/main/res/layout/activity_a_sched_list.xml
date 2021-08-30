@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-    <LinearLayout android:layout_height="match_parent" android:layout_width="match_parent" android:orientation="vertical" xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:layout_height="match_parent" android:layout_width="match_parent" android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
 
     <RelativeLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:padding="10dip">
 
     <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:onClick="onNewSched" android:paddingLeft="10dp" android:paddingBottom="4dp" android:paddingTop="4dp" android:paddingRight="10dp" android:gravity="center" android:background="@drawable/button" android:layout_marginLeft="5dip" android:layout_marginRight="5dip" android:textSize="20dp" android:text="@string/new_sched" android:id="@+id/addsched"/>
 
-    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:onClick="onSched" android:paddingLeft="10dp" android:paddingBottom="4dp" android:paddingTop="4dp" android:paddingRight="10dp" android:gravity="center" android:background="@drawable/button" android:layout_marginRight="5dip" android:textSize="20dp" android:text="@string/sc_detail" android:id="@+id/regi_man" android:layout_toRightOf="@id/addsched"/>
+    <TextView android:visibility="invisible"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content" android:onClick="onSched" android:paddingLeft="10dp"
+        android:paddingBottom="4dp" android:paddingTop="4dp" android:paddingRight="10dp" android:gravity="center"
+        android:background="@drawable/button" android:layout_marginRight="5dip" android:textSize="20dp" android:text="@string/sc_detail"
+        android:id="@+id/sched_mod" android:layout_toRightOf="@id/addsched"/>
 
-    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:onClick="onHome" android:paddingLeft="10dp" android:paddingBottom="4dp" android:paddingTop="4dp" android:paddingRight="10dp" android:gravity="center" android:background="@drawable/button" android:textSize="20dp" android:text="@string/gohome" android:id="@+id/showsum" android:layout_toRightOf="@id/regi_man"/>
+    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content"
+        android:onClick="onHome" android:paddingLeft="10dp" android:paddingBottom="4dp" android:paddingTop="4dp"
+        android:paddingRight="10dp" android:gravity="center" android:background="@drawable/button" android:textSize="20dp"
+        android:text="@string/gohome" android:id="@+id/showsum" android:layout_toRightOf="@id/sched_mod"/>
 
 </RelativeLayout>
 

@@ -297,7 +297,8 @@ public class A_SumActivity extends AppCompatActivity {
         list1.setVisibility(View.GONE);
     }
 
-    public void onB3Clicked(View v) {
+    public void onMyCoupons(View v) {
+        Coupon.onMyCoupons(this, man_spi.getSelectedItem()+"");
 
         }
     public void onHome(View v){
@@ -397,7 +398,7 @@ class CpListAdapter extends BaseAdapter {
         ((TextView) convertView.findViewById(R.id.date)).setText(cd.date);
         ((TextView) convertView.findViewById(R.id.s_title)).setText(cd.s_title);
         ((TextView) convertView.findViewById(R.id.link_note)).setText(cd.link_note);
-        ((TextView) convertView.findViewById(R.id.score)).setText(cd.price);
+        ((TextView) convertView.findViewById(R.id.price)).setText(cd.price);
         ((TextView) convertView.findViewById(R.id.name)).setText(cd.name);
         ((TextView) convertView.findViewById(R.id.state)).setText(cd.state?"used": "");
 

@@ -577,6 +577,7 @@ public class ScheduleActivity extends AppCompatActivity {
                         return false;
                     }
                     data.coupon_datas = layout.coupon_datas;
+                    data.cash = "";
                 }
             }
         else if(data.reward_type ==3) { //edt execute_during_time rew

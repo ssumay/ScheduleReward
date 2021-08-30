@@ -87,6 +87,8 @@ public class Schedule_content_layout {
         simple_rew_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int i, long id) {
+                Log.i("simple_rew_type", i + " selected");
+
                 switch (i){
                     case 0:cash_layout.setVisibility(View.VISIBLE);
                         coupon_layout.setVisibility(View.GONE);
@@ -126,7 +128,6 @@ public class Schedule_content_layout {
                     case 0: root.findViewById(R.id.simple_rew_layout).setVisibility(View.VISIBLE);  //case 0:
                         root.findViewById(R.id.formula_layout).setVisibility(View.GONE);
                         root.findViewById(R.id.execute_during_time).setVisibility(View.GONE);
-                        Log.i("sched_api", "ffff" );
                         sd.lds.get(seq).reward_type = 0;
                        // simple_rew_type.setSelection(0);
                         break;
@@ -134,19 +135,15 @@ public class Schedule_content_layout {
                         root.findViewById(R.id.formula_layout).setVisibility(View.VISIBLE);
                         root.findViewById(R.id.execute_during_time).setVisibility(View.GONE);
                         sd.lds.get(seq).reward_type = 1;
-                        Log.i("sched_api", "eeee");
                         break;
                     case 2: root.findViewById(R.id.simple_rew_layout).setVisibility(View.GONE);
                         root.findViewById(R.id.formula_layout).setVisibility(View.GONE);
                         root.findViewById(R.id.execute_during_time).setVisibility(View.GONE);
                         sd.lds.get(seq).reward_type = 2;
-                        Log.i("sched_api", "ddd");
-
                         break;
                     case 3: root.findViewById(R.id.simple_rew_layout).setVisibility(View.GONE);
                         root.findViewById(R.id.formula_layout).setVisibility(View.GONE);
                         root.findViewById(R.id.execute_during_time).setVisibility(View.VISIBLE);
-
                         sd.lds.get(seq).reward_type = 3;
                         break;
 

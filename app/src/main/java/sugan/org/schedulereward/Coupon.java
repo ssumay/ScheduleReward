@@ -14,7 +14,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,6 +54,83 @@ class Date_day{
 
 public class Coupon {
 
+    static void onMyCoupons(Context context, String man ){
+        androidx.appcompat.app.AlertDialog coupons_dia;
+        final ScrollView root = (ScrollView) View.inflate(context, R.layout.my_coupons, null);
+        GridLayout linear = root.findViewById(R.id.grid);
+
+        coupons_dia = new androidx.appcompat.app.AlertDialog.Builder(context)
+                .setTitle(R.string.sel_coupon)
+                //.setIcon(R.drawable.androboy)
+                .setView(root)
+                .setNegativeButton(R.string.cancle, null)
+                .show();
+
+        ArrayList<Coupon_data> mycoupons = Coupon.getMyCoupons(context, man);
+        for(int i=0; i< mycoupons.size(); i++) {
+            final LinearLayout cp = (LinearLayout) View.inflate(context, R.layout.my_coupon, null);
+            TextView name = cp.findViewById(R.id.name);
+            TextView price = cp.findViewById(R.id.price);
+            TextView date = cp.findViewById(R.id.date);
+            TextView _id = cp.findViewById(R.id._id);
+
+            TextView imsi = new TextView(context);
+            imsi.setText(R.string.won);
+            ((TextView)cp.findViewById(R.id.name)).setText(mycoupons.get(i).name);
+            String p = mycoupons.get(i).price;
+            if(p!=null) ((TextView)cp.findViewById(R.id.price)).setText(p + imsi.getText().toString());Log.i("c_price",p + imsi.getText().toString() );
+            ((TextView)cp.findViewById(R.id.date)).setText(mycoupons.get(i).date);
+            ((TextView)cp.findViewById(R.id._id)).setText(mycoupons.get(i)._id + "");
+
+            linear.addView(cp);
+            name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    TextView imsi = new TextView(context);
+                    imsi.setText(R.string.use_coupon);
+
+                    String mes = ((TextView)v).getText().toString()  + imsi.getText().toString();
+                    new androidx.appcompat.app.AlertDialog.Builder(context)
+                            .setMessage(mes)
+                            .setPositiveButton(R.string.y, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichbutton) {
+                                    //Sum.removeOnedayRew(A_SumActivity.this, ms.man._id, rew_desc );
+                                    int _id = Integer.parseInt(((TextView)((LinearLayout)v.getParent()).findViewById(R.id._id)).getText().toString());
+                                    if(Coupon.useMyCoupon(context, _id+""))
+                                    {
+                                        linear.removeView(cp);
+                                        TextView imsi = new TextView(context);
+                                        imsi.setText(R.string.won);
+                                        String mes ="";
+                                        for(int i=0; i<mycoupons.size(); i++){
+                                            if(mycoupons.get(i)._id==_id) {
+                                                Coupon_data cd = mycoupons.get(i);
+                                                mes = cd.name + ( p==null? "" : " (" + cd.price + imsi.getText().toString() + ") ");
+                                                imsi.setText(R.string.used_coupon);
+                                                mes += imsi.getText().toString();
+                                                mycoupons.remove(mycoupons.get(i));
+                                                break;
+                                            }
+                                        }
+                                        Toast.makeText(context, mes, Toast.LENGTH_SHORT).show();
+
+
+                                    }
+
+                                    if(mycoupons.size()==0) {
+                                        coupons_dia.dismiss();
+                                        //mycoupons_b.setVisibility(View.GONE);
+
+                                    }
+                                }
+                            } )
+                            .setNegativeButton(R.string.n, null)
+                            .show();
+                }
+            });
+        }
+    }
+
     static boolean useMyCoupon(Context context, String _id){
         SchedDBHelper sHelper = new SchedDBHelper(context);
         SQLiteDatabase db = sHelper.getWritableDatabase();
@@ -75,8 +154,11 @@ public class Coupon {
         SQLiteDatabase db = sHelper.getWritableDatabase();
         ArrayList<Coupon_data> cds = new ArrayList<>(5);
 
-        String sql = "select name, date, price_ea, _id from my_coupon where man_name = '" + m_name + "' ";
+        String sql = "select name, date, price_ea, _id from my_coupon where man_name = '" + m_name + "' and state is null";
+
         Cursor cursor = db.rawQuery(sql, null);
+        Log.i("getmycoupons", sql);
+        Log.i("ea", cursor.getCount() +  " ");
         while (cursor.moveToNext()){
             Coupon_data cd = new Coupon_data(cursor.getString(0));
             cd.date = cursor.getString(1);

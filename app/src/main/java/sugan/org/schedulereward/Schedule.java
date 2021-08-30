@@ -798,10 +798,11 @@ Log.i("nowsched", sql);
 
         }
         else {   //page_mode = 0    //new sc
-            sql = "select max(_id)+1 from sched ";
+            sql = "select s_id+1 from LATEST_SCHED_ID";   //schedule 삭제했을 경우 중복을 막기 위해.
+            //sql = "select max(_id)+1 from sched ";
             Cursor cursor = db.rawQuery(sql, null);
             cursor.moveToNext();
-            s_id = cursor.getInt(0);
+            s_id = cursor.getInt(0);//Log.i("latest_sched_id", s_id + " " );
             cursor.close();
         }
 
@@ -824,6 +825,10 @@ Log.i("nowsched", sql);
                 sd.state + " ) ";
         Log.i("sql", sql);
         db.execSQL(sql);Log.i("sd.lds.size()", sd.lds.size() + " ");
+
+        sql = "update LATEST_SCHED_ID set s_id = " + s_id ;
+        db.execSQL(sql);Log.i("LATEST_SCHED_ID", sql);
+
         for (int i=0; i<sd.lds.size(); i++) {
             Linked_sched_data ld = sd.lds.get(i);
             String formula = "";

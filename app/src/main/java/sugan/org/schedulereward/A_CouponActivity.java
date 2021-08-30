@@ -507,81 +507,9 @@ public class A_CouponActivity extends AppCompatActivity {
     }
 
     public void onMyCoupons(View v){
-        AlertDialog coupons_dia;
-        final ScrollView root = (ScrollView) View.inflate(this, R.layout.my_coupons, null);
-        GridLayout linear = root.findViewById(R.id.grid);
-
-        coupons_dia = new AlertDialog.Builder(this)
-                .setTitle(R.string.sel_coupon)
-                //.setIcon(R.drawable.androboy)
-                .setView(root)
-                .setNegativeButton(R.string.cancle, null)
-                .show();
 
         String man = (String)man_spi1.getSelectedItem();
-        ArrayList<Coupon_data> mycoupons = Coupon.getMyCoupons(this, man);
-        for(int i=0; i< mycoupons.size(); i++) {
-            final LinearLayout cp = (LinearLayout) View.inflate(this, R.layout.my_coupon, null);
-            TextView name = cp.findViewById(R.id.name);
-            TextView price = cp.findViewById(R.id.price);
-            TextView date = cp.findViewById(R.id.date);
-            TextView _id = cp.findViewById(R.id._id);
-
-            TextView imsi = new TextView(A_CouponActivity.this);
-            imsi.setText(R.string.won);
-            ((TextView)cp.findViewById(R.id.name)).setText(mycoupons.get(i).name);
-            String p = mycoupons.get(i).price;
-            if(p!=null) ((TextView)cp.findViewById(R.id.price)).setText(p + imsi.getText().toString());Log.i("c_price",p + imsi.getText().toString() );
-            ((TextView)cp.findViewById(R.id.date)).setText(mycoupons.get(i).date);
-            ((TextView)cp.findViewById(R.id._id)).setText(mycoupons.get(i)._id + "");
-
-            linear.addView(cp);
-            name.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    TextView imsi = new TextView(A_CouponActivity.this);
-                    imsi.setText(R.string.use_coupon);
-
-                    String mes = ((TextView)v).getText().toString()  + imsi.getText().toString();
-                    new AlertDialog.Builder(A_CouponActivity.this)
-                            .setMessage(mes)
-                            .setPositiveButton(R.string.y, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int whichbutton) {
-                                    //Sum.removeOnedayRew(A_SumActivity.this, ms.man._id, rew_desc );
-                                    int _id = Integer.parseInt(((TextView)((LinearLayout)v.getParent()).findViewById(R.id._id)).getText().toString());
-                                    if(Coupon.useMyCoupon(A_CouponActivity.this, _id+""))
-                                    {
-                                        linear.removeView(cp);
-                                        TextView imsi = new TextView(A_CouponActivity.this);
-                                        imsi.setText(R.string.won);
-                                        String mes ="";
-                                        for(int i=0; i<mycoupons.size(); i++){
-                                            if(mycoupons.get(i)._id==_id) {
-                                                Coupon_data cd = mycoupons.get(i);
-                                                mes = cd.name + ( p==null? "" : " (" + cd.price + imsi.getText().toString() + ") ");
-                                                imsi.setText(R.string.used_coupon);
-                                                mes += imsi.getText().toString();
-                                                mycoupons.remove(mycoupons.get(i));
-                                                break;
-                                            }
-                                        }
-                                        Toast.makeText(A_CouponActivity.this, mes, Toast.LENGTH_SHORT).show();
-
-
-                                    }
-
-                                    if(mycoupons.size()==0) {
-                                        coupons_dia.dismiss();
-                                        mycoupons_b.setVisibility(View.GONE);
-
-                                    }
-                                }
-                            } )
-                            .setNegativeButton(R.string.n, null)
-                            .show();
-                }
-            });
-        }
+        Coupon.onMyCoupons(this, man);
 
     }
     /*
