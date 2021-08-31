@@ -344,12 +344,14 @@ class SumListAdapter extends BaseAdapter {
 
         }
         Sum_data sd = (Sum_data) items.get(i);
-
+Log.i("sd.picture", sd.picture + " ");
         ((TextView) convertView.findViewById(R.id.date)).setText(sd.date);
         ((TextView) convertView.findViewById(R.id.s_title)).setText(sd.s_title);
         ((TextView) convertView.findViewById(R.id.link_note)).setText(sd.link_note);
         ((TextView) convertView.findViewById(R.id.s_title)).setText(sd.s_title);
+        if(sd.picture != null)
         Man.setImage(sd.picture, (ImageView) convertView.findViewById(R.id.picture), context);
+
         ((TextView) convertView.findViewById(R.id.score)).setText(sd.score);
 
         return convertView;

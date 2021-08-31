@@ -76,26 +76,6 @@ public class A_MListActivity extends AppCompatActivity {
 
         //.setIcon(R.drawable.androboy)
     }
-    public boolean checkLoginId(){
-        SchedDBHelper sHelper= new SchedDBHelper(this);
-        SQLiteDatabase db = sHelper.getWritableDatabase();
-        Cursor cursor;
-        String sql;
-        if(mode==0)
-            sql = "select _id from man where login_id='" + name.getText().toString() +"'";
-        else
-            sql  = "select _id from man where login_id='" + name.getText().toString() +"' and _id!="+m_id;
-        cursor = db.rawQuery(sql, null);
-        if(cursor.moveToNext())  {
-
-            cursor.close();
-            sHelper.close();
-            return false;
-        }
-        cursor.close();
-        sHelper.close();
-        return true;
-    }
 
     public void onSaveMan(View v) {
 /*
@@ -174,10 +154,10 @@ public class A_MListActivity extends AppCompatActivity {
     public void onCameraClicked(View v) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-        String url = "tmp_" + String.valueOf(System.currentTimeMillis()) + ".jpg";
+        String url = "tmp_" + System.currentTimeMillis() + ".jpg";
 
         mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), url));
-        Log.i("mImageCaptureUri = " , mImageCaptureUri.getPath().toString());
+        Log.i("mImageCaptureUri = " , mImageCaptureUri.getPath());
 
 
         intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageCaptureUri);

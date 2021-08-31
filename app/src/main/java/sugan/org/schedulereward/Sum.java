@@ -267,6 +267,8 @@ public class Sum {
         sd1.date = imsi.getText().toString();
         imsi.setText(R.string.sched);
         sd1.s_title = imsi.getText().toString();
+        imsi.setText(R.string.content);
+        sd1.link_note = imsi.getText().toString();
         imsi.setText(R.string.score);
         sd1.score = imsi.getText().toString();
         //imsi.setText(R.string.picture);
@@ -281,8 +283,8 @@ public class Sum {
                 sd.s_title = cursor2.getString(0);
                 sd.link_note = cursor2.getString(1);
                 sd.date = cursor2.getString(2);
-                sd.score = cursor2.getString(3);   Log.i("sd.score", sd.score + " " );
-                sd.picture = cursor2.getString(4);
+                sd.score = cursor2.getString(3);
+                sd.picture = cursor2.getString(4);Log.i("sd.picture", sd.picture + " " );
             }
 
         }

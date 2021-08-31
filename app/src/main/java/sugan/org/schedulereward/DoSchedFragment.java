@@ -270,10 +270,11 @@ public class DoSchedFragment extends Fragment {
             case CROP_FROM_IMAGE: {
                 Bundle extras = data.getExtras();
                 img = System.currentTimeMillis()+"";
+                String filePath = context.getCacheDir()+"/" + img + ".jpg";
 
-                String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()
-                        +"/scheduleReward/" +
-                        img+".jpg";
+               // String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()
+                  //      +"/scheduleReward/" +
+                  //      img+".jpg";
 
                 if(extras != null){
                     Bitmap photo = extras.getParcelable("data");
@@ -384,7 +385,7 @@ public class DoSchedFragment extends Fragment {
         public void onClick(View v) {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-            String url = "tmp_" + String.valueOf(System.currentTimeMillis()) + ".jpg";
+            String url = "tmp_" + System.currentTimeMillis() + ".jpg";
 
             mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), url));
             //Log.i("mImageCaptureUri = " , mImageCaptureUri.getPath().toString());

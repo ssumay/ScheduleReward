@@ -7,28 +7,33 @@
     <TextView
         android:id="@+id/s_title"
         android:textSize="17sp"
-        android:layout_width="wrap_content"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
+        android:text="aaa"
         android:gravity="center"/>
     <TextView
         android:id="@+id/link_note"
         android:textSize="17sp"
-        android:layout_width="wrap_content"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
+
         android:gravity="center"/>
 <TextView
     android:id="@+id/date"
     android:textSize="17sp"
-    android:layout_width="wrap_content"
+    android:layout_width="70dp"
     android:layout_height="wrap_content"
+
     android:gravity="center"/>
 
     <TextView
         android:id="@+id/score"
         android:textSize="17sp"
-        android:layout_width="wrap_content"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
-        android:gravity="right"/>
+
+        android:gravity="right"
+        android:paddingRight="20dp"/>
     <ImageView
         android:id="@+id/picture"
         android:layout_width="30dp"
