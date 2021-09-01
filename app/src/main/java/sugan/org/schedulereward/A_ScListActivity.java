@@ -26,10 +26,14 @@ public class A_ScListActivity extends AppCompatActivity {
 
     String s_id;   //for delete
     String _id;  //스케줄 보기 및 수정 버튼 클릭시 에러 처리를 위해
+    Man_data admin;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_a_sched_list);
+
+        Intent intent = getIntent();
+        admin = (Man_data)intent.getSerializableExtra("man_data");
 
         getSchedList();
     }
@@ -46,6 +50,8 @@ public class A_ScListActivity extends AppCompatActivity {
     }
     public void onHome(View v){
         Intent intent = new Intent(this, AdminActivity.class);
+        intent.putExtra("man_data", admin);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
     public void onDelSc(View v) {

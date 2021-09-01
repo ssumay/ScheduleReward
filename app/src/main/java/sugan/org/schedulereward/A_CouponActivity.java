@@ -72,6 +72,8 @@ public class A_CouponActivity extends AppCompatActivity {
     LinearLayout mycoupon_l;
     TextView mycoupons_b;
 
+    Man_data admin;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_a_coupon);
@@ -80,6 +82,8 @@ public class A_CouponActivity extends AppCompatActivity {
         attachListeners();
         initiate();
 
+        Intent intent = getIntent();
+        admin = (Man_data)intent.getSerializableExtra("man_data");
     }
 
     void allocate_variables(){
@@ -401,6 +405,7 @@ public class A_CouponActivity extends AppCompatActivity {
 
     public void onHome(View v){
         Intent intent = new Intent(this, AdminActivity.class);
+        intent.putExtra("man_data", admin);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }

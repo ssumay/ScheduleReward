@@ -80,56 +80,13 @@
         android:layout_height="wrap_content"
         android:text="@string/oneday"
         android:background="@drawable/oneday_ticket4"
-        android:onClick="onB3Clicked"
+        android:onClick="onMyCoupons"
         android:visibility="gone"
         android:textColor="#808000"
         android:textSize="18sp"
         android:padding="10dp"
         android:layout_margin="30dp"
         android:gravity="center"/>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
-        <TextView
-            android:id="@+id/b2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sum_used"
-            android:visibility="gone"
-            android:background="@drawable/button2"
-            android:textSize="16sp"
-            android:padding="10dp"
-            android:gravity="center"
-            android:onClick="onB2Clicked"
-            android:layout_margin="10dp"/>
-        <TextView
-            android:id="@+id/b1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sum_detail"
-            android:visibility="gone"
-            android:onClick="onB1Clicked"
-            android:background="@drawable/button3"
-            android:textSize="16sp"
-            android:padding="10dp"
-            android:gravity="center"
-            android:layout_margin="10dp"/>
-        </LinearLayout>
-    <ListView
-        android:id="@+id/list1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/picture3"
-        android:visibility="gone"></ListView>
-    <ListView
-        android:id="@+id/list2"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/picture2"
-        ></ListView>
-
+    <include layout="@layout/sum_history"/>
 
 </LinearLayout>

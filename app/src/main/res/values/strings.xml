@@ -94,6 +94,7 @@
     <string name="del_man">사람을 삭제하시겠습니까?</string>
     <string name="del_ms">스케줄에서 삭제하시겠습니까?</string>
     <string name="pwd_ch">비밀번호 변경</string>
+    <string name="q_pwd_ch">비밀번호를 변경하시겠습니까?</string>
 
     <string name="add_sc">보너스 점수 주기</string>
     <string name="sub_sc">점수 빼기</string>
@@ -208,4 +209,14 @@
     <string name="cp_history">쿠폰 내역</string>
     <string name="content">내용</string>
     <string name="modify_link">연결된 내용을 수정합니다</string>
+    <string name="pwd_on">비밀번호 켬</string>
+    <string name="pwd_off">비밀번호 끔</string>
+    <string name="state_pwd">비밀번호 적용 상태를 바꾸시겠습니까?</string>
+    <string name="pwd_oned">비밀번호가 켜졌습니다.</string>
+    <string name="pwd_offed">비밀번호가 꺼졌습니다.</string>
+    <string name="fail">실패하였습니다</string>
+    <string name="pwd_manage">비밀번호 관리</string>
+    <string name="t_state_pwd">비밀번호 상태 변경</string>
+    <string name="new_pwd">새 비밀번호</string>
+    <string name="enter_pwd">비밀번호 입력</string>
 </resources>

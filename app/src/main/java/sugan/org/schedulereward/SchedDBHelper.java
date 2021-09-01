@@ -54,14 +54,11 @@ public class SchedDBHelper extends SQLiteOpenHelper {
 
 
         String  CREATE_MAN = "CREATE TABLE man (" +
-                //  " _id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
                 " name TEXT NOT NULL UNIQUE ," +   //PRIMARY KEY
                 " img TEXT," +
-                //   " login_id text not null," +   //same as name, so don't allow same name.
                 " pwd text not null,"+
                 " pwd_on integer not null, " +   // 0 - off  , 1 - on
                 " per_score integer) ";
-        //   " reward  text )";
 
         String  CREATE_SCHEDMAN="CREATE TABLE sched_man (" +
                 " s_id INTEGER not null," +

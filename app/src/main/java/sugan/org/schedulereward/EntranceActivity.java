@@ -20,7 +20,6 @@ public class EntranceActivity extends AppCompatActivity {
 
     Man      man;
     Man_data selected_man;
-    //LinearLayout pwd_l;
     EditText pwd;
 
     @Override
@@ -53,11 +52,11 @@ public class EntranceActivity extends AppCompatActivity {
         admin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(EntranceActivity.this, AdminActivity.class);
-                intent.putExtra("man_data", admin_data);
-                startActivity(intent);
+
+                enterMain(admin_data);
             }
         });
+
 
 
         while(cursor.moveToNext())  {
@@ -78,25 +77,10 @@ public class EntranceActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
-                    selected_man = man_data;
+                   // selected_man = man_data;
 
                     Log.i("onClick -",  man_data.pwd_on+" ");
-                    if(man_data.pwd_on== 1) {
-                        LinearLayout pwd_l = (LinearLayout)View.inflate(EntranceActivity.this, R.layout.pwd_input, null);
-                        pwd = (EditText) pwd_l.findViewById(R.id.pwd);
-                        pwd.addTextChangedListener(pwdWatch);
-                       // AlertDialog dialog2 =
-                        new AlertDialog.Builder(EntranceActivity.this)
-                               // .setTitle(R.string.select_time)
-                                //.setIcon(R.drawable.androboy)
-                                .setView(pwd_l)
-                                //.setCancelable(false)
-                                .show();
-
-                    }
-                    else {
-                        gotoMainActivity();
-                    }
+                    enterMain(man_data);
                 }
 
             });
@@ -111,6 +95,30 @@ public class EntranceActivity extends AppCompatActivity {
 
     }
 
+    void enterMain(Man_data sel_man){
+
+        selected_man = sel_man;
+        if(selected_man.pwd_on== 1)
+            pwdDialog();
+
+        else
+            gotoMainActivity();
+
+    }
+
+    void pwdDialog(){
+        LinearLayout pwd_l = (LinearLayout)View.inflate(EntranceActivity.this, R.layout.pwd_input, null);
+        pwd = pwd_l.findViewById(R.id.pwd);
+        pwd.addTextChangedListener(pwdWatch);
+        // AlertDialog dialog2 =
+        new AlertDialog.Builder(EntranceActivity.this)
+                 .setTitle(R.string.enter_pwd)
+                //.setIcon(R.drawable.androboy)
+                .setView(pwd_l)
+                //.setCancelable(false)
+                .show();
+    }
+
         Man_data getMan(Cursor cursor) {
             Man_data man_data = new Man_data();
             man_data.name =  cursor.getString(0);
@@ -118,11 +126,6 @@ public class EntranceActivity extends AppCompatActivity {
             man_data.pwd_on = cursor.getInt(2);
             return man_data;
         }
-
-    public void onAdmin(View v){
-        Intent intent = new Intent(this, AdminActivity.class);
-        startActivity(intent);
-    }
 
         TextWatcher pwdWatch =  new TextWatcher() {
             @Override
@@ -161,8 +164,12 @@ public class EntranceActivity extends AppCompatActivity {
         };
 
     void gotoMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
-        Log.i("man_data", selected_man.name + " " + selected_man.pwd);
+        Intent intent;
+        if(selected_man.name.equals("admin"))
+            intent = new Intent(this, AdminActivity.class);
+        else
+            intent = new Intent(this, MainActivity.class);
+       // Log.i("man_data", selected_man.name + " " + selected_man.pwd);
         intent.putExtra("man_data", selected_man);
         startActivity(intent);
     }

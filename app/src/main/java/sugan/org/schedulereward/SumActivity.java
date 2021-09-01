@@ -43,19 +43,19 @@ public class SumActivity extends AppCompatActivity {
         Intent intent = getIntent();
         md = (Man_data) intent.getSerializableExtra("man_data");
 
-        img = (ImageView) findViewById(R.id.img);
-        name = (TextView) findViewById(R.id.name);
-        t1 = (TextView) findViewById(R.id.t1);
-        t2 = (TextView) findViewById(R.id.t2);
-        t3 = (TextView) findViewById(R.id.t3);
-        b2 = (TextView) findViewById(R.id.b2);
-        b1 = (TextView) findViewById(R.id.b1);
-        list1 = (ListView) findViewById(R.id.list1);
-        list2 = (ListView) findViewById(R.id.list2);
-        b2 = (TextView) findViewById(R.id.b2);
-        b3 = (TextView) findViewById(R.id.b3);
+        img =  findViewById(R.id.img);
+        name = findViewById(R.id.name);
+        t1 = findViewById(R.id.t1);
+        t2 =  findViewById(R.id.t2);
+        t3 =  findViewById(R.id.t3);
+        b2 = findViewById(R.id.b2);
+        b1 = findViewById(R.id.b1);
+        list1 =  findViewById(R.id.list1);
+        list2 = findViewById(R.id.list2);
+        b2 =  findViewById(R.id.b2);
+        b3 =  findViewById(R.id.b3);
 
-        per_s_lay = (LinearLayout) findViewById(R.id.per_s_lay);
+        per_s_lay = findViewById(R.id.per_s_lay);
         int per_score_i;
 
         ms = Sum.fillSumByMan(this, md);
@@ -93,79 +93,37 @@ public class SumActivity extends AppCompatActivity {
             SumListAdapter adapter = new SumListAdapter(SumActivity.this, ms.sum_datas);
             list1.setAdapter(adapter);
             A_SumActivity.setListViewHeightBasedOnChildren(list1);
-            b1.setVisibility(View.VISIBLE);
         }
         else  {
             list1.setAdapter(null);
-            b1.setVisibility(View.GONE);
+        }
+        if(ms.cp_datas.size()>1){
+            CpListAdapter adapter = new CpListAdapter(this, ms.cp_datas);
+            list2.setAdapter(adapter);
+            A_SumActivity.setListViewHeightBasedOnChildren(list2);
+
         }
 
 
     }
 
-    public void onB1Clicked(View v) {
-        if (list1.getVisibility() == View.VISIBLE) list1.setVisibility(View.GONE);
-        else list1.setVisibility(View.VISIBLE);
+    public void onMyCoupons(View v) {
+        Coupon.onMyCoupons(this, md.name);
+
+    }
+
+    public void onB1Clicked(View v) {   //점수내역 sum history
+        list1.setVisibility(list1.getVisibility() == View.VISIBLE? View.GONE:View.VISIBLE);
         list2.setVisibility(View.GONE);
-
     }
 
-    public void onB2Clicked(View v) {
-        if (list2.getVisibility() == View.VISIBLE) list2.setVisibility(View.GONE);
-        else list2.setVisibility(View.VISIBLE);
+    public void onB2Clicked(View v) {   //쿠폰내역 coupon history
+        list2.setVisibility(list2.getVisibility() == View.VISIBLE? View.GONE:View.VISIBLE);
         list1.setVisibility(View.GONE);
-
     }
 
-    public void onB3Clicked(View v) {
-/*
-        final GridLayout linear = (GridLayout) View.inflate(this, R.layout.oneday_not_used, null);
-        for(int i=0; i<ms.cp_datas.size(); i++) {
-            final TextView or = (TextView)View.inflate(this, R.layout.my_coupon, null);
-            or.setText(ms.cp_datas.get(i).rew_desc);
-
-            linear.addView(or);
-            or.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    new AlertDialog.Builder(SumActivity.this)
-                            .setMessage(R.string.dia_oneday)
-                            .setPositiveButton(R.string.y, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int whichbutton) {
-                                    String rew_desc =  or.getText().toString();
-                                  //  Sum.removeOnedayRew(SumActivity.this, ms.man._id, rew_desc );
-                                    linear.removeView(or);
-
-                                    for(int j=0; j<ms.oneday_rews1.size(); j++) {
-                                        if(ms.oneday_rews1.get(j).rew_desc.equals(rew_desc)) {
-                                            ms.oneday_rews1.remove(j);
-                                            break;
-                                        }
-                                    }
-                                    if(ms.oneday_rews1.size() ==0){
-                                        oneday_ticket_dia.dismiss();
-                                        b3.setVisibility(View.GONE);
-                                    }
-
-                                }
-                            } )
-                            .setNegativeButton(R.string.n, null)
-                            .show();
-                }
-            });
-        }
-
-        oneday_ticket_dia = new AlertDialog.Builder(this)
-                .setTitle(R.string.sel_coupon)
-                //.setIcon(R.drawable.androboy)
-                .setNegativeButton(R.string.cancle, null)
-                .setView(linear)
-                .show();
-
- */
-    }
     public void onHome(View v){
-        Intent intent = new Intent(this, EntranceActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("man_data", md);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);

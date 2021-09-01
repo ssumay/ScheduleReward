@@ -56,6 +56,9 @@ public class A_MListActivity extends AppCompatActivity {
     int mode;   // 0 - newman, 1 - modify
     String m_id;
     String from;
+
+    Man_data admin;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -73,6 +76,7 @@ public class A_MListActivity extends AppCompatActivity {
             getManList();
         }
 
+        admin = (Man_data)intent.getSerializableExtra("man_data");
 
         //.setIcon(R.drawable.androboy)
     }
@@ -387,6 +391,8 @@ public class A_MListActivity extends AppCompatActivity {
     }
     public void onHomeClicked(View v){
         Intent intent = new Intent(this, AdminActivity.class);
+        intent.putExtra("man_data", admin);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
     public void onDelMan(final View v) {

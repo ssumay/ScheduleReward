@@ -29,6 +29,39 @@ public class Man {
     ArrayList<Man_data> mans;
     ArrayList<Man_data> search_mans;
 
+    static boolean changePwd( String name, String pwd,  Context context) {
+
+        SchedDBHelper sHelper = new SchedDBHelper(context);
+        SQLiteDatabase db = sHelper.getWritableDatabase();
+        String sql = "update man  set pwd = '" + pwd + "' where name = '" + name + "'"; // Log.i("changePwd", sql);
+        try {
+            db.execSQL(sql);
+            return true;
+        }catch (Exception e){
+            Log.i("changePwd", e.getMessage());
+            return false;
+        }finally {
+            sHelper.close();
+        }
+
+    }
+
+    static boolean changePwdState(int state, String name, Context context) {
+
+        SchedDBHelper sHelper = new SchedDBHelper(context);
+        SQLiteDatabase db = sHelper.getWritableDatabase();
+        String sql = "update man  set pwd_on = " + state + " where name = '" + name + "'";  Log.i("changePwdState", sql);
+        try {
+            db.execSQL(sql);
+            return true;
+        }catch (Exception e){
+            Log.i("changePwdState", e.getMessage());
+            return false;
+        }finally {
+            sHelper.close();
+        }
+
+    }
 
     public static void setSpaceWatch(final EditText et) {
         TextWatcher spaceWatch =  new TextWatcher() {
@@ -157,14 +190,6 @@ public class Man {
         sHelper.close();
     }
 
-    public static void changeAdPwd(String pwd, Context context) {
-
-        SchedDBHelper sHelper = new SchedDBHelper(context);
-        SQLiteDatabase db = sHelper.getWritableDatabase();
-        db.execSQL("update man set pwd='" + pwd + "' where login_id='admin'");
-        sHelper.close();
-    }
-
     public static Man_data checkManId(String name, Context context){
 
         SchedDBHelper sHelper = new SchedDBHelper(context);
@@ -213,6 +238,42 @@ public class Man {
         else
             return WRONG_PWD;
     }
+
+    static   PwdListAdapter  getPwdList(Context context){
+        ArrayList<Man_data> group = new ArrayList<>(3);
+
+        SchedDBHelper sHelper = new SchedDBHelper(context);
+        SQLiteDatabase db = sHelper.getWritableDatabase();
+        Cursor cursor1 = db.rawQuery("select name, img, pwd, pwd_on from man where name ='admin' " , null);
+        cursor1.moveToNext();
+        Man_data md = new Man_data();
+        md.name = cursor1.getString(0);
+        md.img = cursor1.getString(1);
+        md.pwd = cursor1.getString(2);
+        md.pwd_on = cursor1.getInt(3);
+
+        group.add(md);
+        cursor1.close();
+
+        Cursor cursor = db.rawQuery("select name, img, pwd, pwd_on from man where name !='admin' " , null);
+        while(cursor.moveToNext()){
+            Man_data m = new Man_data();
+            m.name = cursor.getString(0);
+            m.img = cursor.getString(1);
+            m.pwd = cursor.getString(2);
+            m.pwd_on = cursor.getInt(3);
+
+            group.add(m);
+        }
+
+        cursor.close();
+        sHelper.close();
+
+        PwdListAdapter adapter = new PwdListAdapter(context, group);
+        return adapter;
+
+    }
+
     public static ManListAdapter getList(Context context) {
         ArrayList<Man_data> group;
         ArrayList<ArrayList<Sched_data>> child;
@@ -226,8 +287,8 @@ public class Man {
         db = sHelper.getWritableDatabase();
         String sql = "select  name,img  from man where  name!='admin'";
         cursor = db.rawQuery(sql, null);
-        group = new ArrayList<Man_data>();
-        child = new ArrayList<ArrayList<Sched_data>>();
+        group = new ArrayList<>();
+        child = new ArrayList<>();
         ManListAdapter adapter = null;
         if (cursor.getCount() != 0) {
             Log.i("cursor.count", cursor.getCount()+" ");

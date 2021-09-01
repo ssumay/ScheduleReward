@@ -54,10 +54,12 @@
         <TextView
             android:layout_width="110dp"
             android:layout_height="80dp"
-            android:text="@string/pwd_ch"
-            android:onClick="onPwdCh"
+            android:text="@string/pwd_manage"
+            android:onClick="onPwdManage"
             android:textSize="22sp"
             android:background="@drawable/picture1"
             android:gravity="center"
             android:padding="10dp"/> </LinearLayout>
+
+
 </LinearLayout>

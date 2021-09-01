@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="sugan.org.schedulereward">
+    <!-- uses-permission android:name="android.permission.CAMERA" / -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -9,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ScheduleReward">
-        <activity android:name=".AdminActivity"></activity>
+        <activity android:name=".AdminActivity" />
         <activity android:name=".EntranceActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,30 +20,40 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".A_ScListActivity"
-            android:theme="@style/AppTheme1"/>
-        <activity android:name=".ScheduleActivity"
-            android:theme="@style/AppTheme1"/>
-        <activity android:name=".A_MListActivity"
-            android:theme="@style/AppTheme1"/>
-        <activity android:name=".MainActivity"
-            android:theme="@style/AppTheme1"/>
-        <activity android:name=".MySchedTotalListActivity"
-            android:theme="@style/AppTheme1"/>
-        <activity android:name=".A_CouponActivity"
-            android:theme="@style/AppTheme1"/>
-        <activity android:name=".A_SumActivity"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:theme="@style/AppTheme1"/>
-        <activity android:name=".DoSchedActivity"
+        <activity
+            android:name=".A_ScListActivity"
+            android:theme="@style/AppTheme1" />
+        <activity
+            android:name=".PwdManageActivity"
+            android:theme="@style/AppTheme1" />
+        <activity
+            android:name=".ScheduleActivity"
+            android:theme="@style/AppTheme1" />
+        <activity
+            android:name=".A_MListActivity"
+            android:theme="@style/AppTheme1" />
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/AppTheme1" />
+        <activity
+            android:name=".MySchedTotalListActivity"
+            android:theme="@style/AppTheme1" />
+        <activity
+            android:name=".A_CouponActivity"
+            android:theme="@style/AppTheme1" />
+        <activity
+            android:name=".A_SumActivity"
+            android:theme="@style/AppTheme1"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".DoSchedActivity"
             android:launchMode="singleTop"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:theme="@style/AppTheme1"/>
-        <activity android:name=".SumActivity"
-            android:theme="@style/AppTheme1"/>
+            android:theme="@style/AppTheme1"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".SumActivity"
+            android:theme="@style/AppTheme1" />
+
     </application>
-    <!--uses-permission android:name="android.permission.CAMERA" /-->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
 </manifest>

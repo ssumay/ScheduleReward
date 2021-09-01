@@ -64,36 +64,28 @@ public class A_SumActivity extends AppCompatActivity {
     //LinearLayout  per_s_lay;
     //LinearLayout  rew_lay;
 
-    AlertDialog oneday_ticket_dia;
     ListView list3;
+    Man_data admin;
+
     //TextView b5;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_a_sum);
 
-        img = (ImageView) findViewById(R.id.img);
-        man_spi = (Spinner) findViewById(R.id.man_spi);
-        //per_score = (TextView) findViewById(R.id.per_score);
-        //rew_desc = (TextView) findViewById(R.id.rew_desc);
-        //rew_lay = (LinearLayout) findViewById(R.id.rew_lay);
-        b1 = (TextView) findViewById(R.id.b1);
-        list1 = (ListView) findViewById(R.id.list1);
-        t1 = (TextView) findViewById(R.id.t1);
-        e1 = (EditText) findViewById(R.id.e1);
-       // t2 = (TextView) findViewById(R.id.t2);
-        //t3 = (TextView) findViewById(R.id.t3);
-        //e2 = (EditText) findViewById(R.id.e2);
-        b2 = (TextView) findViewById(R.id.b2);
-        list2 = (ListView) findViewById(R.id.list2);
-        b3 = (TextView) findViewById(R.id.b3);
-        b4 = (TextView) findViewById(R.id.b4);
-        sign = (TextView) findViewById(R.id.sign);
-       // sign1 = (TextView) findViewById(R.id.sign1);
-        sum_e = (TextView) findViewById(R.id.sum_e);
-        //per_s_lay = (LinearLayout) findViewById(R.id.per_s_lay);
-        list3 = (ListView) findViewById(R.id.list3);
-       // b5 = (TextView) findViewById(R.id.b5);
+        img = findViewById(R.id.img);
+        man_spi =  findViewById(R.id.man_spi);
+        b1 = findViewById(R.id.b1);
+        list1 = findViewById(R.id.list1);
+        t1 = findViewById(R.id.t1);
+        e1 = findViewById(R.id.e1);
+        b2 = findViewById(R.id.b2);
+        list2 = findViewById(R.id.list2);
+        b3 = findViewById(R.id.b3);
+        b4 = findViewById(R.id.b4);
+        sign = findViewById(R.id.sign);
+        sum_e = findViewById(R.id.sum_e);
+        list3 = findViewById(R.id.list3);
 
         //oneday_layout = (LinearLayout) findViewById(R.id.oneday_layout);
         mds = Sum.fillNameSpinner(this, man_spi);
@@ -194,6 +186,10 @@ public class A_SumActivity extends AppCompatActivity {
                 return false;
             }
         });*/
+
+        Intent intent = getIntent();
+        admin = (Man_data)intent.getSerializableExtra("man_data");
+
     }
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {
@@ -303,6 +299,7 @@ public class A_SumActivity extends AppCompatActivity {
         }
     public void onHome(View v){
         Intent intent = new Intent(this, AdminActivity.class);
+        intent.putExtra("man_data", admin);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
