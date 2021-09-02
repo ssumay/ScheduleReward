@@ -399,7 +399,7 @@ public class A_MListActivity extends AppCompatActivity {
         new AlertDialog.Builder(this).setMessage(R.string.del_man).setPositiveButton(R.string.y,
                 new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int b) {
-                        String s_id = ((TextView)(((LinearLayout)v.getParent()).findViewById(R.id._id))).getText().toString();
+                        String s_id = ((TextView)(((LinearLayout)v.getParent()).findViewById(R.id.name))).getText().toString();
                         Man.delMan(s_id, A_MListActivity.this);
                         getManList();
                     }

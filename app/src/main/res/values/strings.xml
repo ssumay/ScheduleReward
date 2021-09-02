@@ -219,4 +219,7 @@
     <string name="t_state_pwd">비밀번호 상태 변경</string>
     <string name="new_pwd">새 비밀번호</string>
     <string name="enter_pwd">비밀번호 입력</string>
+    <string name="state">상태</string>
+    <string name="price_ea">price ea.</string>
+    <string name="close">닫기</string>
 </resources>

@@ -164,28 +164,6 @@ public class A_SumActivity extends AppCompatActivity {
                 return false;
             }
         });
-/*
-        e2.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                //Enter key Action
-                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    Log.i("keycode", "enter");
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(e2.getWindowToken(), 0);    //hide keyboard"
-                    String s_i = e2.getText().toString();
-                    int i_1 = (s_i.equals("") ? 0: Integer.parseInt(s_i))*per_score_i;
-                    if(i_1 > 0) {
-                        if(state)   Sum.minuScore(A_SumActivity.this, ms.man._id, i_1);
-                        else  Sum.plusScore(A_SumActivity.this, ms.man._id, i_1);
-                        fillSum();
-                    }
-                    e1.setText(""); e2.setText("");
-                    return true;
-                }
-                return false;
-            }
-        });*/
 
         Intent intent = getIntent();
         admin = (Man_data)intent.getSerializableExtra("man_data");
@@ -215,7 +193,6 @@ public class A_SumActivity extends AppCompatActivity {
         listView.setLayoutParams(params);
         listView.requestLayout();
     }
-
 
     public void fillSum () {
 

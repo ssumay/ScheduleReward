@@ -255,10 +255,10 @@ public class Sum {
         cursor1.moveToNext();
         ms.sum = cursor1.getDouble(0);
         String sql2 = "select s_title, link_note, date, reward, picture from sum where man_name = '" + md.name +
-                "' and isCP is null order by date desc, s_id desc, seq asc limit 20";  //
+                "' and isCP is null order by date desc, s_id desc, seq asc ";   //limit 20";  //
         Log.i("sql", sql2);
         cursor2 = db.rawQuery(sql2, null);
-        ms.sum_datas = new ArrayList<Sum_data>();
+        ms.sum_datas = new ArrayList<>();
         ms.cp_datas = new ArrayList<>();
 
         Sum_data sd1 = new Sum_data();
@@ -289,8 +289,22 @@ public class Sum {
 
         }
 
+        Coupon_data ct = new Coupon_data();
+        ms.cp_datas.add(ct);
+        imsi = new TextView(context);
+        imsi.setText(R.string.sched);
+        ct.s_title = imsi.getText().toString();
+        imsi.setText(R.string.content);
+        ct.link_note = imsi.getText().toString();
+        imsi.setText(R.string.date);
+        ct.date = imsi.getText().toString();
+        imsi.setText(R.string.price_ea);
+        ct.price =   imsi.getText().toString();
+        imsi.setText(R.string.coupon);
+        ct.name = imsi.getText().toString();
+
         String sql3 = "select s_title, link_note, name, date, price_ea, state from my_coupon where man_name= '" + md.name +
-                  "' order by date desc limit 20";
+                  "' order by date desc ";  // limit 20";
 
         cursor3 = db.rawQuery(sql3, null);
         if(cursor3.getCount()!=0){

@@ -579,14 +579,13 @@ Log.i("nowsched", sql);
                 Cursor cursor1;
                 Sched_data sd = new Sched_data();
 
-                String sql1 = "select _id, title, reward from sched where _id= " + cursor.getString(0);
+                String sql1 = "select _id, title from sched where _id= " + cursor.getString(0);
                 cursor1 = db.rawQuery(sql1, null);
                 cursor1.moveToNext();
                 sd._id = cursor1.getInt(0);
                 TextView imsi = new TextView(context);
                 imsi.setText(R.string.one_day_rew);
-                sd.title = (cursor1.getInt(2)==-1)? cursor1.getString(1): cursor1.getString(1) + " - " +
-                        imsi.getText().toString();
+                sd.title = cursor1.getString(1);
                // sd.reward = cursor1.getInt(2);
                 scheds.add(sd);
                 cursor1.close();

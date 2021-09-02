@@ -179,13 +179,21 @@ public class Man {
         return d;
     }
 
-    public static void delMan(String _id, Context context) {
+    public static void delMan(String name, Context context) {
         SchedDBHelper sHelper = new SchedDBHelper(context);
         SQLiteDatabase db = sHelper.getWritableDatabase();
 
-        String sql = "delete from man where _id=" + _id;
+        String sql = "delete from man where name='" + name + "' ";
         db.execSQL(sql);
-        sql = "delete from sched_man where man_id=" + _id;
+        sql = "delete from sched_man where man_name = '" + name + "'" ;
+        db.execSQL(sql);
+        sql = "delete from during_sched where man_name = '" + name + "'" ;
+        db.execSQL(sql);
+        sql = "delete from sum where man_name = '" + name + "'" ;
+        db.execSQL(sql);
+        sql = "delete from my_coupon where man_name = '" + name + "'" ;
+        db.execSQL(sql);
+        sql = "delete from periodic_coupon where man_name = '" + name + "'" ;
         db.execSQL(sql);
         sHelper.close();
     }

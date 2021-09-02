@@ -63,7 +63,7 @@ public class Coupon {
                 .setTitle(R.string.sel_coupon)
                 //.setIcon(R.drawable.androboy)
                 .setView(root)
-                .setNegativeButton(R.string.cancle, null)
+                .setNegativeButton(R.string.close, null)
                 .show();
 
         ArrayList<Coupon_data> mycoupons = Coupon.getMyCoupons(context, man);
@@ -113,9 +113,14 @@ public class Coupon {
                                             }
                                         }
                                         Toast.makeText(context, mes, Toast.LENGTH_SHORT).show();
+                                        if(context instanceof A_SumActivity )
+                                        ((A_SumActivity)context).fillSum();
+                                        else if(context instanceof SumActivity)
+                                            ((SumActivity)context).fillSum();
 
 
-                                    }
+                                    }else
+                                        Toast.makeText(context, R.string.fail, Toast.LENGTH_SHORT).show();
 
                                     if(mycoupons.size()==0) {
                                         coupons_dia.dismiss();

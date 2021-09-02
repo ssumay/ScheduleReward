@@ -35,7 +35,7 @@ public class SumActivity extends AppCompatActivity {
     ListView list2;
     TextView b3;
     LinearLayout per_s_lay;
-    AlertDialog oneday_ticket_dia;
+    int per_score_i;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +56,11 @@ public class SumActivity extends AppCompatActivity {
         b3 =  findViewById(R.id.b3);
 
         per_s_lay = findViewById(R.id.per_s_lay);
-        int per_score_i;
+        fillSum();
+
+    }
+
+    void fillSum(){
 
         ms = Sum.fillSumByMan(this, md);
         per_score_i = ms.man.per_score; Log.i("per_score", per_score_i+" ");
@@ -73,7 +77,7 @@ public class SumActivity extends AppCompatActivity {
         else {
             //rew_lay.setVisibility(View.VISIBLE);
             per_s_lay.setVisibility(View.VISIBLE);
-          //  t2.setText(ms.man.reward + "");
+            //  t2.setText(ms.man.reward + "");
         }
         //t3.setText(((int) (ms.sum / ms.man.per_score)) + "");
         t3.setText(((int) (ms.sum / per_score_i)) + "");
@@ -103,7 +107,6 @@ public class SumActivity extends AppCompatActivity {
             A_SumActivity.setListViewHeightBasedOnChildren(list2);
 
         }
-
 
     }
 
