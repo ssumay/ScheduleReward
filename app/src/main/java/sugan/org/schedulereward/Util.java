@@ -1,25 +1,57 @@
 package sugan.org.schedulereward;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 public class Util {
 
+    static void storeCropImage (Context context, Bitmap bitmap, String filePath) {
+        Log.i("filepath", filePath+" ");
+        //String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath()
+        //        + "/scheduleReward";
+        //String dirPath = getCacheDir()
+        //String dirPath = "/storage/Android/data/data/sugan.org.schedulereward/";
+        File directory_sched = new File(context.getCacheDir()+"/");
 
+        if (!directory_sched.exists())
+            directory_sched.mkdir();
+
+        File copyFile = new File(filePath);
+        BufferedOutputStream out = null;
+
+        try {
+            boolean newFile = copyFile.createNewFile();
+            out = new BufferedOutputStream(new FileOutputStream(copyFile));
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+
+            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+                    Uri.fromFile(copyFile)));
+
+            out.flush();
+            out.close();
+            Log.i("저장 성공", " ");
+        } catch (Exception e) {
+            Log.i("저장 실패", " ");
+            e.printStackTrace();
+        }
+    }
 
     static String today(){
         return new SimpleDateFormat("yyMMdd").format(new Date());

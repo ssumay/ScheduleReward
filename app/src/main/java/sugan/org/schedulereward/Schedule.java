@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.webkit.WebHistoryItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -325,9 +326,10 @@ Log.i("sched.title", sched.title + " ");
     }
 
 
+    public static Object getRightNowList(Context context, ArrayList<Sched_data> group,
+                                              ArrayList<ArrayList<Linked_sched_data>> child,
+                                              String m_name, Man_data md, boolean fragment) {
 
-    public static FragmentSchedAdapter getRightNowList_frag(Context context, ArrayList<Sched_data> group,
-                                                             Man_data man) {
         SchedDBHelper sHelper;
         SQLiteDatabase db;
         //SchedPerChild schedPerChild;
@@ -335,68 +337,65 @@ Log.i("sched.title", sched.title + " ");
         Cursor cursor;
         db = sHelper.getWritableDatabase();
 
-        int nWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK); //1-일 2-월 3-화 4-수 5-목 6-금 7-토
-        long now = System.currentTimeMillis();
-        Date date = new Date(now);
-        SimpleDateFormat sdfNow = new SimpleDateFormat("HH:mm");
-        String strNow = sdfNow.format(date);   // current time
+        String sql = "select title, _id from sched "
+                + " where _id in (select s_id from sched_man where man_name = '" + m_name
+                + "' ) and _id in (select s_id from sched_week where day = " + getDayOfWeek() + ") "
+                + " and state != 0 ";   //나중에 테스트해볼 것 state ==0에 대해
 
-        String day = "sun";
-        if(nWeek==1) day = "sun";
-        else if(nWeek==2) day="mon";
-        else if(nWeek==3) day="tue";
-        else if(nWeek==4) day="wed";
-        else if(nWeek==5) day="thu";
-        else if(nWeek==6) day="fri";
-        else if(nWeek==7) day="sat";
-        String strNow1 = new SimpleDateFormat("yyMMdd").format(new Date(System.currentTimeMillis()));
-
-        String sql = "select  title, _id,  from sched "
-      //  String sql = "select  title, _id, "+ day +", reward, skip_num  from sched "
-                + " where _id in (select s_id from sched_man where man_name = '"+ man.name
-                + "') and "+ day+" is not null and _id not in (select s_id from during_sched where "
-                + " man_name= '" + man.name + "' and end_time='"+ strNow1 + "' and state='done' ) order by _id desc";
         cursor = db.rawQuery(sql, null);
-        FragmentSchedAdapter adapter = null;
-
+        Object adapter = null;
+        Log.i("nowsched", sql);
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
+                String s_title =  cursor.getString(0);
+                int s_id = cursor.getInt(1);
 
-
-                String today = cursor.getString(2);
-
-                String start_time = today.substring(0, 4);
-                String end_time =   today.substring(8, 12);
-
-                if (strNow.compareTo(start_time)>=0 && strNow.compareTo(end_time)<= 0 ) {
+                if (isNowSCheduledTime(s_id, context)
+                        && isNotCompletedToday(s_id, m_name, context)
+                ) {  //when right now is scheduled for s_id && 오늘 수행되었는지 여부.
 
                     Sched_data sd = new Sched_data();
-                    sd._id = cursor.getInt(1);
-                    //TextView imsi = new TextView(context);
-                  //  imsi.setText(R.string.one_day_rew);
-                    sd.title =
-                            cursor.getString(0) ;
-                  //  sd.reward = cursor.getInt(3);
-                  //  sd.skip_num = cursor.getInt(4);
-                    String sql1 = "select count(*) from linked_sched where s_id=" + sd._id;
-                   // String sql2 = "select rew_desc, type from reward where _id=" + sd.reward;
                     group.add(sd);
-                    Cursor cursor2 = db.rawQuery(sql1, null);
-                  //  Cursor cursor3 = db.rawQuery(sql2, null);
-                    cursor2.moveToNext();
-                    sd.seq_num = cursor2.getInt(0);
-                   /* if(cursor3.getCount()>0){
-                        cursor3.moveToNext();
-                        sd.rew_desc = cursor3.getString(0);  Log.i("sd.rew_desc", sd.rew_desc);
-                        sd.rew_day = cursor3.getInt(1);
-                    }*/
+                    sd._id = s_id;
+                    sd.title = s_title;
+                    // sd.reward = cursor.getInt(3);
+                    // sd.skip_num = cursor.getInt(4);
+                    if(fragment){
+                        adapter = new FragmentSchedAdapter(context, group, md );
 
-                    cursor2.close();  //cursor3.close();
+                        String sql1 = "select count(*) from linked_sched where s_id=" + sd._id;
+                        Cursor cursor2 = db.rawQuery(sql1, null);
+                        cursor2.moveToNext();
+                        sd.seq_num = cursor2.getInt(0);
+                        cursor2.close();
+                    }
+                    else {
+                        adapter = new CurrentSchedListAdapter(context, group, child);
 
+                        ArrayList<Linked_sched_data> notes = new ArrayList<Linked_sched_data>();
+
+                        String sql3 = "select note, s_id, seq from linked_sched where s_id=" + s_id + " order by seq";
+
+                        Cursor cursor3 = db.rawQuery(sql3, null);
+
+                        while (cursor3.moveToNext()) {
+                            Linked_sched_data ld = new Linked_sched_data();
+                            ld.link_note = cursor3.getString(0);
+                            ld.s_id = cursor3.getInt(1);
+                            ld.seq = cursor3.getInt(2);
+                            notes.add(ld);
+                            Log.i("childs", ld.link_note + " " + ld.s_id + " " + ld.seq);
+                        }
+                        child.add(notes);
+                        //sd.lds = notes;
+                        sd.seq_num = notes.size();
+                        cursor3.close();
+                    }
                 }
             }
-            adapter = new FragmentSchedAdapter(context, group, man );
         }
+        Log.i("group-length", group.size()+" ");
+        //Log.i("child-length", child.size()+" ");
         cursor.close();
         sHelper.close();
 
@@ -477,86 +476,6 @@ Log.i("sched.title", sched.title + " ");
         sHelper.close();
         return result;
 
-    }
-
-    public static CurrentSchedListAdapter  getRightNowList(Context context, ArrayList<Sched_data> group,
-                                                           ArrayList<ArrayList<Linked_sched_data>> child,
-                                String m_name) {
-
-        SchedDBHelper sHelper;
-        SQLiteDatabase db;
-        //SchedPerChild schedPerChild;
-        sHelper = new SchedDBHelper(context);
-        Cursor cursor;
-        db = sHelper.getWritableDatabase();
-
-        String strNow = new SimpleDateFormat("hh:mm").format(new Date(System.currentTimeMillis()));
-
-        String sql = "select title, _id from sched "
-                + " where _id in (select s_id from sched_man where man_name = '" + m_name
-                + "' ) and _id in (select s_id from sched_week where day = " + getDayOfWeek() + ") "
-                + " and state != 0 ";   //나중에 테스트해볼 것 state ==0에 대해
-       /* String sql = "select  title, _id, "+ day +", reward, skip_num  from sched "
-        + " where _id in (select s_id from sched_man where man_id = "+ m_id
-        + ") and "+ day+" is not null and _id not in (select s_id from during_sched where "
-        + " man_id= " + m_id + " and end_time='"+ strNow + "' and state='done' ) order by _id desc"; */
-        cursor = db.rawQuery(sql, null);
-        CurrentSchedListAdapter adapter = null;
-Log.i("nowsched", sql);
-        if (cursor.getCount() != 0) {
-            while (cursor.moveToNext()) {
-                String s_title =  cursor.getString(0);
-                int s_id = cursor.getInt(1);
-
-                if (isNowSCheduledTime(s_id, context)
-                        && isNotCompletedToday(s_id, m_name, context)
-                ) {  //when right now is scheduled for s_id && 오늘 수행되었는지 여부.
-
-                    Sched_data sd = new Sched_data();
-                    group.add(sd);
-                    sd._id = s_id;
-                    sd.title = s_title;
-                   // sd.reward = cursor.getInt(3);
-                   // sd.skip_num = cursor.getInt(4);
-                    ArrayList<Linked_sched_data> notes = new ArrayList<Linked_sched_data>();
-
-                    //int c_id = cursor.getInt(2);
-
-                    String sql3 = "select note, s_id, seq from linked_sched where s_id=" + s_id + " order by seq";
-                  //  String sql2 = "select rew_desc, type from reward where _id=" + sd.reward;
-
-                    Cursor cursor3 = db.rawQuery(sql3, null);
-                  /*  Cursor cursor2 = db.rawQuery(sql2, null);
-                    if(cursor2.getCount()>0) {
-                        cursor3.moveToNext();
-                        sd.rew_desc = cursor2.getString(0);
-                        Log.i("sd.rew_desc", sd.rew_desc);
-                        sd.rew_day = cursor2.getInt(1);
-                        cursor2.close();
-                    }*/
-                    while (cursor3.moveToNext()) {
-                        Linked_sched_data ld = new Linked_sched_data();
-                        ld.link_note = cursor3.getString(0);
-                        ld.s_id = cursor3.getInt(1);
-                        ld.seq = cursor3.getInt(2);
-                        notes.add(ld);
-                        Log.i("childs", ld.link_note + " " + ld.s_id + " " + ld.seq);
-                    }
-                    child.add(notes);
-                    //sd.lds = notes;
-                    sd.seq_num = notes.size();
-
-                    cursor3.close();
-                }
-            }
-            adapter = new CurrentSchedListAdapter(context, group, child);
-        }
-        Log.i("group-length", group.size()+" ");
-        Log.i("child-length", child.size()+" ");
-        cursor.close();
-        sHelper.close();
-
-        return adapter;
     }
 
     public static SchedListAdapter_base  getList(Context context,  String m_name) {

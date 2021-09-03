@@ -179,23 +179,29 @@ public class Man {
         return d;
     }
 
-    public static void delMan(String name, Context context) {
+    public static boolean delMan(String name, Context context) {
         SchedDBHelper sHelper = new SchedDBHelper(context);
         SQLiteDatabase db = sHelper.getWritableDatabase();
 
-        String sql = "delete from man where name='" + name + "' ";
-        db.execSQL(sql);
-        sql = "delete from sched_man where man_name = '" + name + "'" ;
-        db.execSQL(sql);
-        sql = "delete from during_sched where man_name = '" + name + "'" ;
-        db.execSQL(sql);
-        sql = "delete from sum where man_name = '" + name + "'" ;
-        db.execSQL(sql);
-        sql = "delete from my_coupon where man_name = '" + name + "'" ;
-        db.execSQL(sql);
-        sql = "delete from periodic_coupon where man_name = '" + name + "'" ;
-        db.execSQL(sql);
-        sHelper.close();
+        try {
+            String sql = "delete from man where name='" + name + "' ";
+            db.execSQL(sql);
+            sql = "delete from sched_man where man_name = '" + name + "'";
+            db.execSQL(sql);
+            sql = "delete from during_sched where man_name = '" + name + "'";
+            db.execSQL(sql);
+            sql = "delete from sum where man_name = '" + name + "'";
+            db.execSQL(sql);
+            sql = "delete from my_coupon where man_name = '" + name + "'";
+            db.execSQL(sql);
+            sql = "delete from periodic_coupon where man_name = '" + name + "'";
+            db.execSQL(sql);
+            return true;
+        }catch (Exception e){
+            Log.i("delMen", e.getMessage());
+            return false;
+        }finally{
+        sHelper.close();}
     }
 
     public static Man_data checkManId(String name, Context context){

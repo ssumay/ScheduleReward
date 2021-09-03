@@ -3,7 +3,6 @@ package sugan.org.schedulereward;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -28,9 +27,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 /**
@@ -156,6 +153,7 @@ public class A_MListActivity extends AppCompatActivity {
         dialog.dismiss();
     }
     public void onCameraClicked(View v) {
+
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         String url = "tmp_" + System.currentTimeMillis() + ".jpg";
@@ -227,7 +225,7 @@ public class A_MListActivity extends AppCompatActivity {
                     Bitmap photo = extras.getParcelable("data");
                     ch_img.setImageBitmap(photo);
 
-                    storeCropImage( photo, filePath);
+                    Util.storeCropImage(this, photo, filePath);
 
                 }
 
@@ -245,36 +243,7 @@ public class A_MListActivity extends AppCompatActivity {
             }
         }
     }
-    public void storeCropImage ( Bitmap bitmap, String filePath) {
-        Log.i("filepath", filePath+" ");
-        //String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath()
-        //        + "/scheduleReward";
-        //String dirPath = getCacheDir()
-        //String dirPath = "/storage/Android/data/data/sugan.org.schedulereward/";
-        File directory_sched = new File(getCacheDir()+"/");
 
-        if (!directory_sched.exists())
-            directory_sched.mkdir();
-
-        File copyFile = new File(filePath);
-        BufferedOutputStream out = null;
-
-        try {
-            boolean newFile = copyFile.createNewFile();
-            out = new BufferedOutputStream(new FileOutputStream(copyFile));
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-
-            sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-                    Uri.fromFile(copyFile)));
-
-            out.flush();
-            out.close();
-            Log.i("저장 성공", " ");
-        } catch (Exception e) {
-            Log.i("저장 실패", " ");
-            e.printStackTrace();
-        }
-    }
 
     public void onName(View v) {
         mode = 1;
@@ -400,7 +369,14 @@ public class A_MListActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int b) {
                         String s_id = ((TextView)(((LinearLayout)v.getParent()).findViewById(R.id.name))).getText().toString();
-                        Man.delMan(s_id, A_MListActivity.this);
+
+                        if(Man.delMan(s_id, A_MListActivity.this)){
+                            Toast.makeText(A_MListActivity.this, R.string.deleted, Toast.LENGTH_SHORT).show();
+
+                        }
+                        else
+                            Toast.makeText(A_MListActivity.this, R.string.fail, Toast.LENGTH_SHORT).show();
+
                         getManList();
                     }
                 }).setNegativeButton(R.string.n, null)

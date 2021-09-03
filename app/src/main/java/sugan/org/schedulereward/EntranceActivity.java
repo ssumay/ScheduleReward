@@ -42,7 +42,7 @@ public class EntranceActivity extends AppCompatActivity {
         SQLiteDatabase db = sHelper.getWritableDatabase();
         Cursor cursor;
         String sql;
-            sql = "select  name, pwd, pwd_on  from man ";
+            sql = "select name, pwd, pwd_on, img from man ";
 
             cursor = db.rawQuery(sql, null);
 
@@ -124,6 +124,7 @@ public class EntranceActivity extends AppCompatActivity {
             man_data.name =  cursor.getString(0);
             man_data.pwd = cursor.getString(1);
             man_data.pwd_on = cursor.getInt(2);
+            man_data.img = cursor.getString(3);
             return man_data;
         }
 

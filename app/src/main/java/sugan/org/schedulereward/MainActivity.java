@@ -43,7 +43,7 @@ Log.i("Mainac", "ONCREATE");
 
         ExpandableListView listView = (ExpandableListView) findViewById(R.id.list);
         //Log.i("md.id", md._id + " " + md.pwd);
-        CurrentSchedListAdapter adapter = Schedule.getRightNowList(this, group, child, md.name );
+        CurrentSchedListAdapter adapter =(CurrentSchedListAdapter) Schedule.getRightNowList(this, group, child, md.name , null, false);
         listView.setAdapter(adapter);
 
     }

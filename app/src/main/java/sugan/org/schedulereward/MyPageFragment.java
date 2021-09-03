@@ -55,7 +55,7 @@ public class MyPageFragment extends Fragment {
         ArrayList<Sched_data> group = new ArrayList<Sched_data>();
 
         ListView listView = (ListView) root.findViewById(R.id.list);
-        FragmentSchedAdapter adapter = Schedule.getRightNowList_frag(context, group, md);
+        FragmentSchedAdapter adapter =(FragmentSchedAdapter) Schedule.getRightNowList(context, group, null, md.name, md, true);
         listView.setAdapter(adapter);
 
         LogoutListener listener = LogoutListener.newInstance(md, context);
@@ -93,9 +93,9 @@ class TitleListener implements View.OnTouchListener {
         Intent intent = new Intent(context, DoSchedActivity.class);
         intent.putExtra("man_data", md);
         intent.putExtra("sched", sd);
+        intent.putExtra("seq", "0");
         //intent.putExtra("s_id", s_id);
-        intent.putExtra("seq", "1");
-        //intent.putExtra("seq_num", seq_num);
+        //intent.putExtra("seq", "1");
         intent.putExtra("page", MyFragment.DOSCHED);
         context.startActivity(intent);
         return false;

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -22,11 +23,13 @@ import androidx.annotation.Nullable;
 public class LoginFragment extends Fragment {
 
     Context context;
-    EditText _id ;
+    String name;
+    //EditText _id ;
 
-    public  static LoginFragment newInstance(Context context) {
+    public  static LoginFragment newInstance(Context context, String name) {
         LoginFragment fragment = new LoginFragment();
         fragment.context = context;
+        fragment.name = name;
 
         return fragment;
     }
@@ -34,8 +37,10 @@ public class LoginFragment extends Fragment {
         @Nullable
     @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View root = inflater.inflate(R.layout.fragment_login, container, false);
-            _id = (EditText) root.findViewById(R.id._id);
+            View root = inflater.inflate(R.layout.fragment_entrance, container, false);
+            TextView user = root.findViewById(R.id.user);
+            user.setText(name);
+           /* _id = (EditText) root.findViewById(R.id._id);
             Man.setSpaceWatch(_id);
             _id.setOnKeyListener(new View.OnKeyListener() {
                 @Override
@@ -77,7 +82,7 @@ public class LoginFragment extends Fragment {
                 return false;
             }
         });
-
+*/
         return root;
     }
 }

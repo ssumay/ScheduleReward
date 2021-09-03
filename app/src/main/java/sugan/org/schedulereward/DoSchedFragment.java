@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,9 +21,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 /**
@@ -107,6 +104,7 @@ public class DoSchedFragment extends Fragment {
         logout1 =  root.findViewById(R.id.logout1);
         home =  root.findViewById(R.id.home);
         home1 = root.findViewById(R.id.home1);
+        Log.i("md.img", md.img + " ");
         Man.setImage(md.img, root.findViewById(R.id.img), context);
 
         showLinkContent();
@@ -200,27 +198,6 @@ public class DoSchedFragment extends Fragment {
 
         done.setOnClickListener( done_listener);
 
-        /*no.setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View v) {
-                Log.i("ln", ln+" ");
-                sd.skip_num--;  Log.i("sd.kip_num", sd.skip_num+" ");
-                Sum.addScore(md._id+"", sd , ln, seq, sd.seq_num+"", "0" ,"", context);
-
-                Intent intent = new Intent(context, DoSchedActivity.class);
-                intent.putExtra("man_data", md);
-                intent.putExtra("sched", sd);
-
-                //intent.putExtra("s_id", s_id);
-                //intent.putExtra("s_title", s_title);
-                intent.putExtra("page", MyFragment.DOSCHED);
-                intent.putExtra("seq", (seq+1)+"");
-                //intent.putExtra("seq_num", seq_num);
-                startActivity(intent);
-
-            }
-        }); */
-
-
         camera.setOnClickListener( camera_listener );
 
         LogoutListener listener = LogoutListener.newInstance(md, context);
@@ -234,6 +211,7 @@ public class DoSchedFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if(resultCode!= Activity.RESULT_OK) {
             return;
         }
@@ -258,12 +236,7 @@ public class DoSchedFragment extends Fragment {
 
                 intent.putExtra("return-data", true);
                 startActivityForResult(intent, CROP_FROM_IMAGE);
-/*
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inSampleSize = 8;
-                Bitmap bitmap = BitmapFactory.decodeFile(mImageCaptureUri.getPath().toString(), options);
-                ch_img.setImageBitmap(bitmap);
-                */
+
                 break;
 
             }
@@ -271,6 +244,7 @@ public class DoSchedFragment extends Fragment {
                 Bundle extras = data.getExtras();
                 img = System.currentTimeMillis()+"";
                 String filePath = context.getCacheDir()+"/" + img + ".jpg";
+                Log.i("CROP_FROM_IMAGE", filePath + " ");
 
                // String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()
                   //      +"/scheduleReward/" +
@@ -280,7 +254,7 @@ public class DoSchedFragment extends Fragment {
                     Bitmap photo = extras.getParcelable("data");
                     picture.setImageBitmap(photo);
 
-                    storeCropImage(context, photo, filePath);
+                    Util.storeCropImage(context, photo, filePath);
 
                 }
 
@@ -299,45 +273,9 @@ public class DoSchedFragment extends Fragment {
         }
     }
 
-    public void storeCropImage (Context context, Bitmap bitmap, String filePath) {
-
-        String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath()
-                + "/scheduleReward";
-        File directory_sched = new File(dirPath);
-
-        if (!directory_sched.exists())
-            directory_sched.mkdir();
-
-        File copyFile = new File(filePath);
-        BufferedOutputStream out = null;
-
-        try {
-            copyFile.createNewFile();
-            out = new BufferedOutputStream(new FileOutputStream(copyFile));
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-
-            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-                    Uri.fromFile(copyFile)));
-
-            out.flush();
-            out.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     Button.OnClickListener done_listener = new Button.OnClickListener() {
         public void onClick(View v) {
             Log.i("onclick", "aaa");
-               /* if(sd.reward!=-1){
-                    Sum.addScore(md._id+"", sd , ln, seq, sd.seq_num+"", "1", img, context);
-                    ++sd.score;  Log.i("sd.score", sd.score+" ");
-                }
-                else
-                    Sum.addScore(md._id+"", sd , ln, seq, sd.seq_num+"", score.getText().toString(), img, context);
-*/
-
-          //  Sum.addScore(ld, img, context);
             Log.i("ld.ld.reward_type", ld.ld.reward_type + " ");
             //double result = 0;
             String result= "" ;
@@ -388,7 +326,7 @@ public class DoSchedFragment extends Fragment {
             String url = "tmp_" + System.currentTimeMillis() + ".jpg";
 
             mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), url));
-            //Log.i("mImageCaptureUri = " , mImageCaptureUri.getPath().toString());
+            Log.i("mImageCaptureUri = " , mImageCaptureUri.getPath());
 
 
             intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageCaptureUri);

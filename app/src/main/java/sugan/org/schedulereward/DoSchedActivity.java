@@ -64,39 +64,44 @@ public class DoSchedActivity extends AppCompatActivity {
         myf.layout_id = i;
         SFDoSchedFragment.myFragments.add(myf);
 
-        lf = LoginFragment.newInstance(this);
+        //lf = LoginFragment.newInstance(this);
         //tr.add(i, mpf);
         SFDoSchedFragment.setHeight(linear1, 400);
         SFDoSchedFragment.frag_linears.add(linear1);
         tr.add(i, dsf);
         //tr.add(R.id.fragment_layout, dsf, m_id);
+        getLoginFrag(i);
+
+        tr.commit();
+
+
+    }
+    void getLoginFrag(int i){
         if(SFDoSchedFragment.mds.size() > SFDoSchedFragment.ids.size())  {
             login_layout = new LinearLayout(this);
             login_layout.setId(++i);
             fragment_layout.addView(login_layout);
             SFDoSchedFragment.setHeight(login_layout, 120);
             SFDoSchedFragment.frag_linears.add(login_layout);
-            tr.add(i, lf);
-            login_frag = true;
+            a: for(int j=0; j<SFDoSchedFragment.mds.size(); j++){
+                for(int k=0;k < SFDoSchedFragment.ids.size(); k++){
+                    if(SFDoSchedFragment.mds.get(j).name.equals( SFDoSchedFragment.ids.get(k)))
+                        continue a;
+                }
+                lf = LoginFragment.newInstance(this, SFDoSchedFragment.mds.get(j).name );
+                tr.add(i, lf);  // i++ error
+                login_frag = true;
+
+                Log.i("login_user", SFDoSchedFragment.mds.get(j).name );
+
+            }
+
+            //tr.add(i, lf);
+
+            //login_frag = true;
 
             //tr.add(R.id.fragment_layout, lf);
         }
-        tr.commit();
-
-
-    }
-
-    void getLoginFrag() {
-        SFDoSchedFragment.next_id = SFDoSchedFragment.next_id + 1;
-        LinearLayout linear2 = new LinearLayout(this);
-        linear2.setId(SFDoSchedFragment.next_id);
-        Log.i("next_id", SFDoSchedFragment.next_id + " ");
-        fragment_layout.addView(linear2);
-        lf = LoginFragment.newInstance(this);
-        SFDoSchedFragment.setHeight(linear2, 120);
-        SFDoSchedFragment.frag_linears.add(linear2);
-        tr.add(SFDoSchedFragment.next_id, lf);
-        login_frag = true;
     }
 
     @Override
@@ -138,7 +143,7 @@ public class DoSchedActivity extends AppCompatActivity {
             //tr.add(mf.layout_id, mf.fragment, m_id);
             if (SFDoSchedFragment.mds.size() > SFDoSchedFragment.ids.size()) {
                 Log.i(" size>", true + " ");
-                getLoginFrag();
+                getLoginFrag(SFDoSchedFragment.next_id + 1);
                 /*
                 SFDoSchedFragment.next_id = SFDoSchedFragment.next_id +1;
                 LinearLayout linear2 = new LinearLayout(this);
@@ -256,11 +261,12 @@ public class DoSchedActivity extends AppCompatActivity {
                             linear2.setId(SFDoSchedFragment.next_id);
                             Log.i("next_id", SFDoSchedFragment.next_id + " ");
                             fragment_layout.addView(linear2);
-                            lf = LoginFragment.newInstance(this);
+                            getLoginFrag(SFDoSchedFragment.next_id);
+                           /* lf = LoginFragment.newInstance(this,SFDoSchedFragment.next_id+1  );
                             SFDoSchedFragment.setHeight(linear2, 120);
                             SFDoSchedFragment.frag_linears.add(linear2);
                             tr.add(SFDoSchedFragment.next_id, lf);
-                            login_frag = true;
+                            login_frag = true;*/
                         }
                         tr.commit();
 
