@@ -32,6 +32,6 @@ public class HomeListener implements View.OnTouchListener {
         //intent.putExtra("m_id", m_id);
         intent.putExtra("page", MyFragment.MYPAGE);
         context.startActivity(intent);
-        return false;
+        return true;
     }
 }

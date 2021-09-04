@@ -136,13 +136,7 @@ public class EntranceActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int i, int i1, int i2) {
-                Log.i("pwdWatcher", " ");
-                //if(s.length()==4 && !_id.getText().toString().equals("")) {
-                /*if(!_id.getText().toString().equals("admin")) {
-                    pwdl.setVisibility(View.GONE);
-                    _id.requestFocus();
-                    return;
-                }*/
+
                 if(s.length()==4 ) {
                     if( pwd.getText().toString().equals(selected_man.pwd) ) {
                         gotoMainActivity();

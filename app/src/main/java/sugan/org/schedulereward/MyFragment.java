@@ -6,7 +6,7 @@ import android.app.Fragment;
  * Created by eunsoo on 2017-11-18.
  */
 
-public class MyFragment {
+class MyFragment {
 
     String m_name;
     int layout_id;
