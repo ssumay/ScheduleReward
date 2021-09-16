@@ -10,6 +10,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+/*
+ * updated by eunsoo on summer 2021
+
+ */
 
 public class AdminActivity extends AppCompatActivity {
 

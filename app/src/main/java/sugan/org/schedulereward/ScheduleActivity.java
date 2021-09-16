@@ -171,6 +171,8 @@ public class ScheduleActivity extends AppCompatActivity {
         final Schedule_content_layout layout = isMain? cl : ldl ;
         Linked_sched_data lsd = sd.lds.get(isMain?0: seq);
 
+
+
         // if(isMain) layout =  cl ;
        // else layout = ldl;
 
@@ -209,7 +211,7 @@ public class ScheduleActivity extends AppCompatActivity {
             }
         });
 
-        if(sd._id != -1) {  //modify page일 떄
+        if(sd._id != -1|| !isMain) {  //modify page일 떄
             //Linked_sched_data data = sd.lds.get(0);
             layout.link_note.setText(lsd.link_note);
             layout.pic_select.setChecked(lsd.pic == 1 ? true : false);
@@ -267,6 +269,7 @@ public class ScheduleActivity extends AppCompatActivity {
                 if (lsd.formula.startsWith("3"))
                     ((EditText) layout.root.findViewById(R.id.cash)).setText(lsd.formula.substring(2));
                     //main.formula.substring(2));
+
                 else {
                     layout.simple_rew_type.setSelection(1);
                     String[] cps = lsd.formula.substring(2).split("\\|");
@@ -472,7 +475,7 @@ public class ScheduleActivity extends AppCompatActivity {
                         //onLinkClose(v);
                         showLinkView();
                     }
-                }).setNegativeButton(R.string.cancle, null)
+                }).setNegativeButton(R.string.cancel, null)
                 .show();
 
     }
@@ -516,13 +519,6 @@ public class ScheduleActivity extends AppCompatActivity {
     public void onDialogCancelClicked2(View v) {
         Schedule.onDialogCancelClicked(2);
     }
- /*
-    public void onSaveClicked(View v) {
-        Schedule.onRegisterMan(s_id, selected_mans, this);
-        Toast.makeText(this, R.string.saved, Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, AdminMainActivity.class);
-        startActivity(intent);
-    } */
 
     boolean saveContent_data(Linked_sched_data data, int seq, Schedule_content_layout layout) {
         data.link_note = layout.link_note.getText().toString().trim();
@@ -570,6 +566,7 @@ public class ScheduleActivity extends AppCompatActivity {
                         Toast.makeText(this, R.string.input_won, Toast.LENGTH_LONG).show();
                         return false;
                     }
+                    data.formula = "3|" + data.cash;
                 }
                 else {  //coupon
                     if(seq != 0 && layout.coupon_datas.size()==0) {
@@ -577,6 +574,8 @@ public class ScheduleActivity extends AppCompatActivity {
                         return false;
                     }
                     data.coupon_datas = layout.coupon_datas;
+                    data.formula = Schedule.getCpFormula(data.coupon_datas);
+
                     data.cash = "";
                 }
             }
@@ -815,13 +814,7 @@ public class ScheduleActivity extends AppCompatActivity {
 
         LinearLayout linear = (LinearLayout) View.inflate(context, R.layout.link_item_view, null);
         TextView note = linear.findViewById(R.id.note);
-      /*  if(!one_day_rew) {
-            LinearLayout score_layout = linear.findViewById(R.id.score_layout);
-            score_layout.setVisibility(View.VISIBLE);
-            TextView score = linear.findViewById(R.id.score);
-           // score.setText(Integer.toString(sched_data.score));
-        }*/
-        //TextView no_exist =  linear.findViewById(R.id.no_exist);                         L.schedule_makeView(" ");
+
         TextView pic_exist = linear.findViewById(R.id.pic_exist);
         L.schedule_makeView(" ");
         TextView seq = linear.findViewById(R.id.seq);
@@ -859,7 +852,9 @@ public class ScheduleActivity extends AppCompatActivity {
             else {
                 formula.setVisibility(View.GONE);
                 LinearLayout cl = linear.findViewById(R.id.verticalLinear);
+                cl.setVisibility(View.VISIBLE);
                 int size = sched_data.coupon_datas.size();
+                Log.i("coupon -", size + " ");
                 for (int i = 0; i < size; i++) {
                     TextView t = new TextView(context);
                     t.setText(sched_data.coupon_datas.get(i).name + " coupons " + sched_data.coupon_datas.get(i).ea);
@@ -1085,7 +1080,7 @@ public class ScheduleActivity extends AppCompatActivity {
                             saveSc();
 
                         }
-                    }).setNegativeButton(R.string.cancle, null)
+                    }).setNegativeButton(R.string.cancel, null)
                     .show();
             // checkReward();
 
@@ -1244,7 +1239,7 @@ public class ScheduleActivity extends AppCompatActivity {
         }
 
     }
-
+/*
     public void onSaveDayTime(View v) {
         if(dt_datas_length==0){
             Toast.makeText(this, R.string.dt_again, Toast.LENGTH_LONG).show();
@@ -1302,7 +1297,8 @@ public class ScheduleActivity extends AppCompatActivity {
        // }
 
 
-    }
+   // }*/
+
     public void onSaveTimeClicked(View v) {
      //   ++dt_datas_length;
         //if(dt_input_state)

@@ -16,6 +16,7 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -26,6 +27,7 @@ import java.util.Calendar;
 import java.util.zip.Inflater;
 
 /**
+ * updated by eunsoo on 2021-Aug
  * Created by eunsoo on 2017-11-23.
  */
 class Date_day{
@@ -54,7 +56,7 @@ class Date_day{
 
 public class Coupon {
 
-    static void onMyCoupons(Context context, String man ){
+    static void onMyCoupons(Context context, String man, ListView list2){
         androidx.appcompat.app.AlertDialog coupons_dia;
         final ScrollView root = (ScrollView) View.inflate(context, R.layout.my_coupons, null);
         GridLayout linear = root.findViewById(R.id.grid);
@@ -70,9 +72,9 @@ public class Coupon {
         for(int i=0; i< mycoupons.size(); i++) {
             final LinearLayout cp = (LinearLayout) View.inflate(context, R.layout.my_coupon, null);
             TextView name = cp.findViewById(R.id.name);
-            TextView price = cp.findViewById(R.id.price);
-            TextView date = cp.findViewById(R.id.date);
-            TextView _id = cp.findViewById(R.id._id);
+           // TextView price = cp.findViewById(R.id.price);
+           // TextView date = cp.findViewById(R.id.date);
+           // TextView _id = cp.findViewById(R.id._id);
 
             TextView imsi = new TextView(context);
             imsi.setText(R.string.won);
@@ -113,11 +115,18 @@ public class Coupon {
                                             }
                                         }
                                         Toast.makeText(context, mes, Toast.LENGTH_SHORT).show();
-                                        if(context instanceof A_SumActivity )
+                                        if(list2 !=null) {
+                                            ArrayList<Coupon_data> cps = Sum.fillCoupons(context, man);
+                                            CpListAdapter adapter = new CpListAdapter(context, cps);
+                                            list2.setAdapter(adapter);
+                                            Sum.setListViewHeightBasedOnChildren(list2);
+                                        }
+                                        /* if(context instanceof A_SumActivity )
                                         ((A_SumActivity)context).fillSum();
                                         else if(context instanceof SumActivity)
                                             ((SumActivity)context).fillSum();
-
+                                        else if(context instanceof DoSchedActivity);
+                                        */
 
                                     }else
                                         Toast.makeText(context, R.string.fail, Toast.LENGTH_SHORT).show();

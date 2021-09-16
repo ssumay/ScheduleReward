@@ -41,6 +41,7 @@ import java.util.Date;
 
 /**
  * Created by eunsoo on 2017-11-03.
+ * updated by eunsoo on summer 2021
  */
 
 public class Schedule {
@@ -297,16 +298,22 @@ Log.i("sched.title", sched.title + " ");
         sHelper.close();
     }
 
-    public static void delMSc(String m_id, String s_id, Context context) {
+    public static boolean delMSc(String m_name, String s_id, Context context) {
         SchedDBHelper sHelper;
         SQLiteDatabase db;
         //SchedPerChild schedPerChild;
         sHelper = new SchedDBHelper(context);
-        String sql = "delete from sched_man  where s_id= " + s_id +" and man_id="+ m_id;
+        String sql = "delete from sched_man  where s_id= " + s_id +" and man_name = '"+ m_name + "'";
         db = sHelper.getWritableDatabase();
-        db.execSQL(sql);
-
-        sHelper.close();
+        try {
+            db.execSQL(sql);
+            return  true;
+        }catch (Exception e) {
+            Log.i("message", e.getMessage());
+            return false;
+        }finally {
+            sHelper.close();
+        }
     }
     public static void delLink(String s_id, String seq, Context context ) {
         SchedDBHelper sHelper;
@@ -502,8 +509,8 @@ Log.i("sched.title", sched.title + " ");
                 cursor1 = db.rawQuery(sql1, null);
                 cursor1.moveToNext();
                 sd._id = cursor1.getInt(0);
-                TextView imsi = new TextView(context);
-                imsi.setText(R.string.one_day_rew);
+                //TextView imsi = new TextView(context);
+               // imsi.setText(R.string.one_day_rew);
                 sd.title = cursor1.getString(1);
                // sd.reward = cursor1.getInt(2);
                 scheds.add(sd);
@@ -777,14 +784,19 @@ Log.i("sched.title", sched.title + " ");
         sHelper.close();
     }
 
+    static String getCpFormula( ArrayList<Coupon_data> coupon_datas ){
+        String formula = "4|";   //coupon
+        for(int i=0; i<coupon_datas.size(); i++){
+            formula += coupon_datas.get(i).name + "|" + coupon_datas.get(i).ea+"|";
+        }
+        return formula;
+    }
+
     static String setSimpleRewLink(Linked_sched_data ld) {
         String formula = "";
-        if(ld.cash.equals("")){
-            formula = "4|";   //coupon
-            for(int i=0; i<ld.coupon_datas.size(); i++){
-                formula += ld.coupon_datas.get(i).name + "|" + ld.coupon_datas.get(i).ea+"|";
-            }
-        }
+        if(ld.cash.equals(""))
+            formula = getCpFormula(ld.coupon_datas);  //coupon
+
         else formula = "3|" + ld.cash;
         return formula;
     }
@@ -902,42 +914,6 @@ Log.i("sched.title", sched.title + " ");
 
     }
 
-/*
-
-
-    static TextWatcher scoreWatch =  new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
-        @Override
-        public void onTextChanged(CharSequence s, int i, int i1, int i2) {
-            if(s.length()>0) {
-                scored = true;
-                if(link_noted && scored)
-                    save_link.setVisibility(View.VISIBLE);
-            }
-            else {scored = false; save_link.setVisibility(View.GONE);     }
-        }
-        @Override
-        public void afterTextChanged(Editable editable) {            }
-    };
-
-    static TextWatcher scoreWatch_m =  new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
-        @Override
-        public void onTextChanged(CharSequence s, int i, int i1, int i2) {
-            if(s.length()>0) {
-                scored = true;
-                if(link_noted && scored)
-                    modify_link.setVisibility(View.VISIBLE);
-            }
-            else {scored = false; modify_link.setVisibility(View.GONE);     }
-        }
-        @Override
-        public void afterTextChanged(Editable editable) {            }
-    };*/
 }
 
 class CurrentSchedListAdapter extends BaseExpandableListAdapter {

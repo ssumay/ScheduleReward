@@ -121,7 +121,7 @@ class PwdListAdapter extends BaseAdapter {
                                     Toast.makeText(context, R.string.fail, Toast.LENGTH_SHORT).show();
                                 }
                             }
-                        }).setNegativeButton(R.string.cancle, null)
+                        }).setNegativeButton(R.string.cancel, null)
                         .show();
             }
         });
@@ -143,7 +143,7 @@ class PwdListAdapter extends BaseAdapter {
                         .setMessage(s)
                         .setView(pwd_l)
                         //.setIcon(R.drawable.androboy)
-                        .setNegativeButton(R.string.cancle, null)
+                        .setNegativeButton(R.string.cancel, null)
                         .show();
 
                 pwd.addTextChangedListener( new TextWatcher() {

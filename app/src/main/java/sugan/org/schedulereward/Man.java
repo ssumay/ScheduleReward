@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 /**
  * Created by eunsoo on 2017-11-03.
+ * updated by eunsoo on summer 2021
  */
 
 public class Man {
@@ -160,7 +161,7 @@ public class Man {
         SQLiteDatabase db = sHelper.getWritableDatabase();
         Cursor cursor;
 
-        String sql = "select name, img,  pwd, per_score from man where name !='admin' and  name='" + name +"'";     L.man_checkManId("sql="+sql);
+        String sql = "select name, img,  pwd, per_score from man where  name='" + name +"'";     L.man_checkManId("sql="+sql);
         cursor = db.rawQuery(sql , null);
 
         int c = cursor.getCount();

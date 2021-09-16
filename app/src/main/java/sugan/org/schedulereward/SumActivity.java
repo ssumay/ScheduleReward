@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Created by eunsoo on 2017-12-12.
+ * updated by eunsoo on summer 2021
  */
 
 public class SumActivity extends AppCompatActivity {
@@ -63,66 +64,28 @@ public class SumActivity extends AppCompatActivity {
     void fillSum(){
 
         ms = Sum.fillSumByMan(this, md);
+
+        Sum.fillSum(ms, b1, b2, b3, list1, list2, img, this);
+
         per_score_i = ms.man.per_score; Log.i("per_score", per_score_i+" ");
 
         name.setText(md.name);
-        Man.setImage(md.img, img, this);
+        //Man.setImage(md.img, img, this);
         t1.setText(ms.sum + "");
         if(ms.man.per_score==0){
             per_score_i=1;      // 보이지 않으므로 상관없음.
-            //ms.man.per_score=1;
-            //rew_lay.setVisibility(View.GONE);
             per_s_lay.setVisibility(View.GONE);
         }
         else {
-            //rew_lay.setVisibility(View.VISIBLE);
             per_s_lay.setVisibility(View.VISIBLE);
-            //  t2.setText(ms.man.reward + "");
         }
-        //t3.setText(((int) (ms.sum / ms.man.per_score)) + "");
         t3.setText(((int) (ms.sum / per_score_i)) + "");
-/*
-        if(ms.used_scores.size()>1) {
-            UsedSumListAdapter adapter1 = new UsedSumListAdapter(SumActivity.this, ms.used_scores);
-            list2.setAdapter(adapter1);
-            b2.setVisibility(View.VISIBLE);
-            A_SumActivity.setListViewHeightBasedOnChildren(list2);
-        }
-        else b2.setVisibility(View.GONE);*/
-        if(ms.cp_datas.size()>0) {
+
+        if(ms.cp_datas!= null ){ //ms.cp_datas.size()>0) {
             b3.setVisibility(View.VISIBLE);
         }
         else b3.setVisibility(View.GONE);
-        if(ms.sum_datas.size()>1) {
-            SumListAdapter adapter = new SumListAdapter(SumActivity.this, ms.sum_datas);
-            list1.setAdapter(adapter);
-            A_SumActivity.setListViewHeightBasedOnChildren(list1);
-        }
-        else  {
-            list1.setAdapter(null);
-        }
-        if(ms.cp_datas.size()>1){
-            CpListAdapter adapter = new CpListAdapter(this, ms.cp_datas);
-            list2.setAdapter(adapter);
-            A_SumActivity.setListViewHeightBasedOnChildren(list2);
 
-        }
-
-    }
-
-    public void onMyCoupons(View v) {
-        Coupon.onMyCoupons(this, md.name);
-
-    }
-
-    public void onB1Clicked(View v) {   //점수내역 sum history
-        list1.setVisibility(list1.getVisibility() == View.VISIBLE? View.GONE:View.VISIBLE);
-        list2.setVisibility(View.GONE);
-    }
-
-    public void onB2Clicked(View v) {   //쿠폰내역 coupon history
-        list2.setVisibility(list2.getVisibility() == View.VISIBLE? View.GONE:View.VISIBLE);
-        list1.setVisibility(View.GONE);
     }
 
     public void onHome(View v){

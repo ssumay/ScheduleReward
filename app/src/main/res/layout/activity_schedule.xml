@@ -84,6 +84,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/button"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
                     android:gravity="center"
                     android:onClick="onAddLinkClicked"
                     android:paddingLeft="6dp"
@@ -98,6 +101,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/button"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
                         android:gravity="center"
                         android:onClick="onDelLink"
                         android:layout_marginLeft="10dp"
@@ -180,6 +186,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:background="@drawable/button"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
                     android:onClick="onNewMan"
                     android:paddingLeft="12dp"
                     android:paddingTop="6dp"
@@ -225,6 +234,9 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:background="@drawable/button"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?android:attr/selectableItemBackground"
                             android:onClick="onManRegist"
                             android:paddingLeft="10dp"
                             android:paddingTop="4dp"
@@ -269,7 +281,10 @@
             android:paddingBottom="6dp"
             android:layout_marginRight="40dp"
             android:onClick="onDelSc"
-            android:background="@drawable/button"/>
+            android:background="@drawable/button"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"/>
         <TextView
             android:id="@+id/save"
             android:layout_width="wrap_content"
@@ -281,17 +296,23 @@
             android:paddingBottom="6dp"
             android:layout_marginRight="20dp"
             android:onClick="onSaveSc"
-            android:background="@drawable/button"/>
+            android:background="@drawable/button"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/cancle"
+            android:text="@string/cancel"
             android:onClick="onBack"
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
             android:paddingTop="6dp"
             android:paddingBottom="6dp"
             android:background="@drawable/button"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
             />
     </LinearLayout>
 </LinearLayout>

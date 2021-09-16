@@ -17,4 +17,5 @@
         android:maxLength="4"
         android:hint="@string/pwd_enter"
         android:inputType="numberPassword"/>
+    <requestFocus/>
 </LinearLayout>

@@ -35,6 +35,9 @@
         android:layout_marginRight="5dp"
         android:layout_marginLeft="5dp"
         android:background="@drawable/button"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
         android:id="@+id/del_period_cp"/>
     <TextView
         android:layout_width="wrap_content"

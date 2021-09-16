@@ -7,6 +7,7 @@ import android.util.Log;
 
 /**
  * Created by eunsoo on 2017-11-03.
+ * updated by eunsoo on summer 2021
  */
 
 public class SchedDBHelper extends SQLiteOpenHelper {

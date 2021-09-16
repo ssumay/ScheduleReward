@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:gravity="center">
 
     <!--TextView
@@ -9,12 +9,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         ></TextView-->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="120dp"
+        >
     <LinearLayout
         android:id="@+id/man_list"
         android:orientation="vertical"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"></LinearLayout>
+        android:gravity="center"></LinearLayout></ScrollView>
     <TextView
         android:id="@+id/admin"
         android:layout_width="200dp"
@@ -22,8 +27,11 @@
         android:text="@string/admin"
         android:textSize="25dp"
         android:background="@drawable/picture1"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
         android:layout_marginTop="30dp"
-        android:layout_marginBottom="45dp" android:gravity="center"/>
+        android:layout_marginBottom="120dp" android:gravity="center"/>
 
 
 </LinearLayout>

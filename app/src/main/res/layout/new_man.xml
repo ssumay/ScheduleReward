@@ -16,41 +16,7 @@
             android:layout_width="50pt"
             android:layout_height="wrap_content" />
     </LinearLayout>
-    <LinearLayout
-        android:visibility="gone"
-        android:padding="5pt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/score"
-            android:layout_marginRight="10dp"/>
-        <EditText
-            android:id="@+id/per_score"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:maxLength="3"
-            android:inputType="number"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/per_score"
-            android:layout_marginRight="20dp" />
-        <EditText
-            android:id="@+id/rew_desc"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:maxLength="30"
-            android:singleLine="true"
-            android:gravity="center"
-            android:hint="@string/rew"/></LinearLayout>
-        <TextView
-            android:visibility="gone"
-            android:layout_marginLeft="30dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/omit" />
+
     <LinearLayout
         android:paddingTop="10pt"
         android:layout_width="wrap_content"
@@ -68,6 +34,9 @@
                 android:text="@string/take_picture"
                 android:onClick="onCameraClicked"
                 android:background="@drawable/button"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:textSize="20sp"
                 android:padding="5dp"
                 android:gravity="center"/>
@@ -78,6 +47,9 @@
                 android:text="@string/ch_album"
                 android:onClick="onAlbumClicked"
                 android:background="@drawable/button"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:textSize="20sp"
                 android:padding="5dp"
                 android:layout_marginTop="30dp"
@@ -128,6 +100,9 @@
             android:visibility="gone"
             android:onClick="onSaveMan"
             android:background="@drawable/button"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
             android:paddingTop="6dp"
@@ -136,9 +111,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/cancle"
+            android:text="@string/cancel"
             android:onClick="onDialogCancel"
             android:background="@drawable/button"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
             android:paddingTop="6dp"

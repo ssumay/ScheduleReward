@@ -8,6 +8,7 @@ import android.view.View;
 
 /**
  * Created by eunsoo on 2017-11-18.
+ * updated by eunsoo on summer 2021
  */
 
 public class LogoutListener implements View.OnTouchListener {
@@ -25,11 +26,15 @@ public class LogoutListener implements View.OnTouchListener {
     }
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
-        Log.i("logout_ontouch", "aaa");
-        Intent intent = new Intent(context, DoSchedActivity.class);
-        intent.putExtra("man_data", md);
-        intent.putExtra("page", MyFragment.LOGOUT);
-        context.startActivity(intent);
-        return false;
+
+        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+           // Log.i("logout_ontouch", md.name + " " + DoSchedActivity.SFDoSchedFragment.ids.size());
+            Intent intent = new Intent(context, DoSchedActivity.class);
+            intent.putExtra("man_data", md);
+            intent.putExtra("page", MyFragment.LOGOUT);
+            context.startActivity(intent);
+        }
+        return true;
+
     }
 }

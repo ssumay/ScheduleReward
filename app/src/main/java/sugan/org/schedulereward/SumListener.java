@@ -8,6 +8,7 @@ import android.view.View;
 
 /**
  * Created by eunsoo on 2017-11-18.
+ * updated by eunsoo on summer 2021
  */
 
 public class SumListener implements View.OnTouchListener {

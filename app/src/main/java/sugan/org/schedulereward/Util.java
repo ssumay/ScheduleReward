@@ -19,7 +19,9 @@ import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
+/*
+ * updated by eunsoo on summer 2021
+*/
 public class Util {
 
     static void storeCropImage (Context context, Bitmap bitmap, String filePath) {

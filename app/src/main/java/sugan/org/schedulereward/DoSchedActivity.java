@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 
 /**
  * Created by eunsoo on 2017-11-16.
+ * updated by eunsoo on summer 2021
  */
 
 public class DoSchedActivity extends AppCompatActivity {
@@ -27,6 +29,7 @@ public class DoSchedActivity extends AppCompatActivity {
     FragmentManager fm ;
     FragmentTransaction tr ;
     //boolean login_frag = false;   //추후 삭제할 것. 로긴프레그가 있는지를 나타냄.   로긴아웃시 로긴프레그가 없으면  로긴프레그를 추가하기 위함.
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,16 +130,7 @@ public class DoSchedActivity extends AppCompatActivity {
         //String s_id = intent.getStringExtra("s_id");
         String add_id = intent.getStringExtra("add_id");
         if(add_id!=null && add_id.equals("y")) {
-           // for(int j = 0; j<SFDoSchedFragment.loginFragments.size(); j++){
-               // tr.remove(SFDoSchedFragment.loginFragments.get(j));
-               //fragment_layout.removeView(SFDoSchedFragment.loginFragments.get(j).linear);
-           // }
-            //tr.remove(lf);
-
-            //LinearLayout linear1 = new LinearLayout(this);
-            //linear1.setId(SFDoSchedFragment.next_id); Log.i("next_id",SFDoSchedFragment.next_id+ " " );
-            //fragment_layout.removeView();
-            //fragment_layout.addView(linear1);
+            Log.i("schedactivity","--a--" );
 
             SFDoSchedFragment.ids.add(name);
             MyFragment mf = new MyFragment();
@@ -215,7 +209,7 @@ public class DoSchedActivity extends AppCompatActivity {
                 //String s_title = intent.getStringExtra("s_title");
                 SumFragment fragment = SumFragment.newInstance( md,  this);
 
-                int layout_id = 0;
+                //int layout_id = 0;
                 for(int i = 0; i< SFDoSchedFragment.ids.size(); i++ ) {
                     if(SFDoSchedFragment.ids.get(i).equals(name)){  //transferred from different fragment except loginfrag.
                         Log.i("SFDoSchedFragment.id", i+" ");
@@ -228,19 +222,24 @@ public class DoSchedActivity extends AppCompatActivity {
 
             }
             else if(page.equals(MyFragment.LOGOUT)) {
+                //Log.i("schedactivity","--logout--" +SFDoSchedFragment.ids.size()  );
 
                 if(SFDoSchedFragment.ids.size()==1) {
+                  //  Log.i("schedactivity","--logout.size1--" );
+                   //Intent intent1 = new Intent(this, MainActivity.class);
 
                     Intent intent1 = new Intent(this, EntranceActivity.class);
                     intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
                     startActivity(intent1);
+                    finish(); return;
                 }
 
                 for(int i = 0; i< SFDoSchedFragment.myFragments.size(); i++) {
                     if(SFDoSchedFragment.myFragments.get(i).m_name.equals(name)) {
                         fragment_layout.removeViewAt(i);
                         //fragment_layout.removeView(SFDoSchedFragment.frag_linears.get(i));
-                        tr.remove(SFDoSchedFragment.myFragments.get(i).fragment);Log.i("tr.remove", "ccc");
+                        tr.remove(SFDoSchedFragment.myFragments.get(i).fragment);  //Log.i("tr.remove", "ccc");
                         //tr.commit();
                         SFDoSchedFragment.ids.remove(i);
                         SFDoSchedFragment.myFragments.remove(i);
@@ -256,11 +255,6 @@ Log.i("next_id",SFDoSchedFragment.next_id + " ");
                         tr.commit();
                         break;
                     }
-                   // if(i>k){
-                   //     SFDoSchedFragment.myFragments.get(i).layout_id--;
-                   //     SFDoSchedFragment.frag_linears.
-                   // }
-
 
                 }
             }

@@ -2,6 +2,7 @@ package sugan.org.schedulereward;
 
 /**
  * Created by eunsoo on 2017-11-26.
+ * updated by eunsoo on summer 2021
  */
 
 public class Sum_data {

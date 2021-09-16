@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 
 /**
  * Created by eunsoo on 2017-11-03.
+ * updated by eunsoo on summer 2021
  */
 
 public class A_MListActivity extends AppCompatActivity {
@@ -51,7 +53,7 @@ public class A_MListActivity extends AppCompatActivity {
     ImageView ch_img;
     TextView save;
     int mode;   // 0 - newman, 1 - modify
-    String m_id;
+    String m_name;
     String from;
 
     Man_data admin;
@@ -117,9 +119,9 @@ public class A_MListActivity extends AppCompatActivity {
                     name.getText().toString() +"', '1111', 0 , " + i_img +" )";
 
         else
-            sql = "update man set name = '" + name.getText().toString() + "', login_id= '"+name.getText().toString()
-                    +"', 0, img= "+ i_img+ " where name=" + name;
+            sql = "update man set  img= "+ i_img+ " where name='" + m_name + "'";
         try {
+            Log.i("sql", sql);
             db.execSQL(sql);
 
             if (from == null) {  //스케줄페이지에서 온 경우 토스트메시지를 보이지 않는다. 저장메시지가 혼동을 줄 수 있으므로
@@ -136,6 +138,7 @@ public class A_MListActivity extends AppCompatActivity {
             }
             else
                 getManList();
+
         }catch (Exception e){
             Log.i("exception", e.getMessage() + " ");
             Toast.makeText(this, R.string.check_name, Toast.LENGTH_LONG).show();
@@ -143,6 +146,7 @@ public class A_MListActivity extends AppCompatActivity {
             name.setFocusable(true);
         }finally {
             sHelper.close();
+
         }
 
     }
@@ -184,6 +188,20 @@ public class A_MListActivity extends AppCompatActivity {
             case PICK_FROM_ALBUM: {
                 mImageCaptureUri = data.getData();
                 Log.i("pick_from_album = " , mImageCaptureUri.getPath().toString());
+
+
+                Intent intent = new Intent("com.android.camera.action.CROP");
+                intent.setDataAndType(mImageCaptureUri, "image/*");
+
+                intent.putExtra("outputX", 180);
+                intent.putExtra("outputY", 200);
+                intent.putExtra("aspectX", 9);
+                intent.putExtra("aspectY", 10);
+                intent.putExtra("scale", true);
+
+                intent.putExtra("return-data", true);
+                startActivityForResult(intent, CROP_FROM_IMAGE);
+
             }
             case PICK_FROM_CAMERA: {
                 Log.i("pick_from_camera  " , mImageCaptureUri.getPath().toString());
@@ -223,6 +241,7 @@ public class A_MListActivity extends AppCompatActivity {
                 Log.i("CROP_FROM_IMAGE", filePath + " ");
                 if(extras != null){
                     Bitmap photo = extras.getParcelable("data");
+                    Log.i("photo", photo + " ");
                     ch_img.setImageBitmap(photo);
 
                     Util.storeCropImage(this, photo, filePath);
@@ -247,29 +266,33 @@ public class A_MListActivity extends AppCompatActivity {
 
     public void onName(View v) {
         mode = 1;
-        m_id = ((TextView)((LinearLayout)v.getParent()).findViewById(R.id._id)).getText().toString();
-        Man_data md = Man.getManData( m_id, this);
 
-        if(dialog==null)
+        m_name = ((TextView)v).getText().toString();
+        Man_data md = Man.getManData( m_name, this);
+
+       // if(dialog==null)
             getMDiaLayout(R.string.mod_man);
-        else {
-            dialog.setTitle(R.string.mod_man);
-            dialog.show();
-        }
+       // else {
+        //    dialog.setTitle(R.string.mod_man);
+        //    dialog.show();
+       // }
         name.setText(md.name);
         Man.setImage(md.img, ch_img, this);
-        if(md.per_score==0)  per_score.setText("");
-        else  per_score.setText(md.per_score+"");
+        img = md.img;
+       // if(md.per_score==0)  per_score.setText("");
+       // else  per_score.setText(md.per_score+"");
         save.setText(R.string.modify);
     }
 
     public void getMDiaLayout(int title_res){
         linear = (LinearLayout)View.inflate(this, R.layout.new_man, null);
         name = (EditText)linear.findViewById(R.id.name);
+        if(mode!=0) name.setFocusable(false);
+
         ch_img = linear.findViewById(R.id.ch_img);
         login = (EditText)linear.findViewById(R.id.login);
-        per_score = (EditText)linear.findViewById(R.id.per_score);
-        rew_desc = (EditText)linear.findViewById(R.id.rew_desc);
+       // per_score = (EditText)linear.findViewById(R.id.per_score);
+        //rew_desc = (EditText)linear.findViewById(R.id.rew_desc);
         //ch_img = linear.findViewById(R.id.ch_img);
         //Log.i("name", "" + name.getText().toString()+" ");
         save = (TextView)linear.findViewById(R.id.save);
@@ -342,19 +365,22 @@ public class A_MListActivity extends AppCompatActivity {
     }
     public void onNewMan(View v){
         mode = 0;
-        if(dialog==null) {Log.i("dialog", "null");
-        getMDiaLayout(R.string.input_man); }
+        img = null;
+      //  if(dialog==null) {Log.i("dialog", "null");
+        getMDiaLayout(R.string.input_man); //}
 
-        else {
-            dialog.setTitle(R.string.input_man);
-            dialog.show();
+       // else {
+        //    dialog.setTitle(R.string.input_man);
+        //    dialog.show();
             name.setText("");
             ch_img.setImageResource(R.drawable.singer2);
             login.setText("");
-            per_score.setText("");
-            rew_desc.setText("");
+            name.requestFocus();
 
-        }
+            //per_score.setText("");
+           // rew_desc.setText("");
+
+       // }
         save.setText(R.string.save);
 
     }
@@ -391,15 +417,19 @@ public class A_MListActivity extends AppCompatActivity {
         intent.putExtra("s_id", s_id);
         startActivity(intent);
     }
-
+*/
     public void onDelSc(final View v) {
         new AlertDialog.Builder(this).setMessage(R.string.del_ms).setPositiveButton(R.string.y,
                 new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int b) {
-                        String s_id = ((TextView)(((LinearLayout)v.getParent()).findViewById(R.id._id))).getText().toString();
-                        String m_id = ((TextView)(((LinearLayout)v.getParent()).findViewById(R.id.m_id))).getText().toString();
+                        String s_id = ((TextView)(((LinearLayout)v.getParent().getParent()).findViewById(R.id._id))).getText().toString();
+                        String m_id = ((TextView)(((LinearLayout)v.getParent().getParent()).findViewById(R.id.m_name))).getText().toString();
 
-                        Schedule.delMSc(m_id, s_id, A_MListActivity.this);
+                        if(Schedule.delMSc(m_id, s_id, A_MListActivity.this))
+                            Toast.makeText(A_MListActivity.this, R.string.deleted_sch, Toast.LENGTH_SHORT).show();
+                        else
+                            Toast.makeText(A_MListActivity.this, R.string.fail, Toast.LENGTH_SHORT).show();
+
                         getManList();
                     }
                 }).setNegativeButton(R.string.n, null)
@@ -408,7 +438,7 @@ public class A_MListActivity extends AppCompatActivity {
 
         //getSchedList();
 
-    }*/
+    }
     public void getManList() {
         ExpandableListView listView = (ExpandableListView) findViewById(R.id.list);
         ManListAdapter adapter = Man.getList(this);
@@ -531,11 +561,9 @@ class ManListAdapter extends BaseExpandableListAdapter {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.man_list_group, null);
         }
-        Log.i("dddddddddd", " ");
         Man_data d = (Man_data) getGroup(groupPosition);
         ((TextView)convertView.findViewById(R.id.name)).setText(d.name);
         ImageView img = (ImageView) convertView.findViewById(R.id.img);
-        Log.i("groupview", d.name+" " +d.img);
         Man.setImage(d.img, img, context);
         return convertView;
 

@@ -17,12 +17,12 @@
             android:visibility="gone"/>
         <TextView
             android:id="@+id/mon"
-            android:layout_width="wrap_content"
+            android:layout_width="25dp"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:text="@string/mon"
             android:background="@drawable/picture"
             android:textSize="15sp"
-            android:padding="2dp"
             android:onClick="onDayClicked"
             />
         <TextView
@@ -40,7 +40,8 @@
         android:layout_height="wrap_content">
         <TextView
             android:id="@+id/tue"
-            android:layout_width="wrap_content"
+            android:layout_width="25dp"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:text="@string/tue"
             android:background="@drawable/picture"
@@ -57,7 +58,8 @@
     android:layout_height="wrap_content">
     <TextView
         android:id="@+id/wed"
-        android:layout_width="wrap_content"
+        android:layout_width="25dp"
+        android:gravity="center"
         android:layout_height="wrap_content"
         android:text="@string/wed"
         android:background="@drawable/picture"
@@ -73,7 +75,8 @@
     android:layout_height="wrap_content">
     <TextView
         android:id="@+id/thu"
-        android:layout_width="wrap_content"
+        android:layout_width="25dp"
+        android:gravity="center"
         android:layout_height="wrap_content"
         android:text="@string/thu"
         android:background="@drawable/picture"
@@ -89,7 +92,8 @@
     android:layout_height="wrap_content">
     <TextView
         android:id="@+id/fri"
-        android:layout_width="wrap_content"
+        android:layout_width="25dp"
+        android:gravity="center"
         android:layout_height="wrap_content"
         android:text="@string/fri"
         android:background="@drawable/picture"
@@ -105,7 +109,8 @@
     android:layout_height="wrap_content">
     <TextView
         android:id="@+id/sat"
-        android:layout_width="wrap_content"
+        android:layout_width="25dp"
+        android:gravity="center"
         android:layout_height="wrap_content"
         android:text="@string/sat"
         android:background="@drawable/picture"
@@ -122,7 +127,8 @@
         android:layout_height="wrap_content">
         <TextView
             android:id="@+id/sun"
-            android:layout_width="wrap_content"
+            android:layout_width="25dp"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:text="@string/sun"
             android:background="@drawable/picture"

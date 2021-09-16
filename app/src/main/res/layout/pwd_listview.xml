@@ -36,12 +36,18 @@
         android:padding="3dp"
         android:id="@+id/pwd_on"
         android:textColor="@color/colorAccent" android:layout_gravity="center"
-        android:background="@drawable/red_border"/>
+        android:background="@drawable/red_border"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/pwd_ch"
         android:background="@drawable/button"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
         android:padding="3dp"
         android:layout_marginLeft="15dp"    android:layout_gravity="center"
         android:layout_marginRight="15dp"

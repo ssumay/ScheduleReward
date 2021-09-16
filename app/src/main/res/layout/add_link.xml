@@ -14,13 +14,13 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:maxLength="100"/>
-    <Switch
+    <!--Switch
         android:id="@+id/no_select"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/no_select"
         android:textSize="17sp"
-        android:padding="10dp"/>
+        android:padding="10dp"/-->
     <Switch
         android:id="@+id/pic_select"
         android:layout_width="wrap_content"

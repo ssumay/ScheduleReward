@@ -31,6 +31,7 @@ import java.util.ArrayList;
 
 /**
  * Created by eunsoo on 2017-11-25.
+ * updated by eunsoo on summer 2021
  */
 
 public class A_SumActivity extends AppCompatActivity {
@@ -170,30 +171,6 @@ public class A_SumActivity extends AppCompatActivity {
 
     }
 
-    public static void setListViewHeightBasedOnChildren(ListView listView) {
-        ListAdapter listAdapter = listView.getAdapter();
-        if (listAdapter == null)  return;
-
-        int numberOfItems = listAdapter.getCount();
-
-        // Get total height of all items.
-        int totalItemsHeight = 0;
-        for (int itemPos = 0; itemPos < numberOfItems; itemPos++) {
-            View item = listAdapter.getView(itemPos, null, listView);
-            item.measure(0, 0);
-            totalItemsHeight += item.getMeasuredHeight();
-        }
-
-        // Get total height of all item dividers.
-        int totalDividersHeight = listView.getDividerHeight() *  (numberOfItems - 1);
-
-        // Set list height.
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalItemsHeight + totalDividersHeight;
-        listView.setLayoutParams(params);
-        listView.requestLayout();
-    }
-
     public void fillSum () {
 
         b4.setText(R.string.add_sc);
@@ -204,41 +181,19 @@ public class A_SumActivity extends AppCompatActivity {
 
         ms = Sum.fillSumByMan(A_SumActivity.this, mds.get(selected_i));
 
-        Man.setImage(ms.man.img, img, this);
+        Sum.fillSum(ms, b1, b2, b3, list1, list2, img, this);
+
+        //Man.setImage(ms.man.img, img, this);
         per_score_i = ms.man.per_score;Log.i("per_score", per_score_i+" ");
         //per_score.setText(per_score_i + "");
        // rew_desc.setText(ms.man.reward);
         t1.setText(ms.sum + "");
         if(ms.man.per_score==0){
             per_score_i=1;      // 보이지 않으므로 상관없음.
-            //ms.man.per_score=1;
-        //    rew_lay.setVisibility(View.GONE);
-         //   per_s_lay.setVisibility(View.GONE);
-        }
-        //else {
-       //     rew_lay.setVisibility(View.VISIBLE);
-        //    per_s_lay.setVisibility(View.VISIBLE);
-         //   t2.setText(ms.man.reward + "");
-        //}
-        //t3.setText(((int) (ms.sum / ms.man.per_score)) + "");
-        //t3.setText(((int) (ms.sum / per_score_i)) + "");
-
-        if(ms.sum_datas.size()>1) {
-            SumListAdapter adapter = new SumListAdapter(A_SumActivity.this, ms.sum_datas);
-            list1.setAdapter(adapter);
-            setListViewHeightBasedOnChildren(list1);
-        }
-        else  {
-            list1.setAdapter(null);
-        }
-        if(ms.cp_datas.size()>1){
-            CpListAdapter adapter = new CpListAdapter(A_SumActivity.this, ms.cp_datas);
-            list2.setAdapter(adapter);
-            setListViewHeightBasedOnChildren(list2);
 
         }
+
     }
-
 
     public void onB4Clicked(View v) {  //점수주기 버튼
         if (state) {   //true - 빼기(점수주기버튼), false - 더하기 (점수빼기버튼)
@@ -260,20 +215,6 @@ public class A_SumActivity extends AppCompatActivity {
         }
     }
 
-    public void onB1Clicked(View v) {   //점수내역 sum history
-        list1.setVisibility(list1.getVisibility() == View.VISIBLE? View.GONE:View.VISIBLE);
-        list2.setVisibility(View.GONE);
-    }
-
-    public void onB2Clicked(View v) {   //쿠폰내역 coupon history
-        list2.setVisibility(list2.getVisibility() == View.VISIBLE? View.GONE:View.VISIBLE);
-        list1.setVisibility(View.GONE);
-    }
-
-    public void onMyCoupons(View v) {
-        Coupon.onMyCoupons(this, man_spi.getSelectedItem()+"");
-
-        }
     public void onHome(View v){
         Intent intent = new Intent(this, AdminActivity.class);
         intent.putExtra("man_data", admin);

@@ -3,6 +3,7 @@ package sugan.org.schedulereward;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,11 +12,14 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
+/*
+ * created by eunsoo on summer 2021
+*/
 public class EntranceActivity extends AppCompatActivity {
 
     Man      man;
@@ -25,14 +29,10 @@ public class EntranceActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // deleteDatabase("schedreward.db");
+        //deleteDatabase("schedreward.db");
 
         setContentView(R.layout.activity_entrance);
-       // TextView formula_test_r = findViewById(R.id.formula_test_r);
-
-        //formula_test_r.setText(Util.getResult(21, 0, 19, 30, 1.5f)+"");
-        //Util.calcul_r(paren);
-
+        //Log.i("entranceac", "aaa");
         Coupon.givePeriodicCoupons(this);   //주기적으로 발행되는 쿠폰 체크하고 발행한다
 
         man = new Man();
@@ -57,6 +57,7 @@ public class EntranceActivity extends AppCompatActivity {
             }
         });
 
+        Log.i("entranceac", "bbb");
 
 
         while(cursor.moveToNext())  {
@@ -88,10 +89,7 @@ public class EntranceActivity extends AppCompatActivity {
         }
         cursor.close();
         sHelper.close();
-
-      //  LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-
+        Log.i("entranceac", "ccc");
 
     }
 
@@ -110,13 +108,17 @@ public class EntranceActivity extends AppCompatActivity {
         LinearLayout pwd_l = (LinearLayout)View.inflate(EntranceActivity.this, R.layout.pwd_input, null);
         pwd = pwd_l.findViewById(R.id.pwd);
         pwd.addTextChangedListener(pwdWatch);
-        // AlertDialog dialog2 =
+
         new AlertDialog.Builder(EntranceActivity.this)
                  .setTitle(R.string.enter_pwd)
                 //.setIcon(R.drawable.androboy)
                 .setView(pwd_l)
                 //.setCancelable(false)
                 .show();
+
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+
     }
 
         Man_data getMan(Cursor cursor) {

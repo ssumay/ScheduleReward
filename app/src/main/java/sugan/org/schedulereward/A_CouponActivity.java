@@ -31,6 +31,7 @@ import java.util.ArrayList;
 
 /**
  * Created by eunsoo on 2017-11-23.
+ * updated by eunsoo on summer 2021
  */
 
 public class A_CouponActivity extends AppCompatActivity {
@@ -113,6 +114,7 @@ public class A_CouponActivity extends AppCompatActivity {
 
         mycoupon_l = findViewById(R.id.mycoupon_l);
         mycoupons_b = findViewById(R.id.mycoupons_b);
+        new_coupon_dialog.setVisibility(View.GONE);
 
     }
 
@@ -514,7 +516,7 @@ public class A_CouponActivity extends AppCompatActivity {
     public void onMyCoupons(View v){
 
         String man = (String)man_spi1.getSelectedItem();
-        Coupon.onMyCoupons(this, man);
+        Coupon.onMyCoupons(this, man, null);
 
     }
     /*

@@ -4,7 +4,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -14,6 +20,7 @@ import java.util.Date;
 
 /**
  * Created by eunsoo on 2017-11-18.
+ * updated by eunsoo on summer 2021
  */
 
 public class Sum {
@@ -240,6 +247,60 @@ public class Sum {
         return mans;
     }
 
+    public static void fillSum(Man_sum  ms, TextView b1, TextView b2, TextView b3, ListView list1, ListView list2, ImageView img, Context context){
+        Man.setImage(ms.man.img, img, context);
+
+        if(ms.cp_datas != null ){ //&& ms.cp_datas.size()>1) {
+            b3.setVisibility(View.VISIBLE);
+        }
+        else b3.setVisibility(View.GONE);
+
+        if(ms.sum_datas != null){ // && ms.sum_datas.size()>1) {
+            SumListAdapter adapter = new SumListAdapter(context, ms.sum_datas);
+            list1.setAdapter(adapter);
+            setListViewHeightBasedOnChildren(list1);
+        }
+        else  {
+            list1.setAdapter(null);
+        }
+        Log.i("ms.cp_datas", ms.cp_datas + " ");
+        if(ms.cp_datas != null ){ //&& ms.cp_datas.size()>1){
+            Log.i("cp_datas != null ", "---");
+            CpListAdapter adapter = new CpListAdapter(context, ms.cp_datas);
+            list2.setAdapter(adapter);
+            setListViewHeightBasedOnChildren(list2);
+        }
+        else {
+            list2.setAdapter(null);
+        }
+
+        b1.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                if (list1.getVisibility() == View.VISIBLE) list1.setVisibility(View.GONE);
+                else list1.setVisibility(View.VISIBLE);
+                list2.setVisibility(View.GONE);
+
+            }
+        });
+        b2.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                if (list2.getVisibility() == View.VISIBLE) list2.setVisibility(View.GONE);
+                else list2.setVisibility(View.VISIBLE);
+                list1.setVisibility(View.GONE);
+
+
+            }
+        });
+
+        b3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Coupon.onMyCoupons(context, ms.man.name, list2);
+
+            }
+        });
+    }
+
     public static Man_sum  fillSumByMan(Context context, Man_data md){
 
         SchedDBHelper sHelper = new SchedDBHelper(context);
@@ -247,7 +308,6 @@ public class Sum {
         Man_sum ms = new Man_sum();  ms.man = md;
         Cursor cursor1;
         Cursor cursor2;
-        Cursor cursor3;
 
         String sql1 = "select sum(reward) from sum where man_name = '" + md.name + "' and isCP is null";
 
@@ -258,25 +318,29 @@ public class Sum {
                 "' and isCP is null order by date desc, s_id desc, seq asc ";   //limit 20";  //
         Log.i("sql", sql2);
         cursor2 = db.rawQuery(sql2, null);
-        ms.sum_datas = new ArrayList<>();
-        ms.cp_datas = new ArrayList<>();
+        //ms.sum_datas = new ArrayList<>(10);
+       // ms.cp_datas = new ArrayList<>();
 
-        Sum_data sd1 = new Sum_data();
-        TextView imsi = new TextView(context);
-        imsi.setText(R.string.date);
-        sd1.date = imsi.getText().toString();
-        imsi.setText(R.string.sched);
-        sd1.s_title = imsi.getText().toString();
-        imsi.setText(R.string.content);
-        sd1.link_note = imsi.getText().toString();
-        imsi.setText(R.string.score);
-        sd1.score = imsi.getText().toString();
-        //imsi.setText(R.string.picture);
-        //ds.picture = imsi.getText().toString();
-        imsi.setText(R.string.content);
-        ms.sum_datas.add(sd1);
+
 
         if(cursor2.getCount()!=0) {
+            ms.sum_datas = new ArrayList<>(10);
+
+            Sum_data sd1 = new Sum_data();
+            TextView imsi = new TextView(context);
+            imsi.setText(R.string.date);
+            sd1.date = imsi.getText().toString();
+            imsi.setText(R.string.sched);
+            sd1.s_title = imsi.getText().toString();
+            imsi.setText(R.string.content);
+            sd1.link_note = imsi.getText().toString();
+            imsi.setText(R.string.score);
+            sd1.score = imsi.getText().toString();
+            //imsi.setText(R.string.picture);
+            //ds.picture = imsi.getText().toString();
+            imsi.setText(R.string.content);
+            ms.sum_datas.add(sd1);
+
             while (cursor2.moveToNext()) {
                 Sum_data sd = new Sum_data();
                 ms.sum_datas.add(sd);
@@ -289,28 +353,50 @@ public class Sum {
 
         }
 
-        Coupon_data ct = new Coupon_data();
-        ms.cp_datas.add(ct);
-        imsi = new TextView(context);
-        imsi.setText(R.string.sched);
-        ct.s_title = imsi.getText().toString();
-        imsi.setText(R.string.content);
-        ct.link_note = imsi.getText().toString();
-        imsi.setText(R.string.date);
-        ct.date = imsi.getText().toString();
-        imsi.setText(R.string.price_ea);
-        ct.price =   imsi.getText().toString();
-        imsi.setText(R.string.coupon);
-        ct.name = imsi.getText().toString();
+        ms.cp_datas = fillCoupons(context, ms.man.name);
 
-        String sql3 = "select s_title, link_note, name, date, price_ea, state from my_coupon where man_name= '" + md.name +
-                  "' order by date desc ";  // limit 20";
+        cursor1.close(); cursor2.close();
+        sHelper.close();
 
-        cursor3 = db.rawQuery(sql3, null);
+        return ms;
+    }
+
+    static ArrayList<Coupon_data> fillCoupons(Context context, String man ){//Man_sum ms){
+
+        SchedDBHelper sHelper = new SchedDBHelper(context);
+        SQLiteDatabase db = sHelper.getWritableDatabase();
+        ArrayList<Coupon_data> cps = null;
+
+        String sql3 = "select s_title, link_note, name, date, price_ea, state from my_coupon where man_name= '" + man +
+                "' order by date desc ";  // limit 20";
+
+        Log.i("fillcps", sql3 + " ");
+        Cursor cursor3 = db.rawQuery(sql3, null);
+
         if(cursor3.getCount()!=0){
+            Log.i("cp-count",cursor3.getCount() + " " );
+            cps =  new ArrayList<>(10);
+            TextView imsi = new TextView(context);
+
+            Coupon_data ct = new Coupon_data();
+            imsi = new TextView(context);
+            imsi.setText(R.string.sched);
+            ct.s_title = imsi.getText().toString();
+            imsi.setText(R.string.content);
+            ct.link_note = imsi.getText().toString();
+            imsi.setText(R.string.date);
+            ct.date = imsi.getText().toString();
+            imsi.setText(R.string.price_ea);
+            ct.price =   imsi.getText().toString();
+            imsi.setText(R.string.coupon);
+            ct.name = imsi.getText().toString();
+            cps.add(ct);
+
             while(cursor3.moveToNext()) {
+
                 Coupon_data cp = new Coupon_data();
-                ms.cp_datas.add(cp);
+                cps.add(cp);
+                //ms.cp_datas.add(cp);
                 cp.s_title = cursor3.getString(0);
                 cp.link_note = cursor3.getString(1);
                 cp.name = cursor3.getString(2);
@@ -319,11 +405,34 @@ public class Sum {
                 if(cursor3.getInt(5)==1) cp.state = true;   //1이면 사용한 상태. 그렇지 않은 경우 NULL
             }
         }
-
-        cursor1.close(); cursor2.close();  cursor3.close();
+        cursor3.close();
         sHelper.close();
+        return cps;
+    }
 
-        return ms;
+
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null)  return;
+
+        int numberOfItems = listAdapter.getCount();
+
+        // Get total height of all items.
+        int totalItemsHeight = 0;
+        for (int itemPos = 0; itemPos < numberOfItems; itemPos++) {
+            View item = listAdapter.getView(itemPos, null, listView);
+            item.measure(0, 0);
+            totalItemsHeight += item.getMeasuredHeight();
+        }
+
+        // Get total height of all item dividers.
+        int totalDividersHeight = listView.getDividerHeight() *  (numberOfItems - 1);
+
+        // Set list height.
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalItemsHeight + totalDividersHeight;
+        listView.setLayoutParams(params);
+        listView.requestLayout();
     }
 
 /*

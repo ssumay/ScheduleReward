@@ -25,7 +25,11 @@
             android:layout_width="wrap_content" android:onClick="onHome"
             android:paddingLeft="10dp" android:paddingBottom="4dp"
             android:paddingTop="4dp" android:paddingRight="10dp"
-            android:gravity="center" android:background="@drawable/button"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:background="@drawable/button"
             android:textSize="20dp" android:text="@string/gohome"
             android:layout_margin="20dp"/>
     </LinearLayout>
@@ -80,13 +84,15 @@
         android:layout_height="wrap_content"
         android:text="@string/oneday"
         android:background="@drawable/oneday_ticket4"
-        android:onClick="onMyCoupons"
         android:visibility="gone"
         android:textColor="#808000"
         android:textSize="18sp"
         android:padding="10dp"
         android:layout_margin="30dp"
         android:gravity="center"/>
-    <include layout="@layout/sum_history"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <include layout="@layout/sum_history"/></ScrollView>
 
 </LinearLayout>

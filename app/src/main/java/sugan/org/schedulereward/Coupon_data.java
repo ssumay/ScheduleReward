@@ -2,6 +2,7 @@ package sugan.org.schedulereward;
 
 /**
  * Created by eunsoo on 2017-11-23.
+ * updated by eunsoo on summer 2021
  */
 
 public class Coupon_data {

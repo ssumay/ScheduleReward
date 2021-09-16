@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 /**
  * Created by eunsoo on 2017-11-14.
+ * updated by eunsoo on summer 2021
  */
 
 public class MainActivity extends AppCompatActivity {
@@ -41,7 +42,7 @@ Log.i("Mainac", "ONCREATE");
         group = new ArrayList<Sched_data>();
         child = new ArrayList<ArrayList<Linked_sched_data>>();
 
-        ExpandableListView listView = (ExpandableListView) findViewById(R.id.list);
+        ExpandableListView listView = findViewById(R.id.list);
         //Log.i("md.id", md._id + " " + md.pwd);
         CurrentSchedListAdapter adapter =(CurrentSchedListAdapter) Schedule.getRightNowList(this, group, child, md.name , null, false);
         listView.setAdapter(adapter);

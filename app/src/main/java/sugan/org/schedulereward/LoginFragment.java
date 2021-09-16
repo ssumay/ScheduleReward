@@ -23,6 +23,7 @@ import androidx.appcompat.app.AlertDialog;
 
 /**
  * Created by eunsoo on 2017-11-17.
+ * updated by eunsoo on summer 2021
  */
 
 public class LoginFragment extends Fragment {

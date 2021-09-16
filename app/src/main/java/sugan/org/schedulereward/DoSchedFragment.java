@@ -26,6 +26,7 @@ import java.util.ArrayList;
 
 /**
  * Created by eunsoo on 2017-11-16.
+ * updated by eunsoo on summer 2021
  */
 
 public class DoSchedFragment extends Fragment {

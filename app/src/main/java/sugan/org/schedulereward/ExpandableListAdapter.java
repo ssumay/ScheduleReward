@@ -4,6 +4,7 @@ import android.widget.BaseExpandableListAdapter;
 
 /**
  * Created by eunsoo on 2017-12-01.
+ * updated by eunsoo on summer 2021
  */
 
 public abstract  class ExpandableListAdapter extends BaseExpandableListAdapter {

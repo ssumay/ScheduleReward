@@ -11,6 +11,7 @@ import java.util.Date;
 
 /**
  * Created by eunsoo on 2017-11-17.
+ * updated by eunsoo on summer 2021
  */
 
 public class Link {

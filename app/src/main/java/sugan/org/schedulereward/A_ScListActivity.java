@@ -8,9 +8,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 
 /**
  * Created by eunsoo on 2017-11-03.
+ * updated by eunsoo on summer 2021
  */
 
 public class A_ScListActivity extends AppCompatActivity {
@@ -55,7 +58,7 @@ public class A_ScListActivity extends AppCompatActivity {
         startActivity(intent);
     }
     public void onDelSc(View v) {
-        s_id = ((TextView)(((LinearLayout)v.getParent()).findViewById(R.id._id))).getText().toString();
+        s_id = ((TextView)(((RelativeLayout)v.getParent()).findViewById(R.id._id))).getText().toString();
         new AlertDialog.Builder(this).setMessage(R.string.del_sc).setPositiveButton(R.string.y,
                 new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int b) {
@@ -70,7 +73,7 @@ public class A_ScListActivity extends AppCompatActivity {
     }
 
     public void onSchedTitleClicked(View v) {
-        String s_id = ((TextView)(((LinearLayout)v.getParent()).findViewById(R.id._id))).getText().toString();
+        String s_id = ((TextView)(((RelativeLayout)v.getParent()).findViewById(R.id._id))).getText().toString();
         Intent intent = new Intent(this, ScheduleActivity.class);
         intent.putExtra("s_id", s_id);
         startActivity(intent);
@@ -79,7 +82,7 @@ public class A_ScListActivity extends AppCompatActivity {
     }
 
     public void getSchedList() {
-        ExpandableListView listView = (ExpandableListView) findViewById(R.id.list);
+        ExpandableListView listView = findViewById(R.id.list);
         SchedListAdapter adapter = Schedule.getList(this);
         listView.setAdapter(adapter);
         if(adapter != null){
@@ -90,7 +93,7 @@ public class A_ScListActivity extends AppCompatActivity {
 }
 
 
-class SchedListAdapter implements ExpandableListAdapter {
+class SchedListAdapter extends BaseExpandableListAdapter {
 
     Context context;
 

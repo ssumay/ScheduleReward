@@ -19,7 +19,9 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 
 import java.util.ArrayList;
-
+/*
+ * updated by eunsoo on summer 2021
+*/
 public class Schedule_content_layout {
     View root;
     TextView seqT;

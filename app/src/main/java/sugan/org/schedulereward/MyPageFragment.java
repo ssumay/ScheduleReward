@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 /**
  * Created by eunsoo on 2017-11-18.
+ * updated by eunsoo on summer 2021
  */
 
 public class MyPageFragment extends Fragment {

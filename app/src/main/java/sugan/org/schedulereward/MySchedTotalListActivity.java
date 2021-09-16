@@ -1,5 +1,6 @@
 package sugan.org.schedulereward;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 
 /**
  * Created by eunsoo on 2017-11-14.
+ * updated by eunsoo on summer 2021
  */
 
 public class MySchedTotalListActivity extends AppCompatActivity {
@@ -39,7 +41,7 @@ public class MySchedTotalListActivity extends AppCompatActivity {
     }
 
     public void onMainClicked(View v) {
-        Intent intent = new Intent(this, EntranceActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("man_data", md );
         startActivity(intent);
